@@ -5,6 +5,9 @@ import com.example.carsharing1.entity.Car;
 
 public class CarMapper {
 
+    private CarMapper() {
+    }
+
     public static CarDto toDto(Car car) {
 
         if (car == null) {
