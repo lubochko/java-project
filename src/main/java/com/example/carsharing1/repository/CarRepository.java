@@ -1,28 +1,33 @@
 package com.example.carsharing1.repository;
 
 import com.example.carsharing1.entity.Car;
-import java.util.ArrayList;
-import java.util.List;
+import com.example.carsharing1.enums.CarStatus;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class CarRepository {
+public interface CarRepository extends JpaRepository<Car, Long> {
 
-    private static final String STATUS_AVAILABLE = "AVAILABLE";
-    private static final String STATUS_BUSY = "BUSY";
+    List<Car> findByBrand(String brand);
 
-    private final List<Car> cars = new ArrayList<>();
+    List<Car> findByStatus(CarStatus status);
 
-    public CarRepository() {
-        cars.add(new Car(1, "Toyota", "Corolla", 0.5, STATUS_AVAILABLE));
-        cars.add(new Car(2, "BMW", "X5", 1.2, STATUS_BUSY));
-        cars.add(new Car(3, "Audi", "A4", 0.9, STATUS_AVAILABLE));
-        cars.add(new Car(4, "Tesla", "Model 3", 1.5, STATUS_BUSY));
-        cars.add(new Car(5, "Kia", "Rio", 0.4, STATUS_AVAILABLE));
-    }
+    @EntityGraph(attributePaths = {"location", "features"})
+    @Query("SELECT c FROM Car c WHERE c.id = :id")
+    Optional<Car> findByIdWithDetails(@Param("id") Long id);
 
-    public List<Car> findAll() {
-        return cars;
-    }
+    @Query("SELECT DISTINCT c FROM Car c " +
+            "LEFT JOIN FETCH c.location " +
+            "LEFT JOIN FETCH c.features " +
+            "WHERE c.status = :status")
+    List<Car> findByStatusWithDetails(@Param("status") CarStatus status);
+
+    List<Car> findByBrandAndModel(String brand, String model);
+
+    boolean existsByLicensePlate(String licensePlate);
 }
-

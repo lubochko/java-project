@@ -11,36 +11,32 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.FetchType;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "locations")
+@Table(name = "features")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {
+public class Feature {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String city;
+    @Column(unique = true, nullable = false, length = 50)
+    private String name;
 
-    @Column(nullable = false, length = 200)
-    private String address;
+    @Column(length = 500)
+    private String description;
 
-    private Double latitude;
+    private String icon;
 
-    private Double longitude;
-
-    private Integer capacity;
-
-    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "features", fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<Car> cars = new ArrayList<>();
+    private Set<Car> cars = new HashSet<>();
 }
