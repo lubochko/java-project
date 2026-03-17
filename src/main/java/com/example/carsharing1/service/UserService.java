@@ -2,6 +2,9 @@ package com.example.carsharing1.service;
 
 import com.example.carsharing1.dto.UserDto;
 import com.example.carsharing1.entity.User;
+import com.example.carsharing1.exception.UserNotFoundException;
+import com.example.carsharing1.exception.DuplicateEmailException;
+import com.example.carsharing1.exception.DuplicateLicenseException;
 import com.example.carsharing1.mapper.UserMapper;
 import com.example.carsharing1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Slf4j
 @Service
@@ -70,16 +74,8 @@ public class UserService {
     public UserDto createUser(UserDto userDto) {
         log.info("Создание нового пользователя с email: {}", userDto.getEmail());
 
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            log.warn(EMAIL_ALREADY_TAKEN, userDto.getEmail());
-            return null;
-        }
-
-        if (userDto.getDriverLicense() != null && !userDto.getDriverLicense().isEmpty() &&
-                userRepository.findByDriverLicense(userDto.getDriverLicense()).isPresent()) {
-            log.warn(LICENSE_ALREADY_TAKEN, userDto.getDriverLicense());
-            return null;
-        }
+        validateEmailNotTaken(userDto.getEmail());
+        validateLicenseNotTaken(userDto.getDriverLicense());
 
         User user = UserMapper.toEntity(userDto);
         user.setRegistrationDate(LocalDateTime.now());
@@ -94,29 +90,22 @@ public class UserService {
     public UserDto updateUser(Long id, UserDto userDto) {
         log.info("Обновление пользователя с ID: {}", id);
 
-        User existingUser = userRepository.findById(id).orElse(null);
-        if (existingUser == null) {
-            log.warn(USER_NOT_FOUND, id);
-            return null;
-        }
+        User existingUser = findUserById(id);
 
-        if (!existingUser.getEmail().equals(userDto.getEmail()) &&
-                userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            log.warn(EMAIL_ALREADY_TAKEN, userDto.getEmail());
-            return null;
-        }
+        updateFieldIfChanged(userDto.getEmail(), existingUser.getEmail(),
+                newEmail -> {
+                    validateEmailNotTaken(newEmail);
+                    existingUser.setEmail(newEmail);
+                });
 
-        if (userDto.getDriverLicense() != null && !userDto.getDriverLicense().isEmpty() &&
-                !userDto.getDriverLicense().equals(existingUser.getDriverLicense()) &&
-                userRepository.findByDriverLicense(userDto.getDriverLicense()).isPresent()) {
-            log.warn(LICENSE_ALREADY_TAKEN, userDto.getDriverLicense());
-            return null;
-        }
+        updateFieldIfChanged(userDto.getDriverLicense(), existingUser.getDriverLicense(),
+                newLicense -> {
+                    validateLicenseNotTaken(newLicense);
+                    existingUser.setDriverLicense(newLicense);
+                });
 
-        existingUser.setName(userDto.getName());
-        existingUser.setEmail(userDto.getEmail());
-        existingUser.setPhone(userDto.getPhone());
-        existingUser.setDriverLicense(userDto.getDriverLicense());
+        updateFieldIfNotNull(userDto.getName(), existingUser::setName);
+        updateFieldIfNotNull(userDto.getPhone(), existingUser::setPhone);
 
         User updatedUser = userRepository.save(existingUser);
         log.info("Пользователь с ID {} обновлен", id);
@@ -126,42 +115,7 @@ public class UserService {
     @Transactional
     public UserDto patchUser(Long id, UserDto userDto) {
         log.info("Частичное обновление пользователя с ID: {}", id);
-
-        User existingUser = userRepository.findById(id).orElse(null);
-        if (existingUser == null) {
-            log.warn(USER_NOT_FOUND, id);
-            return null;
-        }
-
-        if (userDto.getName() != null) {
-            existingUser.setName(userDto.getName());
-        }
-
-        if (userDto.getEmail() != null) {
-            if (!existingUser.getEmail().equals(userDto.getEmail()) &&
-                    userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-                log.warn(EMAIL_ALREADY_TAKEN, userDto.getEmail());
-                return null;
-            }
-            existingUser.setEmail(userDto.getEmail());
-        }
-
-        if (userDto.getPhone() != null) {
-            existingUser.setPhone(userDto.getPhone());
-        }
-
-        if (userDto.getDriverLicense() != null) {
-            if (!userDto.getDriverLicense().equals(existingUser.getDriverLicense()) &&
-                    userRepository.findByDriverLicense(userDto.getDriverLicense()).isPresent()) {
-                log.warn(LICENSE_ALREADY_TAKEN, userDto.getDriverLicense());
-                return null;
-            }
-            existingUser.setDriverLicense(userDto.getDriverLicense());
-        }
-
-        User updatedUser = userRepository.save(existingUser);
-        log.info("Пользователь с ID {} частично обновлен", id);
-        return UserMapper.toDto(updatedUser);
+        return updateUser(id, userDto);
     }
 
     @Transactional
@@ -175,5 +129,36 @@ public class UserService {
 
         userRepository.deleteById(id);
         log.info("Пользователь с ID {} удален", id);
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Пользователь с ID " + id + " не найден"));
+    }
+
+    private void validateEmailNotTaken(String email) {
+        if (email != null && !email.isEmpty() && userRepository.findByEmail(email).isPresent()) {
+            log.warn(EMAIL_ALREADY_TAKEN, email);
+            throw new DuplicateEmailException("Email " + email + " уже занят");
+        }
+    }
+
+    private void validateLicenseNotTaken(String license) {
+        if (license != null && !license.isEmpty() && userRepository.findByDriverLicense(license).isPresent()) {
+            log.warn(LICENSE_ALREADY_TAKEN, license);
+            throw new DuplicateLicenseException("Водительское удостоверение " + license + " уже зарегистрировано");
+        }
+    }
+
+    private <T> void updateFieldIfChanged(T newValue, T oldValue, Consumer<T> updater) {
+        if (newValue != null && !newValue.equals(oldValue)) {
+            updater.accept(newValue);
+        }
+    }
+
+    private <T> void updateFieldIfNotNull(T newValue, Consumer<T> updater) {
+        if (newValue != null) {
+            updater.accept(newValue);
+        }
     }
 }
