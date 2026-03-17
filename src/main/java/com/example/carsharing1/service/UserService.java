@@ -19,6 +19,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private static final String EMAIL_ALREADY_TAKEN = "Email {} уже занят";
+    private static final String LICENSE_ALREADY_TAKEN = "Водительское удостоверение {} уже зарегистрировано";
+    private static final String USER_NOT_FOUND = "Пользователь с ID {} не найден";
+
     @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         log.info("Получение списка всех пользователей");
@@ -67,16 +71,14 @@ public class UserService {
     public UserDto createUser(UserDto userDto) {
         log.info("Создание нового пользователя с email: {}", userDto.getEmail());
 
-
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            log.warn("Email {} уже занят", userDto.getEmail());
+            log.warn(EMAIL_ALREADY_TAKEN, userDto.getEmail());
             return null;
         }
 
-
         if (userDto.getDriverLicense() != null && !userDto.getDriverLicense().isEmpty() &&
                 userRepository.findByDriverLicense(userDto.getDriverLicense()).isPresent()) {
-            log.warn("Водительское удостоверение {} уже зарегистрировано", userDto.getDriverLicense());
+            log.warn(LICENSE_ALREADY_TAKEN, userDto.getDriverLicense());
             return null;
         }
 
@@ -95,22 +97,20 @@ public class UserService {
 
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
-            log.warn("Пользователь с ID {} не найден", id);
+            log.warn(USER_NOT_FOUND, id);
             return null;
         }
-
 
         if (!existingUser.getEmail().equals(userDto.getEmail()) &&
                 userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            log.warn("Email {} уже занят", userDto.getEmail());
+            log.warn(EMAIL_ALREADY_TAKEN, userDto.getEmail());
             return null;
         }
-
 
         if (userDto.getDriverLicense() != null && !userDto.getDriverLicense().isEmpty() &&
                 !userDto.getDriverLicense().equals(existingUser.getDriverLicense()) &&
                 userRepository.findByDriverLicense(userDto.getDriverLicense()).isPresent()) {
-            log.warn("Водительское удостоверение {} уже зарегистрировано", userDto.getDriverLicense());
+            log.warn(LICENSE_ALREADY_TAKEN, userDto.getDriverLicense());
             return null;
         }
 
@@ -130,20 +130,18 @@ public class UserService {
 
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
-            log.warn("Пользователь с ID {} не найден", id);
+            log.warn(USER_NOT_FOUND, id);
             return null;
         }
-
 
         if (userDto.getName() != null) {
             existingUser.setName(userDto.getName());
         }
 
         if (userDto.getEmail() != null) {
-
             if (!existingUser.getEmail().equals(userDto.getEmail()) &&
                     userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-                log.warn("Email {} уже занят", userDto.getEmail());
+                log.warn(EMAIL_ALREADY_TAKEN, userDto.getEmail());
                 return null;
             }
             existingUser.setEmail(userDto.getEmail());
@@ -154,10 +152,9 @@ public class UserService {
         }
 
         if (userDto.getDriverLicense() != null) {
-
             if (!userDto.getDriverLicense().equals(existingUser.getDriverLicense()) &&
                     userRepository.findByDriverLicense(userDto.getDriverLicense()).isPresent()) {
-                log.warn("Водительское удостоверение {} уже зарегистрировано", userDto.getDriverLicense());
+                log.warn(LICENSE_ALREADY_TAKEN, userDto.getDriverLicense());
                 return null;
             }
             existingUser.setDriverLicense(userDto.getDriverLicense());
@@ -171,10 +168,9 @@ public class UserService {
     @Transactional
     public void deleteUser(Long id) {
         log.info("Удаление пользователя с ID: {}", id);
-
-
+        
         if (!userRepository.existsById(id)) {
-            log.warn("Пользователь с ID {} не найден, удаление невозможно", id);
+            log.warn(USER_NOT_FOUND, id);
             return;
         }
 
