@@ -19,10 +19,11 @@ public class CarMapper {
         dto.setBrand(car.getBrand());
         dto.setModel(car.getModel());
         dto.setPricePerMinute(car.getPricePerMinute());
-        dto.setStatus(car.getStatus());
         dto.setLicensePlate(car.getLicensePlate());
         dto.setYear(car.getYear());
         dto.setFuelLevel(car.getFuelLevel());
+        dto.setActive(car.isActive());
+        dto.setAvailable(car.isAvailable());
 
         if (car.getLocation() != null) {
             dto.setLocationCity(car.getLocation().getCity());
@@ -48,10 +49,10 @@ public class CarMapper {
         car.setBrand(dto.getBrand());
         car.setModel(dto.getModel());
         car.setPricePerMinute(dto.getPricePerMinute());
-        car.setStatus(dto.getStatus());
         car.setLicensePlate(dto.getLicensePlate());
         car.setYear(dto.getYear());
         car.setFuelLevel(dto.getFuelLevel());
+        car.setActive(dto.isActive());
 
         return car;
     }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,16 @@ public class CarController {
     @GetMapping
     public List<CarDto> getAllCars() {
         return carService.getAllCars();
+    }
+
+    @GetMapping("/active")
+    public List<CarDto> getAllActiveCars() {
+        return carService.getAllActiveCars();
+    }
+
+    @GetMapping("/available")
+    public List<CarDto> getAvailableCars() {
+        return carService.getAvailableCars();
     }
 
     @GetMapping("/{id}")
@@ -45,18 +56,22 @@ public class CarController {
         return updatedCar != null ? ResponseEntity.ok(updatedCar) : ResponseEntity.notFound().build();
     }
 
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<CarDto> updateCarStatus(@PathVariable Long id, @RequestParam boolean active) {
+        CarDto updatedCar = carService.updateCarStatus(id, active);
+        return updatedCar != null ? ResponseEntity.ok(updatedCar) : ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
         carService.deleteCar(id);
         return ResponseEntity.noContent().build();
     }
 
-
     @GetMapping("/nplus1-demo")
     public List<CarDto> demonstrateNPlusOne() {
         return carService.getAllCarsWithNPlusOneProblem();
     }
-
 
     @GetMapping("/{id}/details")
     public ResponseEntity<CarDto> getCarWithDetails(@PathVariable Long id) {
@@ -64,12 +79,10 @@ public class CarController {
         return car != null ? ResponseEntity.ok(car) : ResponseEntity.notFound().build();
     }
 
-
-    @GetMapping("/available/details")
-    public List<CarDto> getAvailableCarsWithDetails() {
-        return carService.getAvailableCarsWithFetchJoin();
+    @GetMapping("/active/details")
+    public List<CarDto> getActiveCarsWithDetails() {
+        return carService.getAllActiveCarsWithFetchJoin();
     }
-
 
     @PostMapping("/with-features")
     public ResponseEntity<String> saveCarWithFeatures(

@@ -44,7 +44,7 @@ public class User {
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Booking> bookings = new ArrayList<>();

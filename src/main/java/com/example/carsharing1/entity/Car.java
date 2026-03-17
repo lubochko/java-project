@@ -1,6 +1,5 @@
 package com.example.carsharing1.entity;
 
-import com.example.carsharing1.enums.CarStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +16,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
 import java.util.ArrayList;
@@ -46,10 +43,6 @@ public class Car {
     @Column(name = "price_per_minute", nullable = false)
     private Double pricePerMinute;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private CarStatus status;
-
     @Column(name = "license_plate", unique = true, length = 10)
     private String licensePlate;
 
@@ -58,13 +51,16 @@ public class Car {
     @Column(name = "fuel_level")
     private Double fuelLevel;
 
+    @Column(nullable = false)
+    private boolean active = true;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
+    @JoinColumn(name = "location_id", nullable = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Location location;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "car", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Booking> bookings = new ArrayList<>();
@@ -78,4 +74,12 @@ public class Car {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Feature> features = new HashSet<>();
+
+    public boolean isAvailable() {
+        if (!active) {
+            return false;
+        }
+        return bookings.stream()
+                .noneMatch(b -> b.getStatus() == com.example.carsharing1.enums.BookingStatus.ACTIVE);
+    }
 }

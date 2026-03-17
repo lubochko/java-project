@@ -4,7 +4,6 @@ import com.example.carsharing1.dto.CarDto;
 import com.example.carsharing1.entity.Car;
 import com.example.carsharing1.entity.Feature;
 import com.example.carsharing1.entity.Location;
-import com.example.carsharing1.enums.CarStatus;
 import com.example.carsharing1.mapper.CarMapper;
 import com.example.carsharing1.repository.CarRepository;
 import com.example.carsharing1.repository.FeatureRepository;
@@ -29,9 +28,20 @@ public class CarService {
     private final LocationRepository locationRepository;
     private final FeatureRepository featureRepository;
 
-
     public List<CarDto> getAllCars() {
         return carRepository.findAll().stream()
+                .map(CarMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<CarDto> getAllActiveCars() {
+        return carRepository.findAllActive().stream()
+                .map(CarMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<CarDto> getAvailableCars() {
+        return carRepository.findAvailableCars().stream()
                 .map(CarMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -45,6 +55,7 @@ public class CarService {
     @Transactional
     public CarDto createCar(CarDto carDto) {
         Car car = CarMapper.toEntity(carDto);
+        car.setActive(true);
         Car savedCar = carRepository.save(car);
         return CarMapper.toDto(savedCar);
     }
@@ -56,10 +67,10 @@ public class CarService {
                     car.setBrand(carDto.getBrand());
                     car.setModel(carDto.getModel());
                     car.setPricePerMinute(carDto.getPricePerMinute());
-                    car.setStatus(carDto.getStatus());
                     car.setLicensePlate(carDto.getLicensePlate());
                     car.setYear(carDto.getYear());
                     car.setFuelLevel(carDto.getFuelLevel());
+                    car.setActive(carDto.isActive());  // это работает для boolean
                     return CarMapper.toDto(carRepository.save(car));
                 })
                 .orElse(null);
@@ -77,14 +88,14 @@ public class CarService {
         List<CarDto> result = new ArrayList<>();
 
         for (Car car : cars) {
-
             Location location = car.getLocation();
             Set<Feature> features = car.getFeatures();
 
-            log.info("Машина ID: {}, Локация: {}, Количество особенностей: {}",
+            log.info("Машина ID: {}, Локация: {}, Количество особенностей: {}, Доступна: {}",
                     car.getId(),
                     location != null ? location.getCity() : "не указана",
-                    features.size());
+                    features.size(),
+                    car.isAvailable());
 
             result.add(CarMapper.toDto(car));
         }
@@ -94,22 +105,18 @@ public class CarService {
 
     public CarDto getCarByIdWithEntityGraph(Long id) {
         log.info("РЕШЕНИЕ ПРОБЛЕМЫ N+1 через @EntityGraph");
-
         return carRepository.findByIdWithDetails(id)
                 .map(CarMapper::toDto)
                 .orElse(null);
     }
 
-
-    public List<CarDto> getAvailableCarsWithFetchJoin() {
+    public List<CarDto> getAllActiveCarsWithFetchJoin() {
         log.info("РЕШЕНИЕ ПРОБЛЕМЫ N+1 через FETCH JOIN");
-
-        List<Car> cars = carRepository.findByStatusWithDetails(CarStatus.AVAILABLE);
+        List<Car> cars = carRepository.findAllActiveWithDetails();
         return cars.stream()
                 .map(CarMapper::toDto)
                 .collect(Collectors.toList());
     }
-
 
     public void saveCarWithFeaturesWithoutTransaction(CarDto carDto, List<Long> featureIds, Long locationId) {
         log.info("СОХРАНЕНИЕ БЕЗ @Transactional");
@@ -122,12 +129,10 @@ public class CarService {
             return;
         }
         car.setLocation(location);
-        car.setStatus(CarStatus.AVAILABLE);
-
+        car.setActive(true);
 
         Car savedCar = carRepository.save(car);
         log.info("Машина сохранена с ID: {}", savedCar.getId());
-
 
         Set<Feature> featuresToAdd = new HashSet<>();
         for (int i = 0; i < featureIds.size(); i++) {
@@ -151,7 +156,6 @@ public class CarService {
         log.info("Все особенности успешно добавлены");
     }
 
-
     @Transactional
     public void saveCarWithFeaturesWithTransaction(CarDto carDto, List<Long> featureIds, Long locationId) {
         log.info("СОХРАНЕНИЕ С @Transactional");
@@ -164,12 +168,10 @@ public class CarService {
             return;
         }
         car.setLocation(location);
-        car.setStatus(CarStatus.AVAILABLE);
-
+        car.setActive(true);
 
         Car savedCar = carRepository.save(car);
         log.info("Машина сохранена с ID: {}", savedCar.getId());
-
 
         Set<Feature> featuresToAdd = new HashSet<>();
         for (int i = 0; i < featureIds.size(); i++) {
@@ -191,5 +193,17 @@ public class CarService {
         savedCar.getFeatures().addAll(featuresToAdd);
         carRepository.save(savedCar);
         log.info("Все особенности успешно добавлены");
+    }
+
+    @Transactional
+    public CarDto updateCarStatus(Long id, boolean active) {
+        log.info("Обновление статуса машины ID: {}, active: {}", id, active);
+
+        return carRepository.findById(id)
+                .map(car -> {
+                    car.setActive(active);
+                    return CarMapper.toDto(carRepository.save(car));
+                })
+                .orElse(null);
     }
 }

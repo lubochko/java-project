@@ -33,13 +33,13 @@ public class Booking {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", nullable = false)
+    @JoinColumn(name = "car_id", nullable = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Car car;
@@ -56,8 +56,8 @@ public class Booking {
 
     @Column(name = "total_cost")
     private Double totalCost;
-
-    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Payment payment;

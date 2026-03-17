@@ -5,7 +5,6 @@ import com.example.carsharing1.entity.Booking;
 import com.example.carsharing1.entity.Car;
 import com.example.carsharing1.entity.Payment;
 import com.example.carsharing1.entity.User;
-import com.example.carsharing1.enums.CarStatus;
 import com.example.carsharing1.enums.BookingStatus;
 import com.example.carsharing1.enums.PaymentStatus;
 import com.example.carsharing1.mapper.BookingMapper;
@@ -46,12 +45,15 @@ public class BookingService {
             return null;
         }
 
-
-        if (!"AVAILABLE".equals(car.getStatus().name())) {
-            log.error("Машина с ID {} недоступна (текущий статус: {})", carId, car.getStatus());
+        if (!car.isActive()) {
+            log.error("Машина с ID {} неактивна", carId);
             return null;
         }
 
+        if (!car.isAvailable()) {
+            log.error("Машина с ID {} занята", carId);
+            return null;
+        }
 
         Booking booking = new Booking();
         booking.setUser(user);
@@ -63,11 +65,6 @@ public class BookingService {
 
         Booking savedBooking = bookingRepository.save(booking);
         log.info("Бронирование создано с ID: {}", savedBooking.getId());
-
-
-        car.setStatus(CarStatus.valueOf("BUSY"));
-        carRepository.save(car);
-
 
         Payment payment = new Payment();
         payment.setBooking(savedBooking);
