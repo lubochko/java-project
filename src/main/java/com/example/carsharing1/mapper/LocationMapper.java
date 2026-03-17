@@ -3,7 +3,6 @@ package com.example.carsharing1.mapper;
 import com.example.carsharing1.dto.LocationDto;
 import com.example.carsharing1.entity.Location;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LocationMapper {
 
@@ -28,7 +27,7 @@ public class LocationMapper {
     public static List<LocationDto> toDtoList(List<Location> locations) {
         return locations.stream()
                 .map(LocationMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static Location toEntity(LocationDto dto) {

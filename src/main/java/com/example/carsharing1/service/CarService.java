@@ -12,11 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.HashSet;
 
 @Slf4j
@@ -31,19 +29,19 @@ public class CarService {
     public List<CarDto> getAllCars() {
         return carRepository.findAll().stream()
                 .map(CarMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<CarDto> getAllActiveCars() {
         return carRepository.findAllActive().stream()
                 .map(CarMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<CarDto> getAvailableCars() {
         return carRepository.findAvailableCars().stream()
                 .map(CarMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public CarDto getCarById(Long id) {
@@ -70,7 +68,7 @@ public class CarService {
                     car.setLicensePlate(carDto.getLicensePlate());
                     car.setYear(carDto.getYear());
                     car.setFuelLevel(carDto.getFuelLevel());
-                    car.setActive(carDto.isActive());  // это работает для boolean
+                    car.setActive(carDto.isActive());
                     return CarMapper.toDto(carRepository.save(car));
                 })
                 .orElse(null);
@@ -84,7 +82,6 @@ public class CarService {
     public List<CarDto> getAllCarsWithNPlusOneProblem() {
         log.info("ДЕМОНСТРАЦИЯ ПРОБЛЕМЫ N+1");
         List<Car> cars = carRepository.findAll();
-
         List<CarDto> result = new ArrayList<>();
 
         for (Car car : cars) {
@@ -99,7 +96,6 @@ public class CarService {
 
             result.add(CarMapper.toDto(car));
         }
-
         return result;
     }
 
@@ -115,7 +111,7 @@ public class CarService {
         List<Car> cars = carRepository.findAllActiveWithDetails();
         return cars.stream()
                 .map(CarMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void saveCarWithFeaturesWithoutTransaction(CarDto carDto, List<Long> featureIds, Long locationId) {

@@ -168,7 +168,7 @@ public class UserService {
     @Transactional
     public void deleteUser(Long id) {
         log.info("Удаление пользователя с ID: {}", id);
-        
+
         if (!userRepository.existsById(id)) {
             log.warn(USER_NOT_FOUND, id);
             return;
