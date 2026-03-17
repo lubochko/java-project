@@ -7,6 +7,7 @@ import com.example.carsharing1.entity.Payment;
 import com.example.carsharing1.entity.User;
 import com.example.carsharing1.enums.BookingStatus;
 import com.example.carsharing1.enums.PaymentStatus;
+import com.example.carsharing1.exception.BookingException;
 import com.example.carsharing1.mapper.BookingMapper;
 import com.example.carsharing1.repository.BookingRepository;
 import com.example.carsharing1.repository.CarRepository;
@@ -77,8 +78,9 @@ public class BookingService {
         paymentRepository.save(payment);
         log.info("Платеж создан с ID: {}", payment.getId());
 
+
         if (minutes > 120) {
-            throw new RuntimeException("ОШИБКА! Бронирование более 2 часов невозможно. Транзакция будет откачена");
+            throw new BookingException("ОШИБКА! Бронирование более 2 часов невозможно. Транзакция будет откачена");
         }
 
         return BookingMapper.toDto(savedBooking);

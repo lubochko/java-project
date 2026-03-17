@@ -4,6 +4,8 @@ import com.example.carsharing1.dto.CarDto;
 import com.example.carsharing1.entity.Car;
 import com.example.carsharing1.entity.Feature;
 import com.example.carsharing1.entity.Location;
+import com.example.carsharing1.exception.CarServiceException;
+import com.example.carsharing1.exception.TransactionDemoException;
 import com.example.carsharing1.mapper.CarMapper;
 import com.example.carsharing1.repository.CarRepository;
 import com.example.carsharing1.repository.FeatureRepository;
@@ -143,7 +145,7 @@ public class CarService {
             log.info("Подготовлена особенность: {}", feature.getName());
 
             if (i == 2) {
-                throw new RuntimeException("ОШИБКА! Проблема при добавлении третьей особенности");
+                throw new CarServiceException("ОШИБКА! Проблема при добавлении третьей особенности");
             }
         }
 
@@ -182,7 +184,7 @@ public class CarService {
             log.info("Подготовлена особенность: {}", feature.getName());
 
             if (i == 2) {
-                throw new RuntimeException("ОШИБКА! Транзакция будет откачена");
+                throw new TransactionDemoException("ОШИБКА! Транзакция будет откачена");
             }
         }
 
