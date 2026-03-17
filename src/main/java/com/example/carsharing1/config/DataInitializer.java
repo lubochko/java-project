@@ -62,7 +62,7 @@ public class DataInitializer implements CommandLineRunner {
         Feature savedF2 = featureRepository.save(f2);
         Feature savedF3 = featureRepository.save(f3);
         Feature savedF4 = featureRepository.save(f4);
-        Feature savedF5 = featureRepository.save(f5);
+        featureRepository.save(f5);
 
         log.info("Создано {} особенностей", 5);
 
@@ -92,10 +92,10 @@ public class DataInitializer implements CommandLineRunner {
                 "3456GH-5", 2023, 90.0, true,  // active = true
                 savedLoc2, null, Set.of(savedF1, savedF2, savedF4));
 
-        Car savedCar1 = carRepository.save(car1);
-        Car savedCar2 = carRepository.save(car2);
+        carRepository.save(car1);
+        carRepository.save(car2);
         Car savedCar3 = carRepository.save(car3);
-        Car savedCar4 = carRepository.save(car4);
+        carRepository.save(car4);
 
         log.info("Создано {} автомобилей", 4);
 
