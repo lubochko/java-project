@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.List;
 
 @Slf4j
@@ -26,6 +25,13 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    private static final String USER_NOT_FOUND_ID = "Пользователь с ID {} не найден";
+    private static final String USER_NOT_FOUND_EMAIL = "Пользователь с email {} не найден";
+    private static final String USER_CREATE_CONFLICT = "Не удалось создать пользователя: email {} уже занят";
+    private static final String USER_UPDATE_CONFLICT = "Не удалось обновить пользователя: email {} уже занят";
+    private static final String USER_PATCH_CONFLICT = "Не удалось частично обновить пользователя с ID {}";
+    private static final String EMAIL_EXISTS_MESSAGE = "Пользователь с таким email уже существует";
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
@@ -40,7 +46,7 @@ public class UserController {
         UserDto user = userService.getUserById(id);
 
         if (user == null) {
-            log.warn("Пользователь с ID {} не найден", id);
+            log.warn(USER_NOT_FOUND_ID, id);
             return ResponseEntity.notFound().build();
         }
 
@@ -53,7 +59,7 @@ public class UserController {
         UserDto user = userService.getUserByEmail(email);
 
         if (user == null) {
-            log.warn("Пользователь с email {} не найден", email);
+            log.warn(USER_NOT_FOUND_EMAIL, email);
             return ResponseEntity.notFound().build();
         }
 
@@ -66,7 +72,7 @@ public class UserController {
         UserDto user = userService.getUserWithBookings(id);
 
         if (user == null) {
-            log.warn("Пользователь с ID {} не найден", id);
+            log.warn(USER_NOT_FOUND_ID, id);
             return ResponseEntity.notFound().build();
         }
 
@@ -88,16 +94,16 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<Object> createUser(@RequestBody UserDto userDto) {
         log.info("POST /api/users - создание нового пользователя: {}", userDto.getEmail());
 
         UserDto createdUser = userService.createUser(userDto);
 
         if (createdUser == null) {
-            log.warn("Не удалось создать пользователя: email {} уже занят", userDto.getEmail());
+            log.warn(USER_CREATE_CONFLICT, userDto.getEmail());
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body("Пользователь с таким email уже существует");
+                    .body(EMAIL_EXISTS_MESSAGE);
         }
 
         log.info("Пользователь создан с ID: {}", createdUser.getId());
@@ -105,7 +111,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
         log.info("PUT /api/users/{} - обновление пользователя", id);
 
         UserDto updatedUser = userService.updateUser(id, userDto);
@@ -113,13 +119,13 @@ public class UserController {
         if (updatedUser == null) {
             UserDto existingUser = userService.getUserById(id);
             if (existingUser == null) {
-                log.warn("Пользователь с ID {} не найден", id);
+                log.warn(USER_NOT_FOUND_ID, id);
                 return ResponseEntity.notFound().build();
             } else {
-                log.warn("Не удалось обновить пользователя: email {} уже занят", userDto.getEmail());
+                log.warn(USER_UPDATE_CONFLICT, userDto.getEmail());
                 return ResponseEntity
                         .status(HttpStatus.CONFLICT)
-                        .body("Пользователь с таким email уже существует");
+                        .body(EMAIL_EXISTS_MESSAGE);
             }
         }
 
@@ -128,7 +134,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> patchUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<Object> patchUser(@PathVariable Long id, @RequestBody UserDto userDto) {
         log.info("PATCH /api/users/{} - частичное обновление пользователя", id);
 
         UserDto patchedUser = userService.patchUser(id, userDto);
@@ -136,10 +142,10 @@ public class UserController {
         if (patchedUser == null) {
             UserDto existingUser = userService.getUserById(id);
             if (existingUser == null) {
-                log.warn("Пользователь с ID {} не найден", id);
+                log.warn(USER_NOT_FOUND_ID, id);
                 return ResponseEntity.notFound().build();
             } else {
-                log.warn("Не удалось частично обновить пользователя с ID {}", id);
+                log.warn(USER_PATCH_CONFLICT, id);
                 return ResponseEntity
                         .status(HttpStatus.CONFLICT)
                         .body("Конфликт данных при обновлении");
@@ -156,7 +162,7 @@ public class UserController {
 
         UserDto existingUser = userService.getUserById(id);
         if (existingUser == null) {
-            log.warn("Пользователь с ID {} не найден", id);
+            log.warn(USER_NOT_FOUND_ID, id);
             return ResponseEntity.notFound().build();
         }
 

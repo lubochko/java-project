@@ -20,11 +20,11 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public ResponseEntity<?> createBooking(
-            @RequestParam Long userId,
-            @RequestParam Long carId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
-            @RequestParam Integer minutes) {
+    public ResponseEntity<Object> createBooking(@RequestParam Long userId,
+                                                  @RequestParam Long carId,
+                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                    LocalDateTime startTime,
+                                                  @RequestParam Integer minutes) {
 
         try {
             BookingDto booking = bookingService.createBookingWithPayment(userId, carId, startTime, minutes);
