@@ -115,7 +115,26 @@ public class UserService {
     @Transactional
     public UserDto patchUser(Long id, UserDto userDto) {
         log.info("Частичное обновление пользователя с ID: {}", id);
-        return updateUser(id, userDto);
+
+        User existingUser = findUserById(id);
+
+        updateFieldIfNotNull(userDto.getName(), existingUser::setName);
+
+        if (userDto.getEmail() != null) {
+            validateEmailNotTaken(userDto.getEmail());
+            existingUser.setEmail(userDto.getEmail());
+        }
+
+        updateFieldIfNotNull(userDto.getPhone(), existingUser::setPhone);
+
+        if (userDto.getDriverLicense() != null) {
+            validateLicenseNotTaken(userDto.getDriverLicense());
+            existingUser.setDriverLicense(userDto.getDriverLicense());
+        }
+
+        User updatedUser = userRepository.save(existingUser);
+        log.info("Пользователь с ID {} частично обновлен", id);
+        return UserMapper.toDto(updatedUser);
     }
 
     @Transactional
