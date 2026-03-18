@@ -70,9 +70,9 @@ public class BookingService {
         Payment payment = new Payment();
         payment.setBooking(savedBooking);
         payment.setAmount(savedBooking.getTotalCost());
-        payment.setPaymentTime(LocalDateTime.now());
+        payment.setTime(LocalDateTime.now());
         payment.setStatus(PaymentStatus.PAID);
-        payment.setPaymentMethod("CARD");
+        payment.setMethod("CARD");
         payment.setTransactionId(UUID.randomUUID().toString());
 
         paymentRepository.save(payment);

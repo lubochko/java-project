@@ -36,9 +36,9 @@ public class BookingMapper {
             PaymentDto paymentDto = new PaymentDto();
             paymentDto.setId(booking.getPayment().getId());
             paymentDto.setAmount(booking.getPayment().getAmount());
-            paymentDto.setPaymentTime(booking.getPayment().getPaymentTime());
+            paymentDto.setTime(booking.getPayment().getTime());
             paymentDto.setStatus(booking.getPayment().getStatus());
-            paymentDto.setPaymentMethod(booking.getPayment().getPaymentMethod());
+            paymentDto.setMethod(booking.getPayment().getMethod());
             paymentDto.setTransactionId(booking.getPayment().getTransactionId());
             dto.setPayment(paymentDto);
         }

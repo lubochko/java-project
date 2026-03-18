@@ -40,14 +40,14 @@ public class Payment {
     private Double amount;
 
     @Column(name = "payment_time")
-    private LocalDateTime paymentTime;
+    private LocalDateTime Time;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private PaymentStatus status;
 
     @Column(name = "payment_method", length = 50)
-    private String paymentMethod;
+    private String Method;
 
     @Column(name = "transaction_id", unique = true)
     private String transactionId;

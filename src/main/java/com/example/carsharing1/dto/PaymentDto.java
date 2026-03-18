@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 public class PaymentDto {
     private Long id;
     private Double amount;
-    private LocalDateTime paymentTime;
+    private LocalDateTime Time;
     private PaymentStatus status;
-    private String paymentMethod;
+    private String Method;
     private String transactionId;
 }

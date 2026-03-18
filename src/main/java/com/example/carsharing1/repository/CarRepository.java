@@ -26,6 +26,8 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     @Query("SELECT DISTINCT c FROM Car c " +
             "LEFT JOIN FETCH c.location " +
             "LEFT JOIN FETCH c.features " +
+            "LEFT JOIN FETCH c.bookings b " +
+            "LEFT JOIN FETCH b.payment " +
             "WHERE c.active = true")
     List<Car> findAllActiveWithDetails();
 
