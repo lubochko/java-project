@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Getter
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class CarSearchKey {
     public static CarSearchKey fromParams(String email, String featureName, Pageable pageable) {
         String sortBy = pageable.getSort().stream()
                 .findFirst()
-                .map(order -> order.getProperty())
+                .map(Sort.Order::getProperty)
                 .orElse("id");
 
         String sortDirection = pageable.getSort().stream()
