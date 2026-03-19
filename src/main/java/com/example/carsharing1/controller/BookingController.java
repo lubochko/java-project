@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -30,7 +29,7 @@ public class BookingController {
 
     private final BookingService bookingService;
     private final BookingRepository bookingRepository;
-    
+
     private static final String LOG_GET_ALL_BOOKINGS = "GET /api/bookings - запрос всех бронирований";
     private static final String LOG_GET_BOOKING_BY_ID = "GET /api/bookings/{} - запрос бронирования по ID";
     private static final String LOG_GET_BY_CAR = "GET /api/bookings/by-car/{} - запрос бронирований по машине";
@@ -48,7 +47,7 @@ public class BookingController {
 
         List<BookingDto> bookings = bookingRepository.findAll().stream()
                 .map(BookingMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();  // Заменено на toList()
 
         return ResponseEntity.ok(bookings);
     }
@@ -74,7 +73,7 @@ public class BookingController {
 
         List<BookingDto> bookings = bookingRepository.findByCarId(carId).stream()
                 .map(BookingMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();  // Заменено на toList()
 
         return ResponseEntity.ok(bookings);
     }
@@ -85,7 +84,7 @@ public class BookingController {
 
         List<BookingDto> bookings = bookingRepository.findByUserId(userId).stream()
                 .map(BookingMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();  // Заменено на toList()
 
         return ResponseEntity.ok(bookings);
     }
