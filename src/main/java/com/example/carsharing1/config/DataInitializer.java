@@ -115,7 +115,7 @@ public class DataInitializer implements CommandLineRunner {
                 "7890KL-7", 2020, 88.0, true,
                 savedLoc2, null, Set.of(savedF2, savedF4));
 
-        Car car7 = new Car(null, "Volkswagen", "Passat", 0.75,
+        Car car7 = new Car(null, "Volkswagen", "PassB5", 0.75,
                 "1234MN-8", 2022, 94.0, true,
                 savedLoc1, null, Set.of(savedF1, savedF2, savedF3));
 
@@ -131,7 +131,7 @@ public class DataInitializer implements CommandLineRunner {
                 "3456ST-1", 2021, 82.0, true,
                 savedLoc2, null, Set.of(savedF3));
 
-        Car savedCar1 = carRepository.save(car1);
+        carRepository.save(car1);
         Car savedCar2 = carRepository.save(car2);
         Car savedCar3 = carRepository.save(car3);
         Car savedCar4 = carRepository.save(car4);
@@ -139,8 +139,8 @@ public class DataInitializer implements CommandLineRunner {
         Car savedCar6 = carRepository.save(car6);
         Car savedCar7 = carRepository.save(car7);
         Car savedCar8 = carRepository.save(car8);
-        Car savedCar9 = carRepository.save(car9);
-        Car savedCar10 = carRepository.save(car10);
+        carRepository.save(car9);
+        carRepository.save(car10);
 
         log.info("Создано {} автомобилей", 10);
 
