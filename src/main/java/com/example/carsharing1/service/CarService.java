@@ -2,6 +2,7 @@ package com.example.carsharing1.service;
 
 import com.example.carsharing1.dto.CarDto;
 import com.example.carsharing1.entity.Car;
+import com.example.carsharing1.entity.Booking;
 import com.example.carsharing1.entity.Feature;
 import com.example.carsharing1.entity.Location;
 import com.example.carsharing1.exception.CarServiceException;
@@ -57,6 +58,8 @@ public class CarService {
     private static final String TX_COMMITTED = "Все особенности успешно добавлены (транзакция зафиксирована)";
     private static final String ERROR_ON_THIRD_FEATURE = "ОШИБКА! Проблема при добавлении третьей особенности";
     private static final String ERROR_TX_ROLLBACK = "ОШИБКА! Транзакция будет откачена";
+    private static final String ERROR_ACTIVE_BOOKINGS = "Невозможно удалить машину " +
+            "с ID {} - есть активные бронирования";
     private static final String CAR_INFO_LOG = "Машина ID: {}, Локация: {}, Количество особенностей: {}, Доступна: {}";
 
     public List<CarDto> getAllCars() {
@@ -144,12 +147,27 @@ public class CarService {
     public void deleteCar(Long id) {
         log.info(DELETE_CAR, id);
 
-        if (!carRepository.existsById(id)) {
+        Car car = carRepository.findById(id).orElse(null);
+        if (car == null) {
             log.warn(CAR_NOT_FOUND, id);
             return;
         }
 
-        carRepository.deleteById(id);
+        boolean hasActiveBookings = car.getBookings().stream()
+                .anyMatch(booking -> booking.getStatus() == com.example.carsharing1.enums.BookingStatus.ACTIVE);
+
+        if (hasActiveBookings) {
+            log.error(ERROR_ACTIVE_BOOKINGS, id);
+            throw new CarServiceException("Невозможно удалить машину с ID " + id + " - есть активные бронирования");
+        }
+
+        for (Booking booking : car.getBookings()) {
+            booking.setCar(null);
+        }
+
+        car.getBookings().clear();
+
+        carRepository.delete(car);
         log.info(CAR_DELETED, id);
     }
 
