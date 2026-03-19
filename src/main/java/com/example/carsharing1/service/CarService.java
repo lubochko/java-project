@@ -1,8 +1,8 @@
 package com.example.carsharing1.service;
 
+import com.example.carsharing1.cache.CarSearchKey;
 import com.example.carsharing1.dto.CarDto;
 import com.example.carsharing1.entity.Car;
-import com.example.carsharing1.entity.Booking;
 import com.example.carsharing1.entity.Feature;
 import com.example.carsharing1.entity.Location;
 import com.example.carsharing1.exception.CarServiceException;
@@ -14,12 +14,18 @@ import com.example.carsharing1.repository.FeatureRepository;
 import com.example.carsharing1.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
@@ -29,6 +35,8 @@ public class CarService {
     private final CarRepository carRepository;
     private final LocationRepository locationRepository;
     private final FeatureRepository featureRepository;
+
+    private final Map<CarSearchKey, List<CarDto>> searchCache = new ConcurrentHashMap<>();
 
     private static final String CAR_NOT_FOUND = "Машина с ID {} не найдена";
     private static final String LOCATION_NOT_FOUND = "Локация с ID {} не найдена";
@@ -58,9 +66,18 @@ public class CarService {
     private static final String TX_COMMITTED = "Все особенности успешно добавлены (транзакция зафиксирована)";
     private static final String ERROR_ON_THIRD_FEATURE = "ОШИБКА! Проблема при добавлении третьей особенности";
     private static final String ERROR_TX_ROLLBACK = "ОШИБКА! Транзакция будет откачена";
-    private static final String ERROR_ACTIVE_BOOKINGS = "Невозможно удалить машину " +
-            "с ID {} - есть активные бронирования";
     private static final String CAR_INFO_LOG = "Машина ID: {}, Локация: {}, Количество особенностей: {}, Доступна: {}";
+    private static final String ERROR_ACTIVE_BOOKINGS = "Невозможно удалить машину с " +
+            "ID {} - есть активные бронирования";
+
+
+    private static final String SEARCH_WITH_CACHE = "Поиск машин с использованием кэша. Ключ: {}";
+    private static final String CACHE_HIT = "КЭШ HIT: данные найдены в кэше. Ключ: {}";
+    private static final String CACHE_MISS = "КЭШ MISS: данных нет в кэше. Выполняем запрос к БД. Ключ: {}";
+    private static final String CACHE_INVALIDATED = "Инвалидация кэша при изменении данных";
+    private static final String SEARCH_JPQL = "Сложный JPQL запрос: email={}, featureName={}";
+    private static final String SEARCH_NATIVE = "Native SQL запрос: email={}, featureName={}";
+    private static final String SEARCH_PAGED = "Поиск с пагинацией: страница={}, размер={}, сортировка={} {}";
 
     public List<CarDto> getAllCars() {
         log.info(GET_ALL_CARS);
@@ -97,6 +114,9 @@ public class CarService {
         car.setActive(true);
         Car savedCar = carRepository.save(car);
         log.info(CAR_CREATED, savedCar.getId());
+
+        invalidateCache();
+
         return CarMapper.toDto(savedCar);
     }
 
@@ -106,6 +126,9 @@ public class CarService {
         Car car = prepareCar(carDto, locationId);
         Car savedCar = carRepository.save(car);
         log.info(CAR_CREATED, savedCar.getId());
+
+        invalidateCache();
+
         return CarMapper.toDto(savedCar);
     }
 
@@ -118,6 +141,9 @@ public class CarService {
                     updateCarFields(car, carDto);
                     Car updatedCar = carRepository.save(car);
                     log.info(CAR_UPDATED, id);
+
+                    invalidateCache();
+
                     return CarMapper.toDto(updatedCar);
                 })
                 .orElseGet(() -> {
@@ -135,6 +161,9 @@ public class CarService {
                     car.setActive(active);
                     Car updatedCar = carRepository.save(car);
                     log.info(CAR_STATUS_UPDATED, id);
+
+                    invalidateCache();
+
                     return CarMapper.toDto(updatedCar);
                 })
                 .orElseGet(() -> {
@@ -161,7 +190,7 @@ public class CarService {
             throw new CarServiceException("Невозможно удалить машину с ID " + id + " - есть активные бронирования");
         }
 
-        for (Booking booking : car.getBookings()) {
+        for (com.example.carsharing1.entity.Booking booking : car.getBookings()) {
             booking.setCar(null);
         }
 
@@ -169,60 +198,68 @@ public class CarService {
 
         carRepository.delete(car);
         log.info(CAR_DELETED, id);
+
+        invalidateCache();
     }
 
-    public List<CarDto> getAllCarsWithNPlusOneProblem() {
-        log.info(N_PLUS_ONE_DEMO);
-        List<Car> cars = carRepository.findAll();
-        List<CarDto> result = new ArrayList<>();
+    public List<CarDto> findCarsByComplexCriteria(String email, String featureName) {
+        log.info(SEARCH_JPQL, email, featureName);
 
-        for (Car car : cars) {
-            Location location = car.getLocation();
-            Set<Feature> features = car.getFeatures();
-
-            log.info(CAR_INFO_LOG,
-                    car.getId(),
-                    location != null ? location.getCity() : "не указана",
-                    features.size(),
-                    car.isAvailable());
-
-            result.add(CarMapper.toDto(car));
-        }
-        return result;
-    }
-
-    public CarDto getCarByIdWithEntityGraph(Long id) {
-        log.info(ENTITY_GRAPH_SOLUTION);
-        return carRepository.findByIdWithDetails(id)
-                .map(CarMapper::toDto)
-                .orElse(null);
-    }
-
-    public List<CarDto> getAllActiveCarsWithFetchJoin() {
-        log.info(FETCH_JOIN_SOLUTION);
-        List<Car> cars = carRepository.findAllActiveWithDetails();
+        List<Car> cars = carRepository.findCarsByComplexCriteria(email, featureName);
         return cars.stream()
                 .map(CarMapper::toDto)
                 .toList();
     }
 
-    public void saveCarWithFeaturesWithoutTransaction(CarDto carDto, List<Long> featureIds, Long locationId) {
-        log.info(WITHOUT_TX_DEMO);
+    public List<CarDto> findCarsByComplexCriteriaNative(String email, String featureName) {
+        log.info(SEARCH_NATIVE, email, featureName);
 
-        Car savedCar = saveCarWithLocation(carDto, locationId);
-        addFeaturesToCar(savedCar, featureIds, false);
-
-        log.info(FEATURES_ADDED_SUCCESS);
+        List<Car> cars = carRepository.findCarsByComplexCriteriaNative(email, featureName);
+        return cars.stream()
+                .map(CarMapper::toDto)
+                .toList();
     }
 
-    @Transactional
-    public void saveCarWithFeaturesWithTransaction(CarDto carDto, List<Long> featureIds, Long locationId) {
-        log.info(WITH_TX_DEMO);
+    public Page<CarDto> findCarsByComplexCriteriaPaged(String email, String featureName,
+                                                       int page, int size, String sortBy, String sortDirection) {
+        log.info(SEARCH_PAGED, page, size, sortBy, sortDirection);
 
-        Car savedCar = saveCarWithLocation(carDto, locationId);
-        addFeaturesToCar(savedCar, featureIds, true);
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        log.info(TX_COMMITTED);
+        Page<Car> carPage = carRepository.findCarsByComplexCriteriaPaged(email, featureName, pageable);
+        return carPage.map(CarMapper::toDto);
+    }
+
+    public List<CarDto> findCarsWithCache(String email, String featureName,
+                                          int page, int size, String sortBy, String sortDirection) {
+
+
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        CarSearchKey cacheKey = CarSearchKey.fromParams(email, featureName, pageable);
+
+        log.info(SEARCH_WITH_CACHE, cacheKey);
+
+        if (searchCache.containsKey(cacheKey)) {
+            log.info(CACHE_HIT, cacheKey);
+            return searchCache.get(cacheKey);
+        }
+
+
+        log.info(CACHE_MISS, cacheKey);
+        List<CarDto> results = findCarsByComplexCriteria(email, featureName);
+
+
+        searchCache.put(cacheKey, results);
+
+        return results;
+    }
+
+
+    private void invalidateCache() {
+        log.info(CACHE_INVALIDATED);
+        searchCache.clear();
     }
 
     private Car prepareCar(CarDto carDto, Long locationId) {
@@ -296,5 +333,59 @@ public class CarService {
         if (dto.getFuelLevel() != null) {
             car.setFuelLevel(dto.getFuelLevel());
         }
+    }
+
+    public List<CarDto> getAllCarsWithNPlusOneProblem() {
+        log.info(N_PLUS_ONE_DEMO);
+        List<Car> cars = carRepository.findAll();
+        List<CarDto> result = new ArrayList<>();
+
+        for (Car car : cars) {
+            Location location = car.getLocation();
+            Set<Feature> features = car.getFeatures();
+
+            log.info(CAR_INFO_LOG,
+                    car.getId(),
+                    location != null ? location.getCity() : "не указана",
+                    features.size(),
+                    car.isAvailable());
+
+            result.add(CarMapper.toDto(car));
+        }
+        return result;
+    }
+
+    public CarDto getCarByIdWithEntityGraph(Long id) {
+        log.info(ENTITY_GRAPH_SOLUTION);
+        return carRepository.findByIdWithDetails(id)
+                .map(CarMapper::toDto)
+                .orElse(null);
+    }
+
+    public List<CarDto> getAllActiveCarsWithFetchJoin() {
+        log.info(FETCH_JOIN_SOLUTION);
+        List<Car> cars = carRepository.findAllActiveWithDetails();
+        return cars.stream()
+                .map(CarMapper::toDto)
+                .toList();
+    }
+
+    public void saveCarWithFeaturesWithoutTransaction(CarDto carDto, List<Long> featureIds, Long locationId) {
+        log.info(WITHOUT_TX_DEMO);
+
+        Car savedCar = saveCarWithLocation(carDto, locationId);
+        addFeaturesToCar(savedCar, featureIds, false);
+
+        log.info(FEATURES_ADDED_SUCCESS);
+    }
+
+    @Transactional
+    public void saveCarWithFeaturesWithTransaction(CarDto carDto, List<Long> featureIds, Long locationId) {
+        log.info(WITH_TX_DEMO);
+
+        Car savedCar = saveCarWithLocation(carDto, locationId);
+        addFeaturesToCar(savedCar, featureIds, true);
+
+        log.info(TX_COMMITTED);
     }
 }

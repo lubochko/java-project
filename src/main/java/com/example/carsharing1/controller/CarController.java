@@ -3,6 +3,8 @@ package com.example.carsharing1.controller;
 import com.example.carsharing1.dto.CarDto;
 import com.example.carsharing1.service.CarService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/cars")
 @RequiredArgsConstructor
@@ -24,65 +28,136 @@ public class CarController {
 
     private final CarService carService;
 
+    private static final String LOG_GET_ALL = "GET /api/cars - запрос всех машин";
+    private static final String LOG_GET_BY_ID = "GET /api/cars/{} - запрос машины по ID";
+    private static final String LOG_CREATE = "POST /api/cars - создание новой машины: {}";
+    private static final String LOG_UPDATE = "PUT /api/cars/{} - обновление машины";
+    private static final String LOG_PATCH_STATUS = "PATCH /api/cars/{}/status - обновление статуса машины: active={}";
+    private static final String LOG_DELETE = "DELETE /api/cars/{} - удаление машины";
+    private static final String LOG_COMPLEX_SEARCH = "GET /api/cars/search - сложный поиск: email={}, feature={}";
+    private static final String LOG_COMPLEX_SEARCH_NATIVE = "GET /api/cars/search/native - native" +
+            " поиск: email={}, feature={}";
+    private static final String LOG_PAGED_SEARCH = "GET /api/cars/search/paged - поиск с пагинацией: " +
+            "email={}, feature={}, page={}, size={}, sortBy={}, sortDir={}";
+    private static final String LOG_CACHED_SEARCH = "GET /api/cars/search/cached - поиск с кэшем: " +
+            "email={}, feature={}, page={}, size={}, sortBy={}, sortDir={}";
+    private static final String LOG_NPLUSONE_DEMO = "GET /api/cars/nplus1-demo - демонстрация проблемы N+1";
+    private static final String LOG_ENTITY_GRAPH = "GET /api/cars/{}/details - решение N+1 через @EntityGraph";
+    private static final String LOG_FETCH_JOIN = "GET /api/cars/active/details - решение N+1 через FETCH JOIN";
+    private static final String LOG_WITHOUT_TX = "POST /api/cars/with-features - сохранение без @Transactional";
+    private static final String LOG_WITH_TX = "POST /api/cars/with-features - сохранение с @Transactional";
+    private static final String LOG_CAR_NOT_FOUND = "Машина с ID {} не найдена";
+    private static final String LOG_CAR_DELETED = "Машина с ID {} успешно удалена";
+
+
     @GetMapping
-    public List<CarDto> getAllCars() {
-        return carService.getAllCars();
+    public ResponseEntity<List<CarDto>> getAllCars() {
+        log.info(LOG_GET_ALL);
+        return ResponseEntity.ok(carService.getAllCars());
     }
 
     @GetMapping("/active")
-    public List<CarDto> getAllActiveCars() {
-        return carService.getAllActiveCars();
+    public ResponseEntity<List<CarDto>> getAllActiveCars() {
+        log.info("GET /api/cars/active - запрос всех активных машин");
+        return ResponseEntity.ok(carService.getAllActiveCars());
     }
 
     @GetMapping("/available")
-    public List<CarDto> getAvailableCars() {
-        return carService.getAvailableCars();
+    public ResponseEntity<List<CarDto>> getAvailableCars() {
+        log.info("GET /api/cars/available - запрос доступных машин");
+        return ResponseEntity.ok(carService.getAvailableCars());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CarDto> getCarById(@PathVariable Long id) {
+        log.info(LOG_GET_BY_ID, id);
         CarDto car = carService.getCarById(id);
-        return car != null ? ResponseEntity.ok(car) : ResponseEntity.notFound().build();
+        if (car == null) {
+            log.warn(LOG_CAR_NOT_FOUND, id);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(car);
     }
 
     @PostMapping
     public ResponseEntity<CarDto> createCar(@RequestBody CarDto carDto) {
-        return new ResponseEntity<>(carService.createCar(carDto), HttpStatus.CREATED);
+        log.info(LOG_CREATE, carDto.getBrand() + " " + carDto.getModel());
+        CarDto createdCar = carService.createCar(carDto);
+        return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/with-location")
+    public ResponseEntity<CarDto> createCarWithLocation(
+            @RequestBody CarDto carDto,
+            @RequestParam Long locationId) {
+        log.info("POST /api/cars/with-location - создание машины с локацией ID: {}", locationId);
+        CarDto createdCar = carService.createCarWithLocation(carDto, locationId);
+        return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CarDto> updateCar(@PathVariable Long id, @RequestBody CarDto carDto) {
+        log.info(LOG_UPDATE, id);
         CarDto updatedCar = carService.updateCar(id, carDto);
-        return updatedCar != null ? ResponseEntity.ok(updatedCar) : ResponseEntity.notFound().build();
+        if (updatedCar == null) {
+            log.warn(LOG_CAR_NOT_FOUND, id);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedCar);
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<CarDto> updateCarStatus(@PathVariable Long id, @RequestParam boolean active) {
+    public ResponseEntity<CarDto> updateCarStatus(
+            @PathVariable Long id,
+            @RequestParam boolean active) {
+        log.info(LOG_PATCH_STATUS, id, active);
         CarDto updatedCar = carService.updateCarStatus(id, active);
-        return updatedCar != null ? ResponseEntity.ok(updatedCar) : ResponseEntity.notFound().build();
+        if (updatedCar == null) {
+            log.warn(LOG_CAR_NOT_FOUND, id);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedCar);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
+        log.info(LOG_DELETE, id);
+
+        CarDto existingCar = carService.getCarById(id);
+        if (existingCar == null) {
+            log.warn(LOG_CAR_NOT_FOUND, id);
+            return ResponseEntity.notFound().build();
+        }
+
         carService.deleteCar(id);
+        log.info(LOG_CAR_DELETED, id);
         return ResponseEntity.noContent().build();
     }
 
+
     @GetMapping("/nplus1-demo")
-    public List<CarDto> demonstrateNPlusOne() {
-        return carService.getAllCarsWithNPlusOneProblem();
+    public ResponseEntity<List<CarDto>> demonstrateNPlusOne() {
+        log.info(LOG_NPLUSONE_DEMO);
+        return ResponseEntity.ok(carService.getAllCarsWithNPlusOneProblem());
     }
 
     @GetMapping("/{id}/details")
     public ResponseEntity<CarDto> getCarWithDetails(@PathVariable Long id) {
+        log.info(LOG_ENTITY_GRAPH, id);
         CarDto car = carService.getCarByIdWithEntityGraph(id);
-        return car != null ? ResponseEntity.ok(car) : ResponseEntity.notFound().build();
+        if (car == null) {
+            log.warn(LOG_CAR_NOT_FOUND, id);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(car);
     }
 
     @GetMapping("/active/details")
-    public List<CarDto> getActiveCarsWithDetails() {
-        return carService.getAllActiveCarsWithFetchJoin();
+    public ResponseEntity<List<CarDto>> getActiveCarsWithDetails() {
+        log.info(LOG_FETCH_JOIN);
+        return ResponseEntity.ok(carService.getAllActiveCarsWithFetchJoin());
     }
+
 
     @PostMapping("/with-features")
     public ResponseEntity<String> saveCarWithFeatures(
@@ -93,15 +168,73 @@ public class CarController {
 
         try {
             if (useTransaction) {
+                log.info(LOG_WITH_TX);
                 carService.saveCarWithFeaturesWithTransaction(carDto, featureIds, locationId);
-                return ResponseEntity.ok("Машина успешно сохранена с транзакцией");
+                return ResponseEntity.ok("Машина успешно сохранена с транзакцией (данные будут откатаны при ошибке)");
             } else {
+                log.info(LOG_WITHOUT_TX);
                 carService.saveCarWithFeaturesWithoutTransaction(carDto, featureIds, locationId);
-                return ResponseEntity.ok("Машина успешно сохранена без транзакции");
+                return ResponseEntity.ok("Машина успешно сохранена без транзакции (частичное сохранение при ошибке)");
             }
         } catch (Exception e) {
+            log.error("Ошибка при сохранении машины с особенностями: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Ошибка: " + e.getMessage());
         }
+    }
+    
+
+    @GetMapping("/search")
+    public ResponseEntity<List<CarDto>> searchCars(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String feature) {
+
+        log.info(LOG_COMPLEX_SEARCH, email, feature);
+        List<CarDto> cars = carService.findCarsByComplexCriteria(email, feature);
+        return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/search/native")
+    public ResponseEntity<List<CarDto>> searchCarsNative(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String feature) {
+
+        log.info(LOG_COMPLEX_SEARCH_NATIVE, email, feature);
+        List<CarDto> cars = carService.findCarsByComplexCriteriaNative(email, feature);
+        return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/search/paged")
+    public ResponseEntity<Page<CarDto>> searchCarsPaged(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String feature,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        log.info(LOG_PAGED_SEARCH, email, feature, page, size, sortBy, sortDirection);
+
+        Page<CarDto> carPage = carService.findCarsByComplexCriteriaPaged(
+                email, feature, page, size, sortBy, sortDirection);
+
+        return ResponseEntity.ok(carPage);
+    }
+
+    @GetMapping("/search/cached")
+    public ResponseEntity<List<CarDto>> searchCarsCached(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String feature,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection) {
+
+        log.info(LOG_CACHED_SEARCH, email, feature, page, size, sortBy, sortDirection);
+
+        List<CarDto> cars = carService.findCarsWithCache(
+                email, feature, page, size, sortBy, sortDirection);
+
+        return ResponseEntity.ok(cars);
     }
 }
