@@ -6,8 +6,8 @@ import com.example.carsharing1.entity.Car;
 import com.example.carsharing1.entity.Feature;
 import com.example.carsharing1.entity.Location;
 import com.example.carsharing1.exception.CarServiceException;
-import com.example.carsharing1.exception.LocationNotFoundException;
 import com.example.carsharing1.exception.FeatureNotFoundException;
+import com.example.carsharing1.exception.LocationNotFoundException;
 import com.example.carsharing1.mapper.CarMapper;
 import com.example.carsharing1.repository.CarRepository;
 import com.example.carsharing1.repository.FeatureRepository;
@@ -21,11 +21,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -36,7 +36,7 @@ public class CarService {
     private final LocationRepository locationRepository;
     private final FeatureRepository featureRepository;
 
-    private final Map<CarSearchKey, List<CarDto>> searchCache = new ConcurrentHashMap<>();
+    private final Map<CarSearchKey, List<CarDto>> searchCache = new HashMap<>();
 
     private static final String CAR_NOT_FOUND = "Машина с ID {} не найдена";
     private static final String LOCATION_NOT_FOUND = "Локация с ID {} не найдена";
