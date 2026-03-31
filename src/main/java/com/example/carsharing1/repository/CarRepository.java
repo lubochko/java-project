@@ -41,7 +41,10 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
 
     @Query("SELECT DISTINCT c FROM Car c " +
-            "LEFT JOIN c.bookings b " +
+            "LEFT JOIN FETCH c.location " +
+            "LEFT JOIN FETCH c.features " +
+            "LEFT JOIN FETCH c.bookings b " +
+            "LEFT JOIN FETCH b.payment " +
             "LEFT JOIN b.user u " +
             "WHERE (:email IS NULL OR u.email = :email) " +
             "AND (:featureName IS NULL OR EXISTS (SELECT f FROM c.features f WHERE f.name = :featureName))")
