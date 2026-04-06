@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(
             MethodArgumentNotValidException ex,
             WebRequest request) {
-
         log.error("Ошибка валидации: {}", ex.getMessage());
 
         Map<String, List<String>> fieldErrors = new HashMap<>();
@@ -49,10 +47,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleTypeMismatch(
             MethodArgumentTypeMismatchException ex,
             WebRequest request) {
-
         log.error("Ошибка типа параметра: {}", ex.getMessage());
+        
+        if (ex.getRequiredType() == null) {
+            ErrorResponse response = ErrorResponse.of(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Bad Request",
+                    "Параметр '" + ex.getName() + "' имеет некорректный тип",
+                    request.getDescription(false).replace("uri=", "")
+            );
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
-        assert ex.getRequiredType() != null;
         ErrorResponse response = ErrorResponse.of(
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
@@ -67,7 +73,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleResourceNotFound(
             ResourceNotFoundException ex,
             WebRequest request) {
-
         log.error("Ресурс не найден: {}", ex.getMessage());
 
         ErrorResponse response = ErrorResponse.of(
@@ -84,7 +89,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleDuplicateResource(
             DuplicateResourceException ex,
             WebRequest request) {
-
         log.error("Дубликат ресурса: {}", ex.getMessage());
 
         ErrorResponse response = ErrorResponse.of(
@@ -101,7 +105,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleCarServiceException(
             CarServiceException ex,
             WebRequest request) {
-
         log.error("Ошибка сервиса машин: {}", ex.getMessage());
 
         ErrorResponse response = ErrorResponse.of(
@@ -118,7 +121,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleBookingException(
             BookingException ex,
             WebRequest request) {
-
         log.error("Ошибка бронирования: {}", ex.getMessage());
 
         ErrorResponse response = ErrorResponse.of(
@@ -135,7 +137,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(
             Exception ex,
             WebRequest request) {
-
         log.error("Необработанная ошибка: ", ex);
 
         ErrorResponse response = ErrorResponse.of(
