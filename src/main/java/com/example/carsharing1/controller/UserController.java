@@ -2,6 +2,11 @@ package com.example.carsharing1.controller;
 
 import com.example.carsharing1.dto.UserDto;
 import com.example.carsharing1.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,163 +16,66 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Tag(name = "Пользователи", description = "Управление пользователями системы")
 public class UserController {
 
     private final UserService userService;
 
-    private static final String USER_NOT_FOUND_ID = "Пользователь с ID {} не найден";
-    private static final String USER_NOT_FOUND_EMAIL = "Пользователь с email {} не найден";
-    private static final String USER_CREATE_CONFLICT = "Не удалось создать пользователя: email {} уже занят";
-    private static final String USER_UPDATE_CONFLICT = "Не удалось обновить пользователя: email {} уже занят";
-    private static final String USER_PATCH_CONFLICT = "Не удалось частично обновить пользователя с ID {}";
-    private static final String EMAIL_EXISTS_MESSAGE = "Пользователь с таким email уже существует";
-
+    @Operation(summary = "Получить всех пользователей", description = "Возвращает список всех пользователей")
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
-        log.info("GET /api/users - запрос всех пользователей");
-        List<UserDto> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    @Operation(summary = "Получить пользователя по ID", description = "Возвращает пользователя по указанному ID")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Пользователь найден"), @ApiResponse(
+            responseCode = "404", description = "Пользователь не найден")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        log.info("GET /api/users/{} - запрос пользователя по ID", id);
         UserDto user = userService.getUserById(id);
-
-        if (user == null) {
-            log.warn(USER_NOT_FOUND_ID, id);
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(user);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/email/{email}")
-    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
-        log.info("GET /api/users/email/{} - запрос пользователя по email", email);
-        UserDto user = userService.getUserByEmail(email);
-
-        if (user == null) {
-            log.warn(USER_NOT_FOUND_EMAIL, email);
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(user);
-    }
-
-    @GetMapping("/{id}/with-bookings")
-    public ResponseEntity<UserDto> getUserWithBookings(@PathVariable Long id) {
-        log.info("GET /api/users/{}/with-bookings - запрос пользователя с бронированиями", id);
-        UserDto user = userService.getUserWithBookings(id);
-
-        if (user == null) {
-            log.warn(USER_NOT_FOUND_ID, id);
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(user);
-    }
-
-    @GetMapping("/count")
-    public ResponseEntity<Long> getUsersCount() {
-        log.info("GET /api/users/count - запрос количества пользователей");
-        long count = userService.getUsersCount();
-        return ResponseEntity.ok(count);
-    }
-
-    @GetMapping("/check-email")
-    public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
-        log.info("GET /api/users/check-email?email={} - проверка существования email", email);
-        boolean exists = userService.existsByEmail(email);
-        return ResponseEntity.ok(exists);
-    }
-
+    @Operation(summary = "Создать пользователя", description = "Создает нового пользователя")
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Пользователь" +
+            " создан"), @ApiResponse(responseCode = "400",
+            description = "Некорректные " +
+            "данные"), @ApiResponse(responseCode = "409", description = "Email уже занят")
+    })
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody UserDto userDto) {
-        log.info("POST /api/users - создание нового пользователя: {}", userDto.getEmail());
-
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         UserDto createdUser = userService.createUser(userDto);
-
-        if (createdUser == null) {
-            log.warn(USER_CREATE_CONFLICT, userDto.getEmail());
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body(EMAIL_EXISTS_MESSAGE);
-        }
-
-        log.info("Пользователь создан с ID: {}", createdUser.getId());
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Обновить пользователя", description = "Обновляет данные существующего пользователя")
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        log.info("PUT /api/users/{} - обновление пользователя", id);
-
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
         UserDto updatedUser = userService.updateUser(id, userDto);
-
-        if (updatedUser == null) {
-            UserDto existingUser = userService.getUserById(id);
-            if (existingUser == null) {
-                log.warn(USER_NOT_FOUND_ID, id);
-                return ResponseEntity.notFound().build();
-            } else {
-                log.warn(USER_UPDATE_CONFLICT, userDto.getEmail());
-                return ResponseEntity
-                        .status(HttpStatus.CONFLICT)
-                        .body(EMAIL_EXISTS_MESSAGE);
-            }
-        }
-
-        log.info("Пользователь с ID {} успешно обновлен", id);
-        return ResponseEntity.ok(updatedUser);
+        return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Object> patchUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        log.info("PATCH /api/users/{} - частичное обновление пользователя", id);
-
-        UserDto patchedUser = userService.patchUser(id, userDto);
-
-        if (patchedUser == null) {
-            UserDto existingUser = userService.getUserById(id);
-            if (existingUser == null) {
-                log.warn(USER_NOT_FOUND_ID, id);
-                return ResponseEntity.notFound().build();
-            } else {
-                log.warn(USER_PATCH_CONFLICT, id);
-                return ResponseEntity
-                        .status(HttpStatus.CONFLICT)
-                        .body("Конфликт данных при обновлении");
-            }
-        }
-
-        log.info("Пользователь с ID {} успешно частично обновлен", id);
-        return ResponseEntity.ok(patchedUser);
-    }
-
+    @Operation(summary = "Удалить пользователя", description = "Удаляет пользователя по ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        log.info("DELETE /api/users/{} - удаление пользователя", id);
-
-        UserDto existingUser = userService.getUserById(id);
-        if (existingUser == null) {
-            log.warn(USER_NOT_FOUND_ID, id);
-            return ResponseEntity.notFound().build();
-        }
-
         userService.deleteUser(id);
-        log.info("Пользователь с ID {} успешно удален", id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Получить количество пользователей", description = "Возвращает общее количество пользователей")
+    @GetMapping("/count")
+    public ResponseEntity<Long> getUsersCount() {
+        return ResponseEntity.ok(userService.getUsersCount());
     }
 }

@@ -1,0 +1,188 @@
+2026-04-06 08:51:54.197 INFO  [main] c.e.c.Carsharing1Application - Starting Carsharing1Application using Java 25.0.2 with PID 8028 (D:\java\carsharing1\target\classes started by luboc in D:\java\carsharing1)
+2026-04-06 08:51:54.203 DEBUG [main] c.e.c.Carsharing1Application - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-06 08:51:54.203 INFO  [main] c.e.c.Carsharing1Application - No active profile set, falling back to 1 default profile: "default"
+2026-04-06 08:51:54.583 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.0.1.Final
+2026-04-06 08:51:55.085 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-06 08:51:55.156 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 63 ms. Found 6 JPA repository interfaces.
+2026-04-06 08:51:55.886 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-06 08:51:55.899 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-06 08:51:55.901 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-06 08:51:55.902 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-06 08:51:55.974 INFO  [main] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1724 ms
+2026-04-06 08:51:56.194 INFO  [main] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-06 08:51:56.272 INFO  [main] org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-06 08:51:56.740 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-06 08:51:56.779 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-06 08:51:57.029 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3117ac8d
+2026-04-06 08:51:57.030 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-06 08:51:57.093 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-06 08:51:57.126 INFO  [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/carsharing?useUnicode=yes&characterEncoding=UTF-8]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.3
+	Default catalog/schema: carsharing/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-06 08:51:58.149 INFO  [main] org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-06 08:51:58.260 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 08:51:58.437 INFO  [main] o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-06 08:51:59.707 WARN  [main] o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-06 08:52:00.334 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-04-06 08:52:00.355 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-06 08:52:00.363 INFO  [main] c.e.c.Carsharing1Application - Started Carsharing1Application in 6.711 seconds (process running for 7.207)
+2026-04-06 08:52:00.438 DEBUG [main] org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        features f1_0
+2026-04-06 08:52:00.452 INFO  [main] c.e.c.config.DataInitializer - ДАННЫЕ УЖЕ СУЩЕСТВУЮТ, ПРОПУСКАЕМ ИНИЦИАЛИЗАЦИЮ
+2026-04-06 08:52:04.940 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06 08:52:04.941 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-06 08:52:04.943 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-04-06 08:52:06.148 INFO  [http-nio-8080-exec-8] o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 857 ms
+2026-04-06 08:52:39.230 INFO  [http-nio-8080-exec-10] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.getUserById с параметрами: [1]
+2026-04-06 08:52:39.233 DEBUG [http-nio-8080-exec-10] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.getUserById
+2026-04-06 08:52:39.233 INFO  [http-nio-8080-exec-10] c.e.carsharing1.service.UserService - Получение пользователя с ID: 1
+2026-04-06 08:52:39.247 DEBUG [http-nio-8080-exec-10] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-04-06 08:52:39.289 DEBUG [http-nio-8080-exec-10] c.e.carsharing1.aspect.LoggingAspect - Метод UserService.getUserById выполнен за 55 мс
+2026-04-06 08:52:39.290 INFO  [http-nio-8080-exec-10] c.e.carsharing1.aspect.LoggingAspect - Контроллер UserController.getUserById выполнен за 60 мс, результат: <200 OK OK,UserDto(id=1, name=Иван Петров-Сидоров, email=ivan.new@email.com, phone=+375299999999, driverLicense=AB123456, registrationDate=2026-03-06T00:28:09.553153, bookings=null),[]>
+2026-04-06 08:55:20.698 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-06 08:55:20.713 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-06 08:55:20.717 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 08:55:20.718 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-06 08:55:20.721 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-06 08:55:24.586 INFO  [main] c.e.c.Carsharing1Application - Starting Carsharing1Application using Java 25.0.2 with PID 22436 (D:\java\carsharing1\target\classes started by luboc in D:\java\carsharing1)
+2026-04-06 08:55:24.587 DEBUG [main] c.e.c.Carsharing1Application - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-06 08:55:24.588 INFO  [main] c.e.c.Carsharing1Application - No active profile set, falling back to 1 default profile: "default"
+2026-04-06 08:55:24.900 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.0.1.Final
+2026-04-06 08:55:25.363 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-06 08:55:25.429 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 59 ms. Found 6 JPA repository interfaces.
+2026-04-06 08:55:26.042 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-06 08:55:26.052 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-06 08:55:26.054 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-06 08:55:26.055 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-06 08:55:26.119 INFO  [main] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1493 ms
+2026-04-06 08:55:26.322 INFO  [main] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-06 08:55:26.366 INFO  [main] org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-06 08:55:26.691 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-06 08:55:26.714 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-06 08:55:26.900 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3487947c
+2026-04-06 08:55:26.901 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-06 08:55:26.930 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-06 08:55:26.953 INFO  [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/carsharing?useUnicode=yes&characterEncoding=UTF-8]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.3
+	Default catalog/schema: carsharing/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-06 08:55:27.823 INFO  [main] org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-06 08:55:27.892 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 08:55:28.044 INFO  [main] o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-06 08:55:29.126 WARN  [main] o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-06 08:55:29.623 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-04-06 08:55:29.641 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-06 08:55:29.647 INFO  [main] c.e.c.Carsharing1Application - Started Carsharing1Application in 5.533 seconds (process running for 5.939)
+2026-04-06 08:55:29.698 DEBUG [main] org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        features f1_0
+2026-04-06 08:55:29.708 INFO  [main] c.e.c.config.DataInitializer - ДАННЫЕ УЖЕ СУЩЕСТВУЮТ, ПРОПУСКАЕМ ИНИЦИАЛИЗАЦИЮ
+2026-04-06 08:55:33.459 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06 08:55:33.459 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-06 08:55:33.461 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-04-06 08:55:34.677 INFO  [http-nio-8080-exec-9] o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 917 ms
+2026-04-06 08:57:23.484 INFO  [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: CarController.createCar с параметрами: [CarDto(id=1, brand=Toyota, model=Camry, pricePerMinute=0.8, licensePlate=1234AB-5, year=2022, fuelLevel=95.0, active=true, available=true, locationCity=string, locationAddress=string, features=[string])]
+2026-04-06 08:57:23.488 INFO  [http-nio-8080-exec-6] c.e.c.controller.CarController - POST /api/cars - создание новой машины: Toyota Camry
+2026-04-06 08:57:23.489 DEBUG [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода CarService.createCar
+2026-04-06 08:57:23.490 INFO  [http-nio-8080-exec-6] c.e.carsharing1.service.CarService - Создание новой машины
+2026-04-06 08:57:23.523 DEBUG [http-nio-8080-exec-6] org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.active,
+        c1_0.brand,
+        c1_0.fuel_level,
+        c1_0.license_plate,
+        c1_0.location_id,
+        c1_0.model,
+        c1_0.price_per_minute,
+        c1_0.year,
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        cars c1_0 
+    left join
+        bookings b1_0 
+            on c1_0.id=b1_0.car_id 
+    where
+        c1_0.id=?
+2026-04-06 08:57:23.600 DEBUG [http-nio-8080-exec-6] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 08:57:23.616 INFO  [http-nio-8080-exec-6] c.e.carsharing1.service.CarService - Машина создана с ID: 1
+2026-04-06 08:57:23.617 INFO  [http-nio-8080-exec-6] c.e.carsharing1.service.CarService - Инвалидация кэша при изменении данных
+2026-04-06 08:57:23.618 DEBUG [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Метод CarService.createCar выполнен за 128 мс
+2026-04-06 08:57:23.657 DEBUG [http-nio-8080-exec-6] org.hibernate.SQL - 
+    update
+        cars 
+    set
+        active=?,
+        brand=?,
+        fuel_level=?,
+        license_plate=?,
+        location_id=?,
+        model=?,
+        price_per_minute=?,
+        year=? 
+    where
+        id=?
+2026-04-06 08:57:23.678 DEBUG [http-nio-8080-exec-6] org.hibernate.SQL - 
+    delete 
+    from
+        car_features 
+    where
+        car_id=?
+2026-04-06 08:57:23.683 INFO  [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Контроллер CarController.createCar выполнен за 196 мс, результат: <201 CREATED Created,CarDto(id=1, brand=Toyota, model=Camry, pricePerMinute=0.8, licensePlate=1234AB-5, year=2022, fuelLevel=95.0, active=true, available=true, locationCity=null, locationAddress=null, features=[]),[]>
+2026-04-06 08:57:40.549 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-06 08:57:40.564 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-06 08:57:40.567 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 08:57:40.569 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-06 08:57:40.572 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
