@@ -19,10 +19,12 @@ public class LoggingConfig {
 
     private static final String ROOT_LOGGER_NAME = org.slf4j.Logger.ROOT_LOGGER_NAME;
 
+    private static final String LOG_PATTERN = "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n";
+
     @PostConstruct
     public void init() {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-        
+
         Logger rootLogger = context.getLogger(ROOT_LOGGER_NAME);
 
         rootLogger.detachAndStopAllAppenders();
@@ -46,10 +48,7 @@ public class LoggingConfig {
         appender.setContext(context);
         appender.setName("CONSOLE");
 
-        PatternLayoutEncoder encoder = new PatternLayoutEncoder();
-        encoder.setContext(context);
-        encoder.setPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n");
-        encoder.start();
+        PatternLayoutEncoder encoder = createEncoder(context);
 
         appender.setEncoder(encoder);
         appender.start();
@@ -63,10 +62,7 @@ public class LoggingConfig {
         appender.setName("FILE");
         appender.setFile("logs/carsharing.log");
 
-        PatternLayoutEncoder encoder = new PatternLayoutEncoder();
-        encoder.setContext(context);
-        encoder.setPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n");
-        encoder.start();
+        PatternLayoutEncoder encoder = createEncoder(context);
         appender.setEncoder(encoder);
 
         SizeAndTimeBasedRollingPolicy<ILoggingEvent> policy = new SizeAndTimeBasedRollingPolicy<>();
@@ -96,10 +92,7 @@ public class LoggingConfig {
         filter.start();
         appender.addFilter(filter);
 
-        PatternLayoutEncoder encoder = new PatternLayoutEncoder();
-        encoder.setContext(context);
-        encoder.setPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n");
-        encoder.start();
+        PatternLayoutEncoder encoder = createEncoder(context);
         appender.setEncoder(encoder);
 
         SizeAndTimeBasedRollingPolicy<ILoggingEvent> policy = new SizeAndTimeBasedRollingPolicy<>();
@@ -114,5 +107,13 @@ public class LoggingConfig {
         appender.start();
 
         return appender;
+    }
+
+    private PatternLayoutEncoder createEncoder(LoggerContext context) {
+        PatternLayoutEncoder encoder = new PatternLayoutEncoder();
+        encoder.setContext(context);
+        encoder.setPattern(LOG_PATTERN);
+        encoder.start();
+        return encoder;
     }
 }
