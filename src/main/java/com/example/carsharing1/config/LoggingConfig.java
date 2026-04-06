@@ -17,17 +17,18 @@ import jakarta.annotation.PostConstruct;
 @Configuration
 public class LoggingConfig {
 
+    private static final String ROOT_LOGGER_NAME = org.slf4j.Logger.ROOT_LOGGER_NAME;
+
     @PostConstruct
     public void init() {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+        
+        Logger rootLogger = context.getLogger(ROOT_LOGGER_NAME);
 
-        Logger rootLogger = context.getLogger(Logger.ROOT_LOGGER_NAME);
         rootLogger.detachAndStopAllAppenders();
-
         rootLogger.addAppender(createConsoleAppender(context));
         rootLogger.addAppender(createFileAppender(context));
         rootLogger.addAppender(createErrorFileAppender(context));
-
         rootLogger.setLevel(Level.INFO);
 
         Logger carsharingLogger = context.getLogger("com.example.carsharing1");
