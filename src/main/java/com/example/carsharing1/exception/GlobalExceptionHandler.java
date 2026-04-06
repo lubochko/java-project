@@ -16,6 +16,12 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    
+    private static final String BAD_REQUEST = "Bad Request";
+    private static final String NOT_FOUND = "Not Found";
+    private static final String CONFLICT = "Conflict";
+    private static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
+    private static final String VALIDATION_FAILED = "Validation Failed";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(
@@ -34,7 +40,7 @@ public class GlobalExceptionHandler {
         ValidationErrorResponse response = new ValidationErrorResponse(
                 java.time.LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Validation Failed",
+                VALIDATION_FAILED,
                 "Проверьте правильность введенных данных",
                 request.getDescription(false).replace("uri=", ""),
                 fieldErrors
@@ -48,11 +54,11 @@ public class GlobalExceptionHandler {
             MethodArgumentTypeMismatchException ex,
             WebRequest request) {
         log.error("Ошибка типа параметра: {}", ex.getMessage());
-        
+
         if (ex.getRequiredType() == null) {
             ErrorResponse response = ErrorResponse.of(
                     HttpStatus.BAD_REQUEST.value(),
-                    "Bad Request",
+                    BAD_REQUEST,
                     "Параметр '" + ex.getName() + "' имеет некорректный тип",
                     request.getDescription(false).replace("uri=", "")
             );
@@ -61,7 +67,7 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.of(
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad Request",
+                BAD_REQUEST,
                 "Параметр '" + ex.getName() + "' должен быть типа " + ex.getRequiredType().getSimpleName(),
                 request.getDescription(false).replace("uri=", "")
         );
@@ -77,7 +83,7 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.of(
                 HttpStatus.NOT_FOUND.value(),
-                "Not Found",
+                NOT_FOUND,
                 ex.getMessage(),
                 request.getDescription(false).replace("uri=", "")
         );
@@ -93,7 +99,7 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.of(
                 HttpStatus.CONFLICT.value(),
-                "Conflict",
+                CONFLICT,
                 ex.getMessage(),
                 request.getDescription(false).replace("uri=", "")
         );
@@ -109,7 +115,7 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.of(
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad Request",
+                BAD_REQUEST,
                 ex.getMessage(),
                 request.getDescription(false).replace("uri=", "")
         );
@@ -125,7 +131,7 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.of(
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad Request",
+                BAD_REQUEST,
                 ex.getMessage(),
                 request.getDescription(false).replace("uri=", "")
         );
@@ -141,7 +147,7 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.of(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Internal Server Error",
+                INTERNAL_SERVER_ERROR,
                 "Произошла внутренняя ошибка сервера",
                 request.getDescription(false).replace("uri=", ""),
                 ex.getMessage()
