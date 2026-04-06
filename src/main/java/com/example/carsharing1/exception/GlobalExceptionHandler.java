@@ -16,7 +16,7 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
+
     private static final String BAD_REQUEST = "Bad Request";
     private static final String NOT_FOUND = "Not Found";
     private static final String CONFLICT = "Conflict";
