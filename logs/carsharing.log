@@ -248,3 +248,1371 @@
 2026-04-06 09:21:59.101 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-04-06 09:21:59.106 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2026-04-06 09:21:59.115 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-06 13:48:59.351 INFO  [main] c.e.c.Carsharing1Application - Starting Carsharing1Application using Java 25.0.2 with PID 3220 (D:\java\carsharing1\target\classes started by luboc in D:\java\carsharing1)
+2026-04-06 13:48:59.354 DEBUG [main] c.e.c.Carsharing1Application - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-06 13:48:59.355 INFO  [main] c.e.c.Carsharing1Application - No active profile set, falling back to 1 default profile: "default"
+2026-04-06 13:48:59.714 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.0.1.Final
+2026-04-06 13:49:00.221 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-06 13:49:00.293 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 64 ms. Found 6 JPA repository interfaces.
+2026-04-06 13:49:00.996 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-06 13:49:01.008 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-06 13:49:01.011 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-06 13:49:01.011 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-06 13:49:01.086 INFO  [main] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1687 ms
+2026-04-06 13:49:01.294 INFO  [main] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-06 13:49:01.360 INFO  [main] org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-06 13:49:01.824 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-06 13:49:01.858 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-06 13:49:02.153 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@52325940
+2026-04-06 13:49:02.155 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-06 13:49:02.216 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-06 13:49:02.246 INFO  [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/carsharing?useUnicode=yes&characterEncoding=UTF-8]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.3
+	Default catalog/schema: carsharing/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-06 13:49:03.238 INFO  [main] org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-06 13:49:03.347 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 13:49:03.499 INFO  [main] o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-06 13:49:04.684 WARN  [main] o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-06 13:49:05.187 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-04-06 13:49:05.206 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-06 13:49:05.212 INFO  [main] c.e.c.Carsharing1Application - Started Carsharing1Application in 6.442 seconds (process running for 6.966)
+2026-04-06 13:49:05.269 DEBUG [main] org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        features f1_0
+2026-04-06 13:49:05.285 INFO  [main] c.e.c.config.DataInitializer - ДАННЫЕ УЖЕ СУЩЕСТВУЮТ, ПРОПУСКАЕМ ИНИЦИАЛИЗАЦИЮ
+2026-04-06 13:49:11.008 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06 13:49:11.008 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-06 13:49:11.011 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-04-06 13:49:12.107 INFO  [http-nio-8080-exec-2] o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 901 ms
+2026-04-06 13:49:39.587 INFO  [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.createUser с параметрами: [UserDto(id=1, name=Иван Иванов, email=ivan@email.com, phone=+375291234567, driverLicense=AB123456, registrationDate=2026-03-31T12:00, bookings=[BookingDto(id=1, userId=1, userName=string, carId=1, carBrand=string, carModel=string, startTime=2026-04-01T15:00, endTime=2026-04-06T10:49:26.012, status=ACTIVE, totalCost=180.0, payment=PaymentDto(id=0, amount=0.1, time=2026-04-06T10:49:26.012, status=PENDING, method=string, transactionId=string))])]
+2026-04-06 13:49:39.592 DEBUG [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.createUser
+2026-04-06 13:49:39.592 INFO  [http-nio-8080-exec-2] c.e.carsharing1.service.UserService - Создание нового пользователя с email: ivan@email.com
+2026-04-06 13:49:39.656 DEBUG [http-nio-8080-exec-2] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-04-06 13:49:39.679 DEBUG [http-nio-8080-exec-2] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.driver_license=?
+2026-04-06 13:49:39.698 WARN  [http-nio-8080-exec-2] c.e.carsharing1.service.UserService - Водительское удостоверение AB123456 уже зарегистрировано
+2026-04-06 13:49:39.703 ERROR [http-nio-8080-exec-2] c.e.c.e.GlobalExceptionHandler - Необработанная ошибка: 
+com.example.carsharing1.exception.DuplicateLicenseException: Водительское удостоверение AB123456 уже зарегистрировано
+	at com.example.carsharing1.service.UserService.validateLicenseNotTaken(UserService.java:168)
+	at com.example.carsharing1.service.UserService.createUser(UserService.java:78)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logServiceExecutionTime(LoggingAspect.java:31)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.service.UserService$$SpringCGLIB$$0.createUser(<generated>)
+	at com.example.carsharing1.controller.UserController.createUser(UserController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logControllerInput(LoggingAspect.java:57)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.controller.UserController$$SpringCGLIB$$0.createUser(<generated>)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-04-06 13:58:06.387 ERROR [http-nio-8080-exec-5] c.e.c.e.GlobalExceptionHandler - Ошибка типа параметра: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "abc"
+2026-04-06 13:58:06.507 ERROR [http-nio-8080-exec-6] c.e.c.e.GlobalExceptionHandler - Необработанная ошибка: 
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico for request '/favicon.ico'.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:527)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:50)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:892)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:622)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-04-06 13:59:12.788 ERROR [http-nio-8080-exec-7] c.e.c.e.GlobalExceptionHandler - Ошибка валидации: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.carsharing1.dto.UserDto> com.example.carsharing1.controller.UserController.createUser(com.example.carsharing1.dto.UserDto) with 4 errors: [Field error in object 'userDto' on field 'name': rejected value []; codes [NotBlank.userDto.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name]]; default message [Имя не может быть пустым]] [Field error in object 'userDto' on field 'email': rejected value [invalid]; codes [Email.userDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@1cc05e6b,.*]; default message [Некорректный формат email]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Pattern.userDto.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],[Ljakarta.validation.constraints.Pattern$Flag;@2592db9c,^[а-яА-ЯёЁa-zA-Z\s-]+$]; default message [Имя может содержать только буквы, пробелы и дефисы]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Size.userDto.name,Size.name,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],100,2]; default message [Имя должно содержать от 2 до 100 символов]] 
+2026-04-06 13:59:44.463 ERROR [http-nio-8080-exec-3] c.e.c.e.GlobalExceptionHandler - Ошибка валидации: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.carsharing1.dto.UserDto> com.example.carsharing1.controller.UserController.createUser(com.example.carsharing1.dto.UserDto) with 4 errors: [Field error in object 'userDto' on field 'name': rejected value []; codes [NotBlank.userDto.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name]]; default message [Имя не может быть пустым]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Size.userDto.name,Size.name,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],100,2]; default message [Имя должно содержать от 2 до 100 символов]] [Field error in object 'userDto' on field 'email': rejected value [invalid]; codes [Email.userDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@1cc05e6b,.*]; default message [Некорректный формат email]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Pattern.userDto.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],[Ljakarta.validation.constraints.Pattern$Flag;@2592db9c,^[а-яА-ЯёЁa-zA-Z\s-]+$]; default message [Имя может содержать только буквы, пробелы и дефисы]] 
+2026-04-06 14:00:16.449 INFO  [http-nio-8080-exec-4] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.getUserById с параметрами: [9999]
+2026-04-06 14:00:16.452 DEBUG [http-nio-8080-exec-4] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.getUserById
+2026-04-06 14:00:16.452 INFO  [http-nio-8080-exec-4] c.e.carsharing1.service.UserService - Получение пользователя с ID: 9999
+2026-04-06 14:00:16.463 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-04-06 14:00:16.469 DEBUG [http-nio-8080-exec-4] c.e.carsharing1.aspect.LoggingAspect - Метод UserService.getUserById выполнен за 16 мс
+2026-04-06 14:00:16.470 INFO  [http-nio-8080-exec-4] c.e.carsharing1.aspect.LoggingAspect - Контроллер UserController.getUserById выполнен за 21 мс, результат: <404 NOT_FOUND Not Found,[]>
+2026-04-06 14:04:35.260 ERROR [http-nio-8080-exec-10] c.e.c.e.GlobalExceptionHandler - Ошибка валидации: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.carsharing1.dto.UserDto> com.example.carsharing1.controller.UserController.createUser(com.example.carsharing1.dto.UserDto) with 3 errors: [Field error in object 'userDto' on field 'name': rejected value []; codes [NotBlank.userDto.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name]]; default message [Имя не может быть пустым]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Size.userDto.name,Size.name,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],100,2]; default message [Имя должно содержать от 2 до 100 символов]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Pattern.userDto.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],[Ljakarta.validation.constraints.Pattern$Flag;@2592db9c,^[а-яА-ЯёЁa-zA-Z\s-]+$]; default message [Имя может содержать только буквы, пробелы и дефисы]] 
+2026-04-06 14:05:19.820 ERROR [http-nio-8080-exec-9] c.e.c.e.GlobalExceptionHandler - Ошибка валидации: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.carsharing1.dto.UserDto> com.example.carsharing1.controller.UserController.createUser(com.example.carsharing1.dto.UserDto) with 3 errors: [Field error in object 'userDto' on field 'name': rejected value []; codes [NotBlank.userDto.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name]]; default message [Имя не может быть пустым]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Pattern.userDto.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],[Ljakarta.validation.constraints.Pattern$Flag;@2592db9c,^[а-яА-ЯёЁa-zA-Z\s-]+$]; default message [Имя может содержать только буквы, пробелы и дефисы]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Size.userDto.name,Size.name,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],100,2]; default message [Имя должно содержать от 2 до 100 символов]] 
+2026-04-06 14:05:46.811 ERROR [http-nio-8080-exec-1] c.e.c.e.GlobalExceptionHandler - Ошибка валидации: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.carsharing1.dto.UserDto> com.example.carsharing1.controller.UserController.createUser(com.example.carsharing1.dto.UserDto) with 4 errors: [Field error in object 'userDto' on field 'name': rejected value []; codes [NotBlank.userDto.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name]]; default message [Имя не может быть пустым]] [Field error in object 'userDto' on field 'email': rejected value [test-sssehh.com]; codes [Email.userDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@1cc05e6b,.*]; default message [Некорректный формат email]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Pattern.userDto.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],[Ljakarta.validation.constraints.Pattern$Flag;@2592db9c,^[а-яА-ЯёЁa-zA-Z\s-]+$]; default message [Имя может содержать только буквы, пробелы и дефисы]] [Field error in object 'userDto' on field 'name': rejected value []; codes [Size.userDto.name,Size.name,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.name,name]; arguments []; default message [name],100,2]; default message [Имя должно содержать от 2 до 100 символов]] 
+2026-04-06 14:06:30.455 INFO  [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.getUserById с параметрами: [33]
+2026-04-06 14:06:30.456 DEBUG [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.getUserById
+2026-04-06 14:06:30.456 INFO  [http-nio-8080-exec-2] c.e.carsharing1.service.UserService - Получение пользователя с ID: 33
+2026-04-06 14:06:30.457 DEBUG [http-nio-8080-exec-2] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-04-06 14:06:30.459 DEBUG [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Метод UserService.getUserById выполнен за 2 мс
+2026-04-06 14:06:30.459 INFO  [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Контроллер UserController.getUserById выполнен за 4 мс, результат: <404 NOT_FOUND Not Found,[]>
+2026-04-06 14:09:06.594 INFO  [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.createUser с параметрами: [UserDto(id=null, name=Сергей, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=null, bookings=null)]
+2026-04-06 14:09:06.595 DEBUG [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.createUser
+2026-04-06 14:09:06.595 INFO  [http-nio-8080-exec-6] c.e.carsharing1.service.UserService - Создание нового пользователя с email: ivan@email.com
+2026-04-06 14:09:06.597 DEBUG [http-nio-8080-exec-6] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-04-06 14:09:06.616 DEBUG [http-nio-8080-exec-6] org.hibernate.SQL - 
+    insert 
+    into
+        users
+        (driver_license, email, name, phone, registration_date) 
+    values
+        (?, ?, ?, ?, ?)
+2026-04-06 14:09:06.627 INFO  [http-nio-8080-exec-6] c.e.carsharing1.service.UserService - Пользователь создан с ID: 8
+2026-04-06 14:09:06.627 DEBUG [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Метод UserService.createUser выполнен за 32 мс
+2026-04-06 14:09:06.636 INFO  [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Контроллер UserController.createUser выполнен за 42 мс, результат: <201 CREATED Created,UserDto(id=8, name=Сергей, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=2026-04-06T14:09:06.598537500, bookings=null),[]>
+2026-04-06 14:09:40.688 INFO  [http-nio-8080-exec-7] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.createUser с параметрами: [UserDto(id=null, name=Михаил, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=null, bookings=null)]
+2026-04-06 14:09:40.689 DEBUG [http-nio-8080-exec-7] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.createUser
+2026-04-06 14:09:40.689 INFO  [http-nio-8080-exec-7] c.e.carsharing1.service.UserService - Создание нового пользователя с email: ivan@email.com
+2026-04-06 14:09:40.690 DEBUG [http-nio-8080-exec-7] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-04-06 14:09:40.691 WARN  [http-nio-8080-exec-7] c.e.carsharing1.service.UserService - Email ivan@email.com уже занят
+2026-04-06 14:09:40.692 ERROR [http-nio-8080-exec-7] c.e.c.e.GlobalExceptionHandler - Необработанная ошибка: 
+com.example.carsharing1.exception.DuplicateEmailException: Email ivan@email.com уже занят
+	at com.example.carsharing1.service.UserService.validateEmailNotTaken(UserService.java:161)
+	at com.example.carsharing1.service.UserService.createUser(UserService.java:77)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logServiceExecutionTime(LoggingAspect.java:31)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.service.UserService$$SpringCGLIB$$0.createUser(<generated>)
+	at com.example.carsharing1.controller.UserController.createUser(UserController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logControllerInput(LoggingAspect.java:57)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.controller.UserController$$SpringCGLIB$$0.createUser(<generated>)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-04-06 14:11:05.893 INFO  [http-nio-8080-exec-3] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: CarController.createCar с параметрами: [CarDto(id=null, brand=Honda, model=Civic, pricePerMinute=0.6, licensePlate=HONDA-01, year=2022, fuelLevel=95.0, active=true, available=null, locationCity=null, locationAddress=null, features=null)]
+2026-04-06 14:11:05.895 INFO  [http-nio-8080-exec-3] c.e.c.controller.CarController - POST /api/cars - создание новой машины: Honda Civic
+2026-04-06 14:11:05.896 DEBUG [http-nio-8080-exec-3] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода CarService.createCar
+2026-04-06 14:11:05.896 INFO  [http-nio-8080-exec-3] c.e.carsharing1.service.CarService - Создание новой машины
+2026-04-06 14:11:05.902 DEBUG [http-nio-8080-exec-3] org.hibernate.SQL - 
+    insert 
+    into
+        cars
+        (active, brand, fuel_level, license_plate, location_id, model, price_per_minute, year) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-04-06 14:11:05.908 INFO  [http-nio-8080-exec-3] c.e.carsharing1.service.CarService - Машина создана с ID: 25
+2026-04-06 14:11:05.908 INFO  [http-nio-8080-exec-3] c.e.carsharing1.service.CarService - Инвалидация кэша при изменении данных
+2026-04-06 14:11:05.909 DEBUG [http-nio-8080-exec-3] c.e.carsharing1.aspect.LoggingAspect - Метод CarService.createCar выполнен за 11 мс
+2026-04-06 14:11:05.912 INFO  [http-nio-8080-exec-3] c.e.carsharing1.aspect.LoggingAspect - Контроллер CarController.createCar выполнен за 17 мс, результат: <201 CREATED Created,CarDto(id=25, brand=Honda, model=Civic, pricePerMinute=0.6, licensePlate=HONDA-01, year=2022, fuelLevel=95.0, active=true, available=true, locationCity=null, locationAddress=null, features=[]),[]>
+2026-04-06 14:27:19.406 ERROR [http-nio-8080-exec-8] c.e.c.e.GlobalExceptionHandler - Ошибка валидации: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.carsharing1.dto.UserDto> com.example.carsharing1.controller.UserController.createUser(com.example.carsharing1.dto.UserDto): [Field error in object 'userDto' on field 'email': rejected value [ivanefffail.com]; codes [Email.userDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@1cc05e6b,.*]; default message [Некорректный формат email]] 
+2026-04-06 14:28:52.196 INFO  [http-nio-8080-exec-10] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.createUser с параметрами: [UserDto(id=null, name=Михаил, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=null, bookings=null)]
+2026-04-06 14:28:52.197 DEBUG [http-nio-8080-exec-10] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.createUser
+2026-04-06 14:28:52.198 INFO  [http-nio-8080-exec-10] c.e.carsharing1.service.UserService - Создание нового пользователя с email: ivan@email.com
+2026-04-06 14:28:52.199 DEBUG [http-nio-8080-exec-10] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-04-06 14:28:52.204 WARN  [http-nio-8080-exec-10] c.e.carsharing1.service.UserService - Email ivan@email.com уже занят
+2026-04-06 14:28:52.206 ERROR [http-nio-8080-exec-10] c.e.c.e.GlobalExceptionHandler - Необработанная ошибка: 
+com.example.carsharing1.exception.DuplicateEmailException: Email ivan@email.com уже занят
+	at com.example.carsharing1.service.UserService.validateEmailNotTaken(UserService.java:161)
+	at com.example.carsharing1.service.UserService.createUser(UserService.java:77)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logServiceExecutionTime(LoggingAspect.java:31)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.service.UserService$$SpringCGLIB$$0.createUser(<generated>)
+	at com.example.carsharing1.controller.UserController.createUser(UserController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logControllerInput(LoggingAspect.java:57)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.controller.UserController$$SpringCGLIB$$0.createUser(<generated>)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-04-06 14:31:14.165 INFO  [http-nio-8080-exec-9] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.getAllUsers с параметрами: []
+2026-04-06 14:31:14.167 DEBUG [http-nio-8080-exec-9] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.getAllUsers
+2026-04-06 14:31:14.167 INFO  [http-nio-8080-exec-9] c.e.carsharing1.service.UserService - Получение списка всех пользователей
+2026-04-06 14:31:14.192 DEBUG [http-nio-8080-exec-9] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0
+2026-04-06 14:31:14.196 DEBUG [http-nio-8080-exec-9] c.e.carsharing1.aspect.LoggingAspect - Метод UserService.getAllUsers выполнен за 29 мс
+2026-04-06 14:31:14.197 INFO  [http-nio-8080-exec-9] c.e.carsharing1.aspect.LoggingAspect - Контроллер UserController.getAllUsers выполнен за 31 мс, результат: <200 OK OK,[UserDto(id=1, name=Иван Петров-Сидоров, email=ivan.new@email.com, phone=+375299999999, driverLicense=AB123456, registrationDate=2026-03-06T00:28:09.553153, bookings=null), UserDto(id=5, name=Анна Смирнова, email=ann44a@email.com, phone=+375331234567, driverLicense=JF345678, registrationDate=2026-03-17T22:52:51.569272, bookings=null), UserDto(id=6, name=Эдуард Смирнов, email=ed44a@email.com, phone=+375291234567, driverLicense=HS345678, registrationDate=2026-03-18T21:35:10.465411, bookings=null), UserDto(id=7, name=Игорь Рак, email=test@email.com, phone=+375331234567, driverLicense=TEST123, registrationDate=2026-03-18T21:53:05.401423, bookings=null), UserDto(id=8, name=Сергей, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=2026-04-06T14:09:06.598538, bookings=null)],[]>
+2026-04-06 14:31:37.709 INFO  [http-nio-8080-exec-1] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.createUser с параметрами: [UserDto(id=null, name=Михаил, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=null, bookings=null)]
+2026-04-06 14:31:37.710 DEBUG [http-nio-8080-exec-1] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.createUser
+2026-04-06 14:31:37.710 INFO  [http-nio-8080-exec-1] c.e.carsharing1.service.UserService - Создание нового пользователя с email: ivan@email.com
+2026-04-06 14:31:37.711 DEBUG [http-nio-8080-exec-1] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-04-06 14:31:37.712 WARN  [http-nio-8080-exec-1] c.e.carsharing1.service.UserService - Email ivan@email.com уже занят
+2026-04-06 14:31:37.715 ERROR [http-nio-8080-exec-1] c.e.c.e.GlobalExceptionHandler - Необработанная ошибка: 
+com.example.carsharing1.exception.DuplicateEmailException: Email ivan@email.com уже занят
+	at com.example.carsharing1.service.UserService.validateEmailNotTaken(UserService.java:161)
+	at com.example.carsharing1.service.UserService.createUser(UserService.java:77)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logServiceExecutionTime(LoggingAspect.java:31)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.service.UserService$$SpringCGLIB$$0.createUser(<generated>)
+	at com.example.carsharing1.controller.UserController.createUser(UserController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logControllerInput(LoggingAspect.java:57)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.controller.UserController$$SpringCGLIB$$0.createUser(<generated>)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-04-06 14:35:38.156 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-06 14:35:38.172 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-06 14:35:38.176 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 14:35:38.181 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-06 14:35:38.184 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-06 14:35:42.324 INFO  [main] c.e.c.Carsharing1Application - Starting Carsharing1Application using Java 25.0.2 with PID 10728 (D:\java\carsharing1\target\classes started by luboc in D:\java\carsharing1)
+2026-04-06 14:35:42.325 DEBUG [main] c.e.c.Carsharing1Application - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-06 14:35:42.326 INFO  [main] c.e.c.Carsharing1Application - No active profile set, falling back to 1 default profile: "default"
+2026-04-06 14:35:42.573 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.0.1.Final
+2026-04-06 14:35:42.994 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-06 14:35:43.056 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 56 ms. Found 6 JPA repository interfaces.
+2026-04-06 14:35:43.616 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-06 14:35:43.627 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-06 14:35:43.628 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-06 14:35:43.629 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-06 14:35:43.695 INFO  [main] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1336 ms
+2026-04-06 14:35:43.874 INFO  [main] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-06 14:35:43.914 INFO  [main] org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-06 14:35:44.234 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-06 14:35:44.259 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-06 14:35:44.544 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1aef7428
+2026-04-06 14:35:44.545 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-06 14:35:44.572 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-06 14:35:44.594 INFO  [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/carsharing?useUnicode=yes&characterEncoding=UTF-8]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.3
+	Default catalog/schema: carsharing/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-06 14:35:45.423 INFO  [main] org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-06 14:35:45.494 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 14:35:45.640 INFO  [main] o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-06 14:35:46.650 WARN  [main] o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-06 14:35:47.129 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-04-06 14:35:47.147 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-06 14:35:47.152 INFO  [main] c.e.c.Carsharing1Application - Started Carsharing1Application in 5.29 seconds (process running for 5.671)
+2026-04-06 14:35:47.206 DEBUG [main] org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        features f1_0
+2026-04-06 14:35:47.214 INFO  [main] c.e.c.config.DataInitializer - ДАННЫЕ УЖЕ СУЩЕСТВУЮТ, ПРОПУСКАЕМ ИНИЦИАЛИЗАЦИЮ
+2026-04-06 14:35:57.189 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06 14:35:57.190 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-06 14:35:57.191 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-06 14:35:57.430 INFO  [http-nio-8080-exec-1] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.createUser с параметрами: [UserDto(id=null, name=Михаил, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=null, bookings=null)]
+2026-04-06 14:35:57.433 DEBUG [http-nio-8080-exec-1] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.createUser
+2026-04-06 14:35:57.433 INFO  [http-nio-8080-exec-1] c.e.carsharing1.service.UserService - Создание нового пользователя с email: ivan@email.com
+2026-04-06 14:35:57.489 DEBUG [http-nio-8080-exec-1] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-04-06 14:35:57.523 WARN  [http-nio-8080-exec-1] c.e.carsharing1.service.UserService - Email ivan@email.com уже занят
+2026-04-06 14:35:57.531 ERROR [http-nio-8080-exec-1] c.e.c.e.GlobalExceptionHandler - Дубликат email: Email ivan@email.com уже занят
+2026-04-06 14:36:04.160 INFO  [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.createUser с параметрами: [UserDto(id=null, name=Михаил, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=null, bookings=null)]
+2026-04-06 14:36:04.162 DEBUG [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Выполнение метода UserService.createUser
+2026-04-06 14:36:04.162 INFO  [http-nio-8080-exec-2] c.e.carsharing1.service.UserService - Создание нового пользователя с email: ivan@email.com
+2026-04-06 14:36:04.164 DEBUG [http-nio-8080-exec-2] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-04-06 14:36:04.166 WARN  [http-nio-8080-exec-2] c.e.carsharing1.service.UserService - Email ivan@email.com уже занят
+2026-04-06 14:36:04.168 ERROR [http-nio-8080-exec-2] c.e.c.e.GlobalExceptionHandler - Дубликат email: Email ivan@email.com уже занят
+2026-04-06 14:40:14.028 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-06 14:40:14.043 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-06 14:40:14.046 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 14:40:14.049 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-06 14:40:14.053 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-06 14:41:38.395 INFO  [main] c.e.c.Carsharing1Application - Starting Carsharing1Application using Java 25.0.2 with PID 7992 (D:\java\carsharing1\target\classes started by luboc in D:\java\carsharing1)
+2026-04-06 14:41:38.397 DEBUG [main] c.e.c.Carsharing1Application - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-06 14:41:38.398 INFO  [main] c.e.c.Carsharing1Application - No active profile set, falling back to 1 default profile: "default"
+2026-04-06 14:41:38.666 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.0.1.Final
+2026-04-06 14:41:39.097 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-06 14:41:39.162 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 58 ms. Found 6 JPA repository interfaces.
+2026-04-06 14:41:39.721 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-06 14:41:39.730 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-06 14:41:39.733 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-06 14:41:39.733 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-06 14:41:39.796 INFO  [main] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1365 ms
+2026-04-06 14:41:39.973 INFO  [main] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-06 14:41:40.014 INFO  [main] org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-06 14:41:40.340 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-06 14:41:40.368 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-06 14:41:40.518 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1aef7428
+2026-04-06 14:41:40.519 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-06 14:41:40.546 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-06 14:41:40.564 INFO  [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/carsharing?useUnicode=yes&characterEncoding=UTF-8]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.3
+	Default catalog/schema: carsharing/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-06 14:41:41.298 INFO  [main] org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-06 14:41:41.365 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 14:41:41.496 INFO  [main] o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-06 14:41:42.526 WARN  [main] o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-06 14:41:42.963 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-04-06 14:41:42.983 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-06 14:41:42.988 INFO  [main] c.e.c.Carsharing1Application - Started Carsharing1Application in 5.049 seconds (process running for 5.428)
+2026-04-06 14:41:43.039 DEBUG [main] org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        features f1_0
+2026-04-06 14:41:43.048 INFO  [main] c.e.c.config.DataInitializer - ДАННЫЕ УЖЕ СУЩЕСТВУЮТ, ПРОПУСКАЕМ ИНИЦИАЛИЗАЦИЮ
+2026-04-06 14:42:00.526 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06 14:42:00.527 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-06 14:42:00.528 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-06 14:42:00.755 INFO  [http-nio-8080-exec-1] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.createUser с параметрами: [UserDto(id=null, name=Михаил, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=null, bookings=null)]
+2026-04-06 14:42:00.760 INFO  [http-nio-8080-exec-1] c.e.carsharing1.aspect.LoggingAspect - НАЧАЛО выполнения метода: UserService.createUser
+2026-04-06 14:42:00.760 INFO  [http-nio-8080-exec-1] c.e.carsharing1.service.UserService - Создание нового пользователя с email: ivan@email.com
+2026-04-06 14:42:00.816 DEBUG [http-nio-8080-exec-1] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-04-06 14:42:00.854 WARN  [http-nio-8080-exec-1] c.e.carsharing1.service.UserService - Email ivan@email.com уже занят
+2026-04-06 14:42:00.861 ERROR [http-nio-8080-exec-1] c.e.c.e.GlobalExceptionHandler - Дубликат email: Email ivan@email.com уже занят
+2026-04-06 14:42:59.180 ERROR [http-nio-8080-exec-2] c.e.c.e.GlobalExceptionHandler - Ошибка валидации: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.carsharing1.dto.UserDto> com.example.carsharing1.controller.UserController.createUser(com.example.carsharing1.dto.UserDto): [Field error in object 'userDto' on field 'email': rejected value [ivanemail.com]; codes [Email.userDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@1387e34f,.*]; default message [Некорректный формат email]] 
+2026-04-06 14:44:51.072 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-06 14:44:51.084 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-06 14:44:51.087 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 14:44:51.090 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-06 14:44:51.093 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-06 14:45:12.339 INFO  [main] c.e.c.Carsharing1Application - Starting Carsharing1Application using Java 25.0.2 with PID 23192 (D:\java\carsharing1\target\classes started by luboc in D:\java\carsharing1)
+2026-04-06 14:45:12.341 INFO  [main] c.e.c.Carsharing1Application - No active profile set, falling back to 1 default profile: "default"
+2026-04-06 14:45:12.600 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.0.1.Final
+2026-04-06 14:45:13.001 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-06 14:45:13.067 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 55 ms. Found 6 JPA repository interfaces.
+2026-04-06 14:45:13.621 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-06 14:45:13.633 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-06 14:45:13.636 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-06 14:45:13.636 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-06 14:45:13.699 INFO  [main] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1324 ms
+2026-04-06 14:45:13.880 INFO  [main] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-06 14:45:13.918 INFO  [main] org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-06 14:45:14.239 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-06 14:45:14.266 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-06 14:45:14.445 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3e1897d
+2026-04-06 14:45:14.446 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-06 14:45:14.471 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-06 14:45:14.489 INFO  [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/carsharing?useUnicode=yes&characterEncoding=UTF-8]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.3
+	Default catalog/schema: carsharing/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-06 14:45:15.213 INFO  [main] org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-06 14:45:15.284 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 14:45:15.451 INFO  [main] o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-06 14:45:16.455 WARN  [main] o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-06 14:45:16.921 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-04-06 14:45:16.938 INFO  [main] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-06 14:45:16.944 INFO  [main] c.e.c.Carsharing1Application - Started Carsharing1Application in 5.054 seconds (process running for 5.47)
+2026-04-06 14:45:16.994 DEBUG [main] org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        features f1_0
+2026-04-06 14:45:17.003 INFO  [main] c.e.c.config.DataInitializer - ДАННЫЕ УЖЕ СУЩЕСТВУЮТ, ПРОПУСКАЕМ ИНИЦИАЛИЗАЦИЮ
+2026-04-06 14:45:29.397 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06 14:45:29.397 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-06 14:45:29.399 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-06 14:45:29.636 ERROR [http-nio-8080-exec-1] c.e.c.e.GlobalExceptionHandler - Ошибка валидации: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.carsharing1.dto.UserDto> com.example.carsharing1.controller.UserController.createUser(com.example.carsharing1.dto.UserDto): [Field error in object 'userDto' on field 'email': rejected value [ivanemail.com]; codes [Email.userDto.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDto.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@4de4a5e5,.*]; default message [Некорректный формат email]] 
+2026-04-06 14:46:44.595 INFO  [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.getAllUsers с параметрами: []
+2026-04-06 14:46:44.599 INFO  [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - НАЧАЛО выполнения метода: UserService.getAllUsers
+2026-04-06 14:46:44.600 INFO  [http-nio-8080-exec-2] c.e.carsharing1.service.UserService - Получение списка всех пользователей
+2026-04-06 14:46:44.622 DEBUG [http-nio-8080-exec-2] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0
+2026-04-06 14:46:44.656 INFO  [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Метод UserService.getAllUsers выполнен за 56 мс
+2026-04-06 14:46:44.658 INFO  [http-nio-8080-exec-2] c.e.carsharing1.aspect.LoggingAspect - Контроллер UserController.getAllUsers выполнен за 62 мс, результат: <200 OK OK,[UserDto(id=1, name=Иван Петров-Сидоров, email=ivan.new@email.com, phone=+375299999999, driverLicense=AB123456, registrationDate=2026-03-06T00:28:09.553153, bookings=null), UserDto(id=5, name=Анна Смирнова, email=ann44a@email.com, phone=+375331234567, driverLicense=JF345678, registrationDate=2026-03-17T22:52:51.569272, bookings=null), UserDto(id=6, name=Эдуард Смирнов, email=ed44a@email.com, phone=+375291234567, driverLicense=HS345678, registrationDate=2026-03-18T21:35:10.465411, bookings=null), UserDto(id=7, name=Игорь Рак, email=test@email.com, phone=+375331234567, driverLicense=TEST123, registrationDate=2026-03-18T21:53:05.401423, bookings=null), UserDto(id=8, name=Сергей, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=2026-04-06T14:09:06.598538, bookings=null)],[]>
+2026-04-06 14:48:52.195 ERROR [http-nio-8080-exec-8] c.e.c.e.GlobalExceptionHandler - Ошибка типа параметра: Method parameter 'startTime': Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.RequestParam @jakarta.validation.constraints.NotNull @jakarta.validation.constraints.FutureOrPresent @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value [10]
+2026-04-06 14:49:57.052 INFO  [http-nio-8080-exec-5] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: BookingController.createBooking с параметрами: [2, 10, 2026-04-06T15:00, 150]
+2026-04-06 14:49:57.069 INFO  [http-nio-8080-exec-5] c.e.c.controller.BookingController - POST /api/bookings - создание бронирования
+2026-04-06 14:49:57.070 INFO  [http-nio-8080-exec-5] c.e.carsharing1.aspect.LoggingAspect - НАЧАЛО выполнения метода: BookingService.createBookingWithPayment
+2026-04-06 14:49:57.071 INFO  [http-nio-8080-exec-5] c.e.c.service.BookingService - СОЗДАНИЕ БРОНИРОВАНИЯ С ПЛАТЕЖОМ
+2026-04-06 14:49:57.083 DEBUG [http-nio-8080-exec-5] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-04-06 14:49:57.087 ERROR [http-nio-8080-exec-5] c.e.c.service.BookingService - Пользователь с ID 2 не найден
+2026-04-06 14:49:57.087 INFO  [http-nio-8080-exec-5] c.e.carsharing1.aspect.LoggingAspect - Метод BookingService.createBookingWithPayment выполнен за 16 мс
+2026-04-06 14:49:57.089 INFO  [http-nio-8080-exec-5] c.e.carsharing1.aspect.LoggingAspect - Контроллер BookingController.createBooking выполнен за 37 мс, результат: <201 CREATED Created,[]>
+2026-04-06 14:50:05.208 INFO  [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: BookingController.createBooking с параметрами: [2, 10, 2026-04-06T15:00, 200]
+2026-04-06 14:50:05.209 INFO  [http-nio-8080-exec-6] c.e.c.controller.BookingController - POST /api/bookings - создание бронирования
+2026-04-06 14:50:05.210 INFO  [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - НАЧАЛО выполнения метода: BookingService.createBookingWithPayment
+2026-04-06 14:50:05.211 INFO  [http-nio-8080-exec-6] c.e.c.service.BookingService - СОЗДАНИЕ БРОНИРОВАНИЯ С ПЛАТЕЖОМ
+2026-04-06 14:50:05.212 DEBUG [http-nio-8080-exec-6] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-04-06 14:50:05.213 ERROR [http-nio-8080-exec-6] c.e.c.service.BookingService - Пользователь с ID 2 не найден
+2026-04-06 14:50:05.213 INFO  [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Метод BookingService.createBookingWithPayment выполнен за 2 мс
+2026-04-06 14:50:05.214 INFO  [http-nio-8080-exec-6] c.e.carsharing1.aspect.LoggingAspect - Контроллер BookingController.createBooking выполнен за 5 мс, результат: <201 CREATED Created,[]>
+2026-04-06 14:52:12.976 INFO  [http-nio-8080-exec-4] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: CarController.getAllCars с параметрами: []
+2026-04-06 14:52:12.976 INFO  [http-nio-8080-exec-4] c.e.c.controller.CarController - GET /api/cars - запрос всех машин
+2026-04-06 14:52:12.976 INFO  [http-nio-8080-exec-4] c.e.carsharing1.aspect.LoggingAspect - НАЧАЛО выполнения метода: CarService.getAllCars
+2026-04-06 14:52:12.976 INFO  [http-nio-8080-exec-4] c.e.carsharing1.service.CarService - Получение всех машин
+2026-04-06 14:52:12.980 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.active,
+        c1_0.brand,
+        c1_0.fuel_level,
+        c1_0.license_plate,
+        c1_0.location_id,
+        c1_0.model,
+        c1_0.price_per_minute,
+        c1_0.year 
+    from
+        cars c1_0
+2026-04-06 14:52:12.997 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.007 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        l1_0.id,
+        l1_0.address,
+        l1_0.capacity,
+        l1_0.city,
+        l1_0.latitude,
+        l1_0.longitude 
+    from
+        locations l1_0 
+    where
+        l1_0.id=?
+2026-04-06 14:52:13.013 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.020 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.022 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.022 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.025 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        p1_0.id,
+        p1_0.amount,
+        p1_0.booking_id,
+        p1_0.method,
+        p1_0.status,
+        p1_0.time,
+        p1_0.transaction_id 
+    from
+        payments p1_0 
+    where
+        p1_0.booking_id=?
+2026-04-06 14:52:13.032 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        l1_0.id,
+        l1_0.address,
+        l1_0.capacity,
+        l1_0.city,
+        l1_0.latitude,
+        l1_0.longitude 
+    from
+        locations l1_0 
+    where
+        l1_0.id=?
+2026-04-06 14:52:13.034 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.035 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.036 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.036 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.037 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.039 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.041 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.042 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.042 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.043 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.044 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        p1_0.id,
+        p1_0.amount,
+        p1_0.booking_id,
+        p1_0.method,
+        p1_0.status,
+        p1_0.time,
+        p1_0.transaction_id 
+    from
+        payments p1_0 
+    where
+        p1_0.booking_id=?
+2026-04-06 14:52:13.045 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.046 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.046 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.047 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:52:13.047 DEBUG [http-nio-8080-exec-4] org.hibernate.SQL - 
+    select
+        f1_0.car_id,
+        f1_1.id,
+        f1_1.description,
+        f1_1.icon,
+        f1_1.name 
+    from
+        car_features f1_0 
+    join
+        features f1_1 
+            on f1_1.id=f1_0.feature_id 
+    where
+        f1_0.car_id=?
+2026-04-06 14:52:13.048 INFO  [http-nio-8080-exec-4] c.e.carsharing1.aspect.LoggingAspect - Метод CarService.getAllCars выполнен за 71 мс
+2026-04-06 14:52:13.048 INFO  [http-nio-8080-exec-4] c.e.carsharing1.aspect.LoggingAspect - Контроллер CarController.getAllCars выполнен за 72 мс, результат: <200 OK OK,[CarDto(id=4, brand=Tesla, model=Model 3, pricePerMinute=1.2, licensePlate=3456GH-5, year=2023, fuelLevel=90.0, active=true, available=true, locationCity=Минск, locationAddress=ул. Сурганова, 6, features=[Автомат, Навигация, Кондиционер]), CarDto(id=5, brand=Renault, model=Logan, pricePerMinute=0.5, licensePlate=9999AB-5, year=2023, fuelLevel=100.0, active=true, available=true, locationCity=null, locationAddress=null, features=[]), CarDto(id=2, brand=BMW, model=X5, pricePerMinute=1.5, licensePlate=5678CD-5, year=2023, fuelLevel=80.0, active=true, available=false, locationCity=Минск, locationAddress=пр-т Независимости, 4, features=[Автомат, Навигация, Кондиционер]), CarDto(id=13, brand=TestNoTx, model=PartialSave, pricePerMinute=0.5, licensePlate=TEST1, year=2024, fuelLevel=100.0, active=true, available=true, locationCity=Минск, locationAddress=пр-т Независимости, 4, features=[]), CarDto(id=19, brand=TestNoTx, model=PartialSave, pricePerMinute=0.5, licensePlate=TEST3, year=2024, fuelLevel=100.0, active=true, available=true, locationCity=Минск, locationAddress=пр-т Независимости, 4, features=[]), CarDto(id=20, brand=TeTestNoTx, model=PartialSave, pricePerMinute=0.5, licensePlate=TEST-333, year=2021, fuelLevel=100.0, active=true, available=true, locationCity=Минск, locationAddress=пр-т Независимости, 4, features=[]), CarDto(id=24, brand=TestCache, model=Invalidation, pricePerMinute=0.5, licensePlate=CACHE-123, year=2024, fuelLevel=100.0, active=true, available=true, locationCity=null, locationAddress=null, features=[]), CarDto(id=22, brand=Lada, model=JJJjJj, pricePerMinute=0.7, licensePlate=6089AB-5, year=2020, fuelLevel=100.0, active=true, available=true, locationCity=null, locationAddress=null, features=[]), CarDto(id=1, brand=Toyota, model=Camry, pricePerMinute=0.8, licensePlate=1234AB-5, year=2022, fuelLevel=95.0, active=true, available=true, locationCity=null, locationAddress=null, features=[]), CarDto(id=25, brand=Honda, model=Civic, pricePerMinute=0.6, licensePlate=HONDA-01, year=2022, fuelLevel=95.0, active=true, available=true, locationCity=null, locationAddress=null, features=[])],[]>
+2026-04-06 14:52:43.662 INFO  [http-nio-8080-exec-9] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: UserController.getAllUsers с параметрами: []
+2026-04-06 14:52:43.663 INFO  [http-nio-8080-exec-9] c.e.carsharing1.aspect.LoggingAspect - НАЧАЛО выполнения метода: UserService.getAllUsers
+2026-04-06 14:52:43.663 INFO  [http-nio-8080-exec-9] c.e.carsharing1.service.UserService - Получение списка всех пользователей
+2026-04-06 14:52:43.665 DEBUG [http-nio-8080-exec-9] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0
+2026-04-06 14:52:43.667 INFO  [http-nio-8080-exec-9] c.e.carsharing1.aspect.LoggingAspect - Метод UserService.getAllUsers выполнен за 3 мс
+2026-04-06 14:52:43.668 INFO  [http-nio-8080-exec-9] c.e.carsharing1.aspect.LoggingAspect - Контроллер UserController.getAllUsers выполнен за 5 мс, результат: <200 OK OK,[UserDto(id=1, name=Иван Петров-Сидоров, email=ivan.new@email.com, phone=+375299999999, driverLicense=AB123456, registrationDate=2026-03-06T00:28:09.553153, bookings=null), UserDto(id=5, name=Анна Смирнова, email=ann44a@email.com, phone=+375331234567, driverLicense=JF345678, registrationDate=2026-03-17T22:52:51.569272, bookings=null), UserDto(id=6, name=Эдуард Смирнов, email=ed44a@email.com, phone=+375291234567, driverLicense=HS345678, registrationDate=2026-03-18T21:35:10.465411, bookings=null), UserDto(id=7, name=Игорь Рак, email=test@email.com, phone=+375331234567, driverLicense=TEST123, registrationDate=2026-03-18T21:53:05.401423, bookings=null), UserDto(id=8, name=Сергей, email=ivan@email.com, phone=+375291234567, driverLicense=null, registrationDate=2026-04-06T14:09:06.598538, bookings=null)],[]>
+2026-04-06 14:53:09.436 INFO  [http-nio-8080-exec-10] c.e.carsharing1.aspect.LoggingAspect - Вызов контроллера: BookingController.createBooking с параметрами: [1, 4, 2026-04-06T15:00, 200]
+2026-04-06 14:53:09.437 INFO  [http-nio-8080-exec-10] c.e.c.controller.BookingController - POST /api/bookings - создание бронирования
+2026-04-06 14:53:09.438 INFO  [http-nio-8080-exec-10] c.e.carsharing1.aspect.LoggingAspect - НАЧАЛО выполнения метода: BookingService.createBookingWithPayment
+2026-04-06 14:53:09.438 INFO  [http-nio-8080-exec-10] c.e.c.service.BookingService - СОЗДАНИЕ БРОНИРОВАНИЯ С ПЛАТЕЖОМ
+2026-04-06 14:53:09.440 DEBUG [http-nio-8080-exec-10] org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.driver_license,
+        u1_0.email,
+        u1_0.name,
+        u1_0.phone,
+        u1_0.registration_date 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-04-06 14:53:09.442 DEBUG [http-nio-8080-exec-10] org.hibernate.SQL - 
+    select
+        c1_0.id,
+        c1_0.active,
+        c1_0.brand,
+        c1_0.fuel_level,
+        c1_0.license_plate,
+        c1_0.location_id,
+        c1_0.model,
+        c1_0.price_per_minute,
+        c1_0.year 
+    from
+        cars c1_0 
+    where
+        c1_0.id=?
+2026-04-06 14:53:09.445 DEBUG [http-nio-8080-exec-10] org.hibernate.SQL - 
+    select
+        b1_0.car_id,
+        b1_0.id,
+        b1_0.end_time,
+        b1_0.start_time,
+        b1_0.status,
+        b1_0.total_cost,
+        b1_0.user_id 
+    from
+        bookings b1_0 
+    where
+        b1_0.car_id=?
+2026-04-06 14:53:09.464 DEBUG [http-nio-8080-exec-10] org.hibernate.SQL - 
+    insert 
+    into
+        bookings
+        (car_id, end_time, start_time, status, total_cost, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+2026-04-06 14:53:09.479 INFO  [http-nio-8080-exec-10] c.e.c.service.BookingService - Бронирование создано с ID: 6
+2026-04-06 14:53:09.480 DEBUG [http-nio-8080-exec-10] org.hibernate.SQL - 
+    insert 
+    into
+        payments
+        (amount, booking_id, method, status, time, transaction_id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+2026-04-06 14:53:09.485 INFO  [http-nio-8080-exec-10] c.e.c.service.BookingService - Платеж создан с ID: 5
+2026-04-06 14:53:09.488 ERROR [http-nio-8080-exec-10] c.e.c.controller.BookingController - Ошибка при создании бронирования: ОШИБКА! Бронирование более 2 часов невозможно. Транзакция будет откачена
+com.example.carsharing1.exception.BookingException: ОШИБКА! Бронирование более 2 часов невозможно. Транзакция будет откачена
+	at com.example.carsharing1.service.BookingService.createBookingWithPayment(BookingService.java:83)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logServiceExecutionTime(LoggingAspect.java:30)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.service.BookingService$$SpringCGLIB$$0.createBookingWithPayment(<generated>)
+	at com.example.carsharing1.controller.BookingController.createBooking(BookingController.java:133)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158)
+	at org.springframework.validation.beanvalidation.MethodValidationInterceptor.invoke(MethodValidationInterceptor.java:172)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:82)
+	at com.example.carsharing1.aspect.LoggingAspect.logControllerExecutionTime(LoggingAspect.java:53)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:648)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:630)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:96)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
+	at com.example.carsharing1.controller.BookingController$$SpringCGLIB$$0.createBooking(<generated>)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-04-06 14:53:09.492 INFO  [http-nio-8080-exec-10] c.e.carsharing1.aspect.LoggingAspect - Контроллер BookingController.createBooking выполнен за 56 мс, результат: <500 INTERNAL_SERVER_ERROR Internal Server Error,Ошибка: ОШИБКА! Бронирование более 2 часов невозможно. Транзакция будет откачена,[]>
+2026-04-06 14:57:59.602 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-06 14:57:59.616 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-06 14:57:59.619 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06 14:57:59.621 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-06 14:57:59.626 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

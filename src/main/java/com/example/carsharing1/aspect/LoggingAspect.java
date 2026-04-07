@@ -12,7 +12,6 @@ import org.springframework.util.StopWatch;
 @Aspect
 @Component
 public class LoggingAspect {
-
     @Pointcut("execution(* com.example.carsharing1.service.*.*(..))")
     public void serviceMethods() { }
 
@@ -25,7 +24,7 @@ public class LoggingAspect {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
 
-        log.debug("Выполнение метода {}.{}", className, methodName);
+        log.info("НАЧАЛО выполнения метода: {}.{}", className, methodName);
 
         stopWatch.start();
         Object result = joinPoint.proceed();
@@ -34,31 +33,27 @@ public class LoggingAspect {
         long executionTime = stopWatch.getTotalTimeMillis();
 
         if (executionTime > 1000) {
-            log.warn("Медленный метод {}.{} - время выполнения: {} мс",
-                    className, methodName, executionTime);
+            log.warn("Медленный метод {}.{} - время выполнения: {} мс", className, methodName, executionTime);
         } else {
-            log.debug("Метод {}.{} выполнен за {} мс",
-                    className, methodName, executionTime);
+            log.info("Метод {}.{} выполнен за {} мс", className, methodName, executionTime);
         }
 
         return result;
     }
 
     @Around("controllerMethods()")
-    public Object logControllerInput(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object logControllerExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
 
-        log.info("Вызов контроллера: {}.{} с параметрами: {}",
-                className, methodName, args);
+        log.info("Вызов контроллера: {}.{} с параметрами: {}", className, methodName, args);
 
         long startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();
         long executionTime = System.currentTimeMillis() - startTime;
 
-        log.info("Контроллер {}.{} выполнен за {} мс, результат: {}",
-                className, methodName, executionTime, result);
+        log.info("Контроллер {}.{} выполнен за {} мс, результат: {}", className, methodName, executionTime, result);
 
         return result;
     }

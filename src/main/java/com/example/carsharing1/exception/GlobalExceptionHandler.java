@@ -107,6 +107,38 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateEmailException(
+            DuplicateEmailException ex,
+            WebRequest request) {
+        log.error("Дубликат email: {}", ex.getMessage());
+
+        ErrorResponse response = ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                CONFLICT,
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(DuplicateLicenseException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateLicenseException(
+            DuplicateLicenseException ex,
+            WebRequest request) {
+        log.error("Дубликат водительских прав: {}", ex.getMessage());
+
+        ErrorResponse response = ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                CONFLICT,
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(CarServiceException.class)
     public ResponseEntity<ErrorResponse> handleCarServiceException(
             CarServiceException ex,
