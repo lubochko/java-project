@@ -31,3 +31,23 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Логи
+*.log
+*.log.gz
+logs/
+log/
+*.log.*
+
+# Другие временные файлы
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# IDEA файлы
+.idea/
+*.iml
+.classpath
+.project
+.settings/
