@@ -1,6 +1,8 @@
 package com.example.carsharing1.controller;
 
 import com.example.carsharing1.dto.BookingDto;
+import com.example.carsharing1.dto.BookingBulkOperationResultDto;
+import com.example.carsharing1.dto.BookingCreateRequestDto;
 import com.example.carsharing1.entity.Booking;
 import com.example.carsharing1.enums.BookingStatus;
 import com.example.carsharing1.mapper.BookingMapper;
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,12 +59,7 @@ public class BookingController {
     @GetMapping
     public ResponseEntity<List<BookingDto>> getAllBookings() {
         log.info(LOG_GET_ALL_BOOKINGS);
-
-        List<BookingDto> bookings = bookingRepository.findAll().stream()
-                .map(BookingMapper::toDto)
-                .toList();
-
-        return ResponseEntity.ok(bookings);
+        return ResponseEntity.ok(bookingService.getAllBookings());
     }
 
     @Operation(summary = "Получить бронирование по ID", description = "Возвращает бронирование по указанному ID")
@@ -70,11 +69,10 @@ public class BookingController {
     @GetMapping("/{id}")
     public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id) {
         log.info(LOG_GET_BOOKING_BY_ID, id);
-
-        return bookingRepository.findById(id)
+        return bookingService.getBookingById(id)
                 .map(booking -> {
                     log.info(LOG_BOOKING_FOUND, id);
-                    return ResponseEntity.ok(BookingMapper.toDto(booking));
+                    return ResponseEntity.ok(booking);
                 })
                 .orElseGet(() -> {
                     log.warn(LOG_BOOKING_NOT_FOUND, id);
@@ -87,12 +85,7 @@ public class BookingController {
     @GetMapping("/by-car/{carId}")
     public ResponseEntity<List<BookingDto>> getBookingsByCarId(@PathVariable Long carId) {
         log.info(LOG_GET_BY_CAR, carId);
-
-        List<BookingDto> bookings = bookingRepository.findByCarId(carId).stream()
-                .map(BookingMapper::toDto)
-                .toList();
-
-        return ResponseEntity.ok(bookings);
+        return ResponseEntity.ok(bookingService.getBookingsByCarId(carId));
     }
 
     @Operation(summary = "Получить бронирования по пользователю", description = "Возвращает все " +
@@ -100,12 +93,7 @@ public class BookingController {
     @GetMapping("/by-user/{userId}")
     public ResponseEntity<List<BookingDto>> getBookingsByUserId(@PathVariable Long userId) {
         log.info(LOG_GET_BY_USER, userId);
-
-        List<BookingDto> bookings = bookingRepository.findByUserId(userId).stream()
-                .map(BookingMapper::toDto)
-                .toList();
-
-        return ResponseEntity.ok(bookings);
+        return ResponseEntity.ok(bookingService.getBookingsByUserId(userId));
     }
 
     @Operation(summary = "Создать бронирование", description = "Создает новое бронирование и связанный с ним платеж")
@@ -137,6 +125,22 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Ошибка: " + e.getMessage());
         }
+    }
+
+    @Operation(summary = "Bulk создание бронирований без транзакции")
+    @PostMapping("/bulk/no-transaction")
+    public ResponseEntity<BookingBulkOperationResultDto> createBookingBulkWithoutTransaction(
+            @RequestBody List<@Valid BookingCreateRequestDto> requests) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(bookingService.createBookingsBulkWithoutTransaction(requests));
+    }
+
+    @Operation(summary = "Bulk создание бронирований с транзакцией")
+    @PostMapping("/bulk/transactional")
+    public ResponseEntity<BookingBulkOperationResultDto> createBookingBulkWithTransaction(
+            @RequestBody List<@Valid BookingCreateRequestDto> requests) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(bookingService.createBookingsBulkWithTransaction(requests));
     }
 
     @Operation(summary = "Завершить бронирование", description = "Переводит бронирование в статус COMPLETED")
