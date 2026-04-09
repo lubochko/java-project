@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -25,12 +26,14 @@ public class UserService {
     private static final String EMAIL_ALREADY_TAKEN = "Email {} уже занят";
     private static final String LICENSE_ALREADY_TAKEN = "Водительское удостоверение {} уже зарегистрировано";
     private static final String USER_NOT_FOUND = "Пользователь с ID {} не найден";
+    private static final Comparator<UserDto> BY_ID = Comparator.comparing(UserDto::getId);
 
     @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         log.info("Получение списка всех пользователей");
         return userRepository.findAll().stream()
                 .map(UserMapper::toDto)
+                .sorted(BY_ID)
                 .toList();
     }
 
