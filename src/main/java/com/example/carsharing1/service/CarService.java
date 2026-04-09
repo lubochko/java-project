@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +38,7 @@ public class CarService {
     private final FeatureRepository featureRepository;
 
     private final Map<CarSearchKey, List<CarDto>> searchCache = new HashMap<>();
+    private static final Comparator<CarDto> BY_ID = Comparator.comparing(CarDto::getId);
 
     private static final String CAR_NOT_FOUND = "Машина с ID {} не найдена";
     private static final String LOCATION_NOT_FOUND = "Локация с ID {} не найдена";
@@ -83,6 +85,7 @@ public class CarService {
         log.info(GET_ALL_CARS);
         return carRepository.findAll().stream()
                 .map(CarMapper::toDto)
+                .sorted(BY_ID)
                 .toList();
     }
 
@@ -90,6 +93,7 @@ public class CarService {
         log.info(GET_ACTIVE_CARS);
         return carRepository.findAllActive().stream()
                 .map(CarMapper::toDto)
+                .sorted(BY_ID)
                 .toList();
     }
 
@@ -97,6 +101,7 @@ public class CarService {
         log.info(GET_AVAILABLE_CARS);
         return carRepository.findAvailableCars().stream()
                 .map(CarMapper::toDto)
+                .sorted(BY_ID)
                 .toList();
     }
 
@@ -208,6 +213,7 @@ public class CarService {
         List<Car> cars = carRepository.findCarsByComplexCriteria(email, featureName);
         return cars.stream()
                 .map(CarMapper::toDto)
+                .sorted(BY_ID)
                 .toList();
     }
 
@@ -217,6 +223,7 @@ public class CarService {
         List<Car> cars = carRepository.findCarsByComplexCriteriaNative(email, featureName);
         return cars.stream()
                 .map(CarMapper::toDto)
+                .sorted(BY_ID)
                 .toList();
     }
 
@@ -367,6 +374,7 @@ public class CarService {
         List<Car> cars = carRepository.findAllActiveWithDetails();
         return cars.stream()
                 .map(CarMapper::toDto)
+                .sorted(BY_ID)
                 .toList();
     }
 
