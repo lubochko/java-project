@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -26,9 +27,9 @@ public class LocationService {
     }
 
     @Transactional(readOnly = true)
-    public Location getLocationById(Long id) {
+    public Optional<Location> getLocationById(Long id) {
         log.info("Получение локации с ID: {}", id);
-        return locationRepository.findById(id).orElse(null);
+        return locationRepository.findById(id);
     }
 
     @Transactional(readOnly = true)

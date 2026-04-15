@@ -24,7 +24,6 @@ import java.util.Optional;
 import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -61,11 +60,11 @@ class CarServiceTest {
     }
 
     @Test
-    void getCarByIdReturnsDtoOrNull() {
+    void getCarByIdReturnsOptional() {
         when(carRepository.findById(1L)).thenReturn(Optional.of(car(1L)));
         when(carRepository.findById(2L)).thenReturn(Optional.empty());
-        assertNotNull(carService.getCarById(1L));
-        assertNull(carService.getCarById(2L));
+        assertTrue(carService.getCarById(1L).isPresent());
+        assertTrue(carService.getCarById(2L).isEmpty());
     }
 
     @Test
@@ -113,13 +112,13 @@ class CarServiceTest {
         patch.setLicensePlate("XYZ-11");
         patch.setYear(2024);
         patch.setFuelLevel(70.0);
-        CarDto updated = carService.updateCar(1L, patch);
+        CarDto updated = carService.updateCar(1L, patch).orElseThrow();
         assertEquals("NewBrand", updated.getBrand());
         assertEquals("NewModel", updated.getModel());
         assertEquals("XYZ-11", updated.getLicensePlate());
 
         when(carRepository.findById(2L)).thenReturn(Optional.empty());
-        assertNull(carService.updateCar(2L, patch));
+        assertTrue(carService.updateCar(2L, patch).isEmpty());
     }
 
     @Test
@@ -129,7 +128,7 @@ class CarServiceTest {
         when(carRepository.save(any(Car.class))).thenAnswer(inv -> inv.getArgument(0));
 
         CarDto patch = new CarDto();
-        CarDto updated = carService.updateCar(5L, patch);
+        CarDto updated = carService.updateCar(5L, patch).orElseThrow();
 
         assertEquals("Brand", updated.getBrand());
         assertEquals("Model", updated.getModel());
@@ -141,11 +140,11 @@ class CarServiceTest {
         Car existing = car(1L);
         when(carRepository.findById(1L)).thenReturn(Optional.of(existing));
         when(carRepository.save(any(Car.class))).thenAnswer(inv -> inv.getArgument(0));
-        CarDto updated = carService.updateCarStatus(1L, false);
+        CarDto updated = carService.updateCarStatus(1L, false).orElseThrow();
         assertTrue(!updated.isActive());
 
         when(carRepository.findById(3L)).thenReturn(Optional.empty());
-        assertNull(carService.updateCarStatus(3L, true));
+        assertTrue(carService.updateCarStatus(3L, true).isEmpty());
     }
 
     @Test
@@ -230,8 +229,8 @@ class CarServiceTest {
 
         when(carRepository.findByIdWithDetails(1L)).thenReturn(Optional.of(c1));
         when(carRepository.findByIdWithDetails(2L)).thenReturn(Optional.empty());
-        assertNotNull(carService.getCarByIdWithEntityGraph(1L));
-        assertNull(carService.getCarByIdWithEntityGraph(2L));
+        assertNotNull(carService.getCarByIdWithEntityGraph(1L).orElse(null));
+        assertTrue(carService.getCarByIdWithEntityGraph(2L).isEmpty());
 
         when(carRepository.findAllActiveWithDetails()).thenReturn(List.of(car(2L), car(1L)));
         assertEquals(List.of(1L, 2L), carService.getAllActiveCarsWithFetchJoin().stream().map(CarDto::getId).toList());

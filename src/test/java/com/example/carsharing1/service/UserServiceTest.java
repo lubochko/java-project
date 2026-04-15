@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,9 +46,9 @@ class UserServiceTest {
         when(userRepository.findByIdWithBookings(1L)).thenReturn(Optional.of(user(1L)));
         when(userRepository.count()).thenReturn(5L);
 
-        assertNotNull(userService.getUserById(1L));
-        assertNotNull(userService.getUserByEmail("a@a.ru"));
-        assertNotNull(userService.getUserWithBookings(1L));
+        assertTrue(userService.getUserById(1L).isPresent());
+        assertTrue(userService.getUserByEmail("a@a.ru").isPresent());
+        assertTrue(userService.getUserWithBookings(1L).isPresent());
         assertEquals(5L, userService.getUsersCount());
         assertTrue(userService.existsByEmail("a@a.ru"));
     }
@@ -59,9 +58,9 @@ class UserServiceTest {
         when(userRepository.findById(55L)).thenReturn(Optional.empty());
         when(userRepository.findByEmail("none@x.ru")).thenReturn(Optional.empty());
         when(userRepository.findByIdWithBookings(55L)).thenReturn(Optional.empty());
-        assertNull(userService.getUserById(55L));
-        assertNull(userService.getUserByEmail("none@x.ru"));
-        assertNull(userService.getUserWithBookings(55L));
+        assertTrue(userService.getUserById(55L).isEmpty());
+        assertTrue(userService.getUserByEmail("none@x.ru").isEmpty());
+        assertTrue(userService.getUserWithBookings(55L).isEmpty());
         assertTrue(!userService.existsByEmail("none@x.ru"));
     }
 

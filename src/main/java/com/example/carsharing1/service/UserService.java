@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -38,27 +39,24 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserDto getUserById(Long id) {
+    public Optional<UserDto> getUserById(Long id) {
         log.info("Получение пользователя с ID: {}", id);
         return userRepository.findById(id)
-                .map(UserMapper::toDto)
-                .orElse(null);
+                .map(UserMapper::toDto);
     }
 
     @Transactional(readOnly = true)
-    public UserDto getUserByEmail(String email) {
+    public Optional<UserDto> getUserByEmail(String email) {
         log.info("Получение пользователя с email: {}", email);
         return userRepository.findByEmail(email)
-                .map(UserMapper::toDto)
-                .orElse(null);
+                .map(UserMapper::toDto);
     }
 
     @Transactional(readOnly = true)
-    public UserDto getUserWithBookings(Long id) {
+    public Optional<UserDto> getUserWithBookings(Long id) {
         log.info("Получение пользователя с бронированиями, ID: {}", id);
         return userRepository.findByIdWithBookings(id)
-                .map(UserMapper::toDtoWithBookings)
-                .orElse(null);
+                .map(UserMapper::toDtoWithBookings);
     }
 
     @Transactional(readOnly = true)

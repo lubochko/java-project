@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -105,11 +106,10 @@ public class CarService {
                 .toList();
     }
 
-    public CarDto getCarById(Long id) {
+    public Optional<CarDto> getCarById(Long id) {
         log.info(GET_CAR_BY_ID, id);
         return carRepository.findById(id)
-                .map(CarMapper::toDto)
-                .orElse(null);
+                .map(CarMapper::toDto);
     }
 
     @Transactional
@@ -138,7 +138,7 @@ public class CarService {
     }
 
     @Transactional
-    public CarDto updateCar(Long id, CarDto carDto) {
+    public Optional<CarDto> updateCar(Long id, CarDto carDto) {
         log.info(UPDATE_CAR, id);
 
         return carRepository.findById(id)
@@ -150,15 +150,11 @@ public class CarService {
                     invalidateCache();
 
                     return CarMapper.toDto(updatedCar);
-                })
-                .orElseGet(() -> {
-                    log.warn(CAR_NOT_FOUND, id);
-                    return null;
                 });
     }
 
     @Transactional
-    public CarDto updateCarStatus(Long id, boolean active) {
+    public Optional<CarDto> updateCarStatus(Long id, boolean active) {
         log.info(UPDATE_CAR_STATUS, id, active);
 
         return carRepository.findById(id)
@@ -170,10 +166,6 @@ public class CarService {
                     invalidateCache();
 
                     return CarMapper.toDto(updatedCar);
-                })
-                .orElseGet(() -> {
-                    log.warn(CAR_NOT_FOUND, id);
-                    return null;
                 });
     }
 
@@ -181,11 +173,12 @@ public class CarService {
     public void deleteCar(Long id) {
         log.info(DELETE_CAR, id);
 
-        Car car = carRepository.findById(id).orElse(null);
-        if (car == null) {
+        Optional<Car> carOptional = carRepository.findById(id);
+        if (carOptional.isEmpty()) {
             log.warn(CAR_NOT_FOUND, id);
             return;
         }
+        Car car = carOptional.get();
 
         boolean hasActiveBookings = car.getBookings().stream()
                 .anyMatch(booking -> booking.getStatus() == com.example.carsharing1.enums.BookingStatus.ACTIVE);
@@ -362,11 +355,10 @@ public class CarService {
         return result;
     }
 
-    public CarDto getCarByIdWithEntityGraph(Long id) {
+    public Optional<CarDto> getCarByIdWithEntityGraph(Long id) {
         log.info(ENTITY_GRAPH_SOLUTION);
         return carRepository.findByIdWithDetails(id)
-                .map(CarMapper::toDto)
-                .orElse(null);
+                .map(CarMapper::toDto);
     }
 
     public List<CarDto> getAllActiveCarsWithFetchJoin() {

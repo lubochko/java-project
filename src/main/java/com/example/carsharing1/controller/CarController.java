@@ -83,12 +83,12 @@ public class CarController {
     @GetMapping("/{id}")
     public ResponseEntity<CarDto> getCarById(@PathVariable Long id) {
         log.info(LOG_GET_BY_ID, id);
-        CarDto car = carService.getCarById(id);
-        if (car == null) {
-            log.warn(LOG_CAR_NOT_FOUND, id);
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(car);
+        return carService.getCarById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    log.warn(LOG_CAR_NOT_FOUND, id);
+                    return ResponseEntity.notFound().build();
+                });
     }
 
     @Operation(summary = "Создать машину", description = "Создает новый автомобиль")
@@ -116,12 +116,12 @@ public class CarController {
     @PutMapping("/{id}")
     public ResponseEntity<CarDto> updateCar(@PathVariable Long id, @Valid @RequestBody CarDto carDto) {
         log.info(LOG_UPDATE, id);
-        CarDto updatedCar = carService.updateCar(id, carDto);
-        if (updatedCar == null) {
-            log.warn(LOG_CAR_NOT_FOUND, id);
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updatedCar);
+        return carService.updateCar(id, carDto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    log.warn(LOG_CAR_NOT_FOUND, id);
+                    return ResponseEntity.notFound().build();
+                });
     }
 
     @Operation(summary = "Обновить статус машины", description = "Обновляет статус активности автомобиля")
@@ -130,12 +130,12 @@ public class CarController {
             @PathVariable Long id,
             @RequestParam boolean active) {
         log.info(LOG_PATCH_STATUS, id, active);
-        CarDto updatedCar = carService.updateCarStatus(id, active);
-        if (updatedCar == null) {
-            log.warn(LOG_CAR_NOT_FOUND, id);
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updatedCar);
+        return carService.updateCarStatus(id, active)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    log.warn(LOG_CAR_NOT_FOUND, id);
+                    return ResponseEntity.notFound().build();
+                });
     }
 
     @Operation(summary = "Удалить машину", description = "Удаляет автомобиль по ID")
@@ -146,8 +146,7 @@ public class CarController {
     public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
         log.info(LOG_DELETE, id);
 
-        CarDto existingCar = carService.getCarById(id);
-        if (existingCar == null) {
+        if (carService.getCarById(id).isEmpty()) {
             log.warn(LOG_CAR_NOT_FOUND, id);
             return ResponseEntity.notFound().build();
         }
@@ -168,12 +167,12 @@ public class CarController {
     @GetMapping("/{id}/details")
     public ResponseEntity<CarDto> getCarWithDetails(@PathVariable Long id) {
         log.info(LOG_ENTITY_GRAPH, id);
-        CarDto car = carService.getCarByIdWithEntityGraph(id);
-        if (car == null) {
-            log.warn(LOG_CAR_NOT_FOUND, id);
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(car);
+        return carService.getCarByIdWithEntityGraph(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    log.warn(LOG_CAR_NOT_FOUND, id);
+                    return ResponseEntity.notFound().build();
+                });
     }
 
     @Operation(summary = "Решение N+1 через FETCH JOIN", description = "Загружает активные машины с деталями")

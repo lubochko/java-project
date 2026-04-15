@@ -30,14 +30,12 @@ public class LocationController {
     @GetMapping("/{id}")
     public ResponseEntity<Location> getLocationById(@PathVariable Long id) {
         log.info("GET /api/locations/{} - запрос локации по ID", id);
-        Location location = locationService.getLocationById(id);
-
-        if (location == null) {
-            log.warn("Локация с ID {} не найдена", id);
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(location);
+        return locationService.getLocationById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    log.warn("Локация с ID {} не найдена", id);
+                    return ResponseEntity.notFound().build();
+                });
     }
 
     @GetMapping("/city")

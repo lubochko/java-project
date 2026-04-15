@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,11 +29,11 @@ class LocationServiceTest {
     }
 
     @Test
-    void getLocationByIdReturnsEntityOrNull() {
+    void getLocationByIdReturnsOptional() {
         when(locationRepository.findById(1L)).thenReturn(Optional.of(location(1L)));
         when(locationRepository.findById(2L)).thenReturn(Optional.empty());
-        assertEquals(1L, locationService.getLocationById(1L).getId());
-        assertNull(locationService.getLocationById(2L));
+        assertEquals(1L, locationService.getLocationById(1L).orElseThrow().getId());
+        assertTrue(locationService.getLocationById(2L).isEmpty());
     }
 
     @Test
