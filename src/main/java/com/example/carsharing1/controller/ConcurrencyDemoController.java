@@ -20,6 +20,16 @@ public class ConcurrencyDemoController {
 
     private final CounterDemoService counterDemoService;
 
+    private static final String KEY_MODE = "mode";
+    private static final String KEY_THREADS = "threads";
+    private static final String KEY_ITERATIONS = "iterationsPerThread";
+    private static final String KEY_EXPECTED = "expected";
+    private static final String KEY_ACTUAL = "actual";
+
+    private static final String MODE_UNSAFE = "unsafe";
+    private static final String MODE_ATOMIC = "atomic";
+    private static final String MODE_SYNCHRONIZED = "synchronized";
+
     @Operation(summary = "Демонстрация race condition",
             description = "Инкремент незащищенного счётчика в нескольких потоках")
     @GetMapping("/race-unsafe")
@@ -29,11 +39,11 @@ public class ConcurrencyDemoController {
         int actual = counterDemoService.runRaceConditionDemo(threads, iterationsPerThread);
         int expected = threads * iterationsPerThread;
         return ResponseEntity.ok(Map.of(
-                "mode", "unsafe",
-                "threads", threads,
-                "iterationsPerThread", iterationsPerThread,
-                "expected", expected,
-                "actual", actual
+                KEY_MODE, MODE_UNSAFE,
+                KEY_THREADS, threads,
+                KEY_ITERATIONS, iterationsPerThread,
+                KEY_EXPECTED, expected,
+                KEY_ACTUAL, actual
         ));
     }
 
@@ -45,11 +55,11 @@ public class ConcurrencyDemoController {
         int actual = counterDemoService.runAtomicCounterDemo(threads, iterationsPerThread);
         int expected = threads * iterationsPerThread;
         return ResponseEntity.ok(Map.of(
-                "mode", "atomic",
-                "threads", threads,
-                "iterationsPerThread", iterationsPerThread,
-                "expected", expected,
-                "actual", actual
+                KEY_MODE, MODE_ATOMIC,
+                KEY_THREADS, threads,
+                KEY_ITERATIONS, iterationsPerThread,
+                KEY_EXPECTED, expected,
+                KEY_ACTUAL, actual
         ));
     }
 
@@ -61,12 +71,11 @@ public class ConcurrencyDemoController {
         int actual = counterDemoService.runSynchronizedCounterDemo(threads, iterationsPerThread);
         int expected = threads * iterationsPerThread;
         return ResponseEntity.ok(Map.of(
-                "mode", "synchronized",
-                "threads", threads,
-                "iterationsPerThread", iterationsPerThread,
-                "expected", expected,
-                "actual", actual
+                KEY_MODE, MODE_SYNCHRONIZED,
+                KEY_THREADS, threads,
+                KEY_ITERATIONS, iterationsPerThread,
+                KEY_EXPECTED, expected,
+                KEY_ACTUAL, actual
         ));
     }
 }
-
