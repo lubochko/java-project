@@ -5,6 +5,8 @@ import com.example.carsharing1.dto.BookingBulkOperationResultDto;
 import com.example.carsharing1.dto.BookingCreateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +40,18 @@ public class AsyncBookingTaskService {
 
     private final BookingService bookingService;
 
+    // Самоинъекция через прокси
+    @Lazy
+    @Autowired
+    private AsyncBookingTaskService self;
+
     private final Map<String, TaskInfo> tasks = new ConcurrentHashMap<>();
 
     public String startAsyncBulkBooking(List<BookingCreateRequestDto> requests) {
         String taskId = UUID.randomUUID().toString();
         tasks.put(taskId, new TaskInfo(TaskStatus.CREATED));
-        executeTaskAsync(taskId, requests);
+        // Вызов через self, а не через this
+        self.executeTaskAsync(taskId, requests);
         log.info("Async booking task {} started", taskId);
         return taskId;
     }
@@ -85,4 +93,3 @@ public class AsyncBookingTaskService {
         );
     }
 }
-
