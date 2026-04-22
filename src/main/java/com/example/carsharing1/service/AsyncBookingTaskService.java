@@ -10,34 +10,37 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
 @Service
 public class AsyncBookingTaskService {
+    private static final long RECEIVED_STATUS_DELAY_MS = 5_000L;
+    private static final long PROCESSING_STATUS_DELAY_MS = 7_000L;
 
     public enum TaskStatus {
-        CREATED,
-        RUNNING,
-        SUCCESS,
+        RECEIVED,
+        PROCESSING,
+        READY,
         FAILED
     }
 
     private static class TaskInfo {
         private volatile TaskStatus status;
-        private volatile String errorMessage;
-        private volatile BookingBulkOperationResultDto result;
+        private volatile String detail;
 
         public TaskInfo(TaskStatus status) {
             this.status = status;
+            this.detail = "Задача создана";
         }
     }
 
     private final BookingService bookingService;
     private final AsyncBookingTaskService self;
     private final Map<String, TaskInfo> tasks = new ConcurrentHashMap<>();
+    private final AtomicLong taskIdSequence = new AtomicLong(0);
 
     public AsyncBookingTaskService(BookingService bookingService, @Lazy AsyncBookingTaskService self) {
         this.bookingService = bookingService;
@@ -45,8 +48,8 @@ public class AsyncBookingTaskService {
     }
 
     public String startAsyncBulkBooking(List<BookingCreateRequestDto> requests) {
-        String taskId = UUID.randomUUID().toString();
-        tasks.put(taskId, new TaskInfo(TaskStatus.CREATED));
+        String taskId = String.valueOf(taskIdSequence.incrementAndGet());
+        tasks.put(taskId, new TaskInfo(TaskStatus.RECEIVED));
         self.executeTaskAsync(taskId, requests);
         log.info("Async booking task {} started", taskId);
         return taskId;
@@ -59,33 +62,52 @@ public class AsyncBookingTaskService {
             return CompletableFuture.completedFuture(null);
         }
 
-        taskInfo.status = TaskStatus.RUNNING;
+        taskInfo.status = TaskStatus.RECEIVED;
+        taskInfo.detail = "Запрос на пакетное бронирование получен";
+        try {
+            sleepForStatusTracking(RECEIVED_STATUS_DELAY_MS);
+            taskInfo.status = TaskStatus.PROCESSING;
+            taskInfo.detail = "Идет обработка заявок на бронирование";
+            sleepForStatusTracking(PROCESSING_STATUS_DELAY_MS);
+            BookingBulkOperationResultDto result =
+                    bookingService.createBookingsBulkWithTransaction(requests);
+            int successCount = result.getCreatedCount() == null ? 0 : result.getCreatedCount();
+            int failureCount = Math.max(0, requests.size() - successCount);
+            taskInfo.status = TaskStatus.READY;
+            taskInfo.detail = "Готово. Успешно: " + successCount
+                    + ", ошибок: " + failureCount;
+            log.info("Async booking task {} completed successfully", taskId);
+        } catch (Exception ex) {
+            log.error("Async booking task {} failed: {}", taskId, ex.getMessage(), ex);
+            taskInfo.status = TaskStatus.FAILED;
+            taskInfo.detail = "Ошибка: " + ex.getMessage();
+        }
+        return CompletableFuture.completedFuture(null);
+    }
 
-        return CompletableFuture.runAsync(() -> {
-            try {
-                BookingBulkOperationResultDto result =
-                        bookingService.createBookingsBulkWithTransaction(requests);
-                taskInfo.result = result;
-                taskInfo.status = TaskStatus.SUCCESS;
-                log.info("Async booking task {} completed successfully", taskId);
-            } catch (Exception ex) {
-                log.error("Async booking task {} failed: {}", taskId, ex.getMessage(), ex);
-                taskInfo.errorMessage = ex.getMessage();
-                taskInfo.status = TaskStatus.FAILED;
-            }
-        });
+    private void sleepForStatusTracking(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Асинхронная обработка была прервана", e);
+        }
     }
 
     public AsyncBookingTaskStatusDto getTaskStatus(String taskId) {
         TaskInfo info = tasks.get(taskId);
         if (info == null) {
-            return new AsyncBookingTaskStatusDto(taskId, "NOT_FOUND", "Задача не найдена", null);
+            return new AsyncBookingTaskStatusDto(taskId, "NOT_FOUND", "Задача не найдена");
         }
-        return new AsyncBookingTaskStatusDto(
-                taskId,
-                info.status.name(),
-                info.errorMessage,
-                info.result
-        );
+        return new AsyncBookingTaskStatusDto(taskId, mapStatusForApi(info.status), info.detail);
+    }
+
+    private String mapStatusForApi(TaskStatus status) {
+        return switch (status) {
+            case RECEIVED -> "ПОЛУЧЕНО";
+            case PROCESSING -> "ОБРАБАТЫВАЕТСЯ";
+            case READY -> "ГОТОВО";
+            case FAILED -> "ОШИБКА";
+        };
     }
 }

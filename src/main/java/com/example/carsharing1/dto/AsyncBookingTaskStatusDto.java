@@ -13,8 +13,6 @@ public class AsyncBookingTaskStatusDto {
 
     private String status;
 
-    private String errorMessage;
-
-    private BookingBulkOperationResultDto result;
+    private String detail;
 }
 

@@ -35,7 +35,7 @@ public class ConcurrencyDemoController {
     @GetMapping("/race-unsafe")
     public ResponseEntity<Map<String, Object>> raceUnsafe(
             @RequestParam(defaultValue = "50") int threads,
-            @RequestParam(defaultValue = "10000") int iterationsPerThread) {
+            @RequestParam(defaultValue = "200") int iterationsPerThread) {
         int actual = counterDemoService.runRaceConditionDemo(threads, iterationsPerThread);
         int expected = threads * iterationsPerThread;
         return ResponseEntity.ok(Map.of(
@@ -51,7 +51,7 @@ public class ConcurrencyDemoController {
     @GetMapping("/race-atomic")
     public ResponseEntity<Map<String, Object>> raceAtomic(
             @RequestParam(defaultValue = "50") int threads,
-            @RequestParam(defaultValue = "10000") int iterationsPerThread) {
+            @RequestParam(defaultValue = "200") int iterationsPerThread) {
         int actual = counterDemoService.runAtomicCounterDemo(threads, iterationsPerThread);
         int expected = threads * iterationsPerThread;
         return ResponseEntity.ok(Map.of(
@@ -67,7 +67,7 @@ public class ConcurrencyDemoController {
     @GetMapping("/race-synchronized")
     public ResponseEntity<Map<String, Object>> raceSynchronized(
             @RequestParam(defaultValue = "50") int threads,
-            @RequestParam(defaultValue = "10000") int iterationsPerThread) {
+            @RequestParam(defaultValue = "200") int iterationsPerThread) {
         int actual = counterDemoService.runSynchronizedCounterDemo(threads, iterationsPerThread);
         int expected = threads * iterationsPerThread;
         return ResponseEntity.ok(Map.of(

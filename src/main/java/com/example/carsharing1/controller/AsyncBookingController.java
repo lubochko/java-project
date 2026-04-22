@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +33,7 @@ public class AsyncBookingController {
     public ResponseEntity<Map<String, String>> startAsyncBulkBooking(
             @RequestBody List<@Valid BookingCreateRequestDto> requests) {
         String taskId = asyncBookingTaskService.startAsyncBulkBooking(requests);
-        return ResponseEntity.ok(Map.of("taskId", taskId));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(Map.of("taskId", taskId));
     }
 
     @Operation(summary = "Получить статус асинхронной задачи")
