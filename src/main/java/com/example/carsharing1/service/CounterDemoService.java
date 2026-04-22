@@ -25,7 +25,11 @@ public class CounterDemoService {
             executor.submit(() -> {
                 try {
                     for (int j = 0; j < iterationsPerThread; j++) {
-                        unsafeCounter++;
+                        int current = unsafeCounter;
+                        if ((j & 127) == 0) {
+                            Thread.yield();
+                        }
+                        unsafeCounter = current + 1;
                     }
                 } finally {
                     latch.countDown();

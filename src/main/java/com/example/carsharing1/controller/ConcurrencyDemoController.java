@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
@@ -34,48 +35,44 @@ public class ConcurrencyDemoController {
             description = "Инкремент незащищенного счётчика в нескольких потоках")
     @GetMapping("/race-unsafe")
     public ResponseEntity<Map<String, Object>> raceUnsafe(
-            @RequestParam(defaultValue = "50") int threads,
-            @RequestParam(defaultValue = "200") int iterationsPerThread) {
+            @RequestParam(defaultValue = "2") int threads,
+            @RequestParam(defaultValue = "5000") int iterationsPerThread) {
         int actual = counterDemoService.runRaceConditionDemo(threads, iterationsPerThread);
         int expected = threads * iterationsPerThread;
-        return ResponseEntity.ok(Map.of(
-                KEY_MODE, MODE_UNSAFE,
-                KEY_THREADS, threads,
-                KEY_ITERATIONS, iterationsPerThread,
-                KEY_EXPECTED, expected,
-                KEY_ACTUAL, actual
-        ));
+        return ResponseEntity.ok(buildRaceResponse(MODE_UNSAFE, threads, iterationsPerThread, expected, actual));
     }
 
     @Operation(summary = "Потокобезопасный счетчик на AtomicInteger")
     @GetMapping("/race-atomic")
     public ResponseEntity<Map<String, Object>> raceAtomic(
-            @RequestParam(defaultValue = "50") int threads,
-            @RequestParam(defaultValue = "200") int iterationsPerThread) {
+            @RequestParam(defaultValue = "2") int threads,
+            @RequestParam(defaultValue = "5000") int iterationsPerThread) {
         int actual = counterDemoService.runAtomicCounterDemo(threads, iterationsPerThread);
         int expected = threads * iterationsPerThread;
-        return ResponseEntity.ok(Map.of(
-                KEY_MODE, MODE_ATOMIC,
-                KEY_THREADS, threads,
-                KEY_ITERATIONS, iterationsPerThread,
-                KEY_EXPECTED, expected,
-                KEY_ACTUAL, actual
-        ));
+        return ResponseEntity.ok(buildRaceResponse(MODE_ATOMIC, threads, iterationsPerThread, expected, actual));
     }
 
     @Operation(summary = "Потокобезопасный счетчик с synchronized")
     @GetMapping("/race-synchronized")
     public ResponseEntity<Map<String, Object>> raceSynchronized(
-            @RequestParam(defaultValue = "50") int threads,
-            @RequestParam(defaultValue = "200") int iterationsPerThread) {
+            @RequestParam(defaultValue = "2") int threads,
+            @RequestParam(defaultValue = "5000") int iterationsPerThread) {
         int actual = counterDemoService.runSynchronizedCounterDemo(threads, iterationsPerThread);
         int expected = threads * iterationsPerThread;
-        return ResponseEntity.ok(Map.of(
-                KEY_MODE, MODE_SYNCHRONIZED,
-                KEY_THREADS, threads,
-                KEY_ITERATIONS, iterationsPerThread,
-                KEY_EXPECTED, expected,
-                KEY_ACTUAL, actual
-        ));
+        return ResponseEntity.ok(buildRaceResponse(MODE_SYNCHRONIZED, threads, iterationsPerThread, expected, actual));
+    }
+
+    private Map<String, Object> buildRaceResponse(String mode, int threads, int iterationsPerThread,
+                                                  int expected, int actual) {
+        int lostUpdates = Math.max(0, expected - actual);
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put(KEY_MODE, mode);
+        response.put(KEY_THREADS, threads);
+        response.put(KEY_ITERATIONS, iterationsPerThread);
+        response.put(KEY_EXPECTED, expected);
+        response.put(KEY_ACTUAL, actual);
+        response.put("lostUpdates", lostUpdates);
+        response.put("status", lostUpdates > 0 ? "RACE_CONDITION_DETECTED" : "THREAD_SAFE_RESULT");
+        return response;
     }
 }

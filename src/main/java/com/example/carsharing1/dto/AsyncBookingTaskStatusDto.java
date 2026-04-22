@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 public class AsyncBookingTaskStatusDto {
 
     private String taskId;
-
     private String status;
-
     private String detail;
 }
 
