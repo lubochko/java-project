@@ -108,11 +108,9 @@ public class CounterDemoService {
 
     private static final class UnsafeCounter {
         private int value;
-
         void increment() {
             value++;
         }
-
         int get() {
             return value;
         }
