@@ -12,12 +12,11 @@ import java.util.concurrent.CountDownLatch;
 @Service
 public class CounterDemoService {
 
-    private int unsafeCounter = 0;
     private final AtomicInteger atomicCounter = new AtomicInteger(0);
     private int synchronizedCounter = 0;
 
     public int runRaceConditionDemo(int threads, int iterationsPerThread) {
-        unsafeCounter = 0;
+        UnsafeCounter unsafeCounter = new UnsafeCounter();
         ExecutorService executor = Executors.newFixedThreadPool(threads);
         CountDownLatch latch = new CountDownLatch(threads);
 
@@ -25,11 +24,7 @@ public class CounterDemoService {
             executor.submit(() -> {
                 try {
                     for (int j = 0; j < iterationsPerThread; j++) {
-                        int current = unsafeCounter;
-                        if ((j & 127) == 0) {
-                            Thread.yield();
-                        }
-                        unsafeCounter = current + 1;
+                        unsafeCounter.increment();
                     }
                 } finally {
                     latch.countDown();
@@ -39,8 +34,9 @@ public class CounterDemoService {
 
         await(latch, executor);
         int expected = threads * iterationsPerThread;
-        log.info("Race condition demo: expected={}, actual={}", expected, unsafeCounter);
-        return unsafeCounter;
+        int actual = unsafeCounter.get();
+        log.info("Race condition demo: expected={}, actual={}", expected, actual);
+        return actual;
     }
 
     public int runAtomicCounterDemo(int threads, int iterationsPerThread) {
@@ -107,6 +103,18 @@ public class CounterDemoService {
 
         if (!completed) {
             log.warn("CountDownLatch await completed false, some tasks may not have finished");
+        }
+    }
+
+    private static final class UnsafeCounter {
+        private int value;
+
+        void increment() {
+            value++;
+        }
+
+        int get() {
+            return value;
         }
     }
 }
