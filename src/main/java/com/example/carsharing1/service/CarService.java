@@ -51,6 +51,7 @@ public class CarService {
     private static final String CAR_NOT_FOUND = "Машина с ID {} не найдена";
     private static final String LOCATION_NOT_FOUND = "Локация с ID {} не найдена";
     private static final String FEATURE_NOT_FOUND = "Особенность с ID {} не найдена";
+    private static final String NOT_FOUND_SUFFIX = " не найдена";
     private static final String CAR_CREATED = "Машина создана с ID: {}";
     private static final String CAR_UPDATED = "Машина с ID {} обновлена";
     private static final String CAR_STATUS_UPDATED = "Статус машины с ID {} обновлен";
@@ -346,7 +347,7 @@ public class CarService {
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> {
                     log.error(LOCATION_NOT_FOUND, locationId);
-                    return new LocationNotFoundException("Локация с ID " + locationId + " не найдена");
+                    return new LocationNotFoundException("Локация с ID " + locationId + NOT_FOUND_SUFFIX);
                 });
 
         car.setLocation(location);
@@ -376,7 +377,7 @@ public class CarService {
             Feature feature = featureRepository.findById(featureId)
                     .orElseThrow(() -> {
                         log.error(FEATURE_NOT_FOUND, featureId);
-                        return new FeatureNotFoundException("Особенность с ID " + featureId + " не найдена");
+                        return new FeatureNotFoundException("Особенность с ID " + featureId + NOT_FOUND_SUFFIX);
                     });
 
             featuresToAdd.add(feature);
@@ -401,7 +402,7 @@ public class CarService {
         for (Long featureId : featureIds) {
             Feature feature = featureRepository.findById(featureId)
                     .orElseThrow(() -> new FeatureNotFoundException(
-                            "Особенность с ID " + featureId + " не найдена"));
+                            "Особенность с ID " + featureId + NOT_FOUND_SUFFIX));
             features.add(feature);
         }
 
@@ -416,7 +417,7 @@ public class CarService {
 
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new LocationNotFoundException(
-                        "Локация с ID " + locationId + " не найдена"));
+                        "Локация с ID " + locationId + NOT_FOUND_SUFFIX));
         car.setLocation(location);
     }
 
