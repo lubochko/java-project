@@ -39,4 +39,36 @@ public class LocationService {
                 .sorted(BY_ID)
                 .toList();
     }
+
+    @Transactional
+    public Location createLocation(Location location) {
+        location.setId(null);
+        return locationRepository.save(location);
+    }
+
+    @Transactional
+    public Optional<Location> updateLocation(Long id, Location location) {
+        return locationRepository.findById(id)
+                .map(existingLocation -> {
+                    existingLocation.setCity(location.getCity());
+                    existingLocation.setAddress(location.getAddress());
+                    existingLocation.setLatitude(location.getLatitude());
+                    existingLocation.setLongitude(location.getLongitude());
+                    existingLocation.setCapacity(location.getCapacity());
+                    return locationRepository.save(existingLocation);
+                });
+    }
+
+    @Transactional
+    public boolean deleteLocation(Long id) {
+        Optional<Location> locationOptional = locationRepository.findById(id);
+        if (locationOptional.isEmpty()) {
+            return false;
+        }
+
+        Location location = locationOptional.get();
+        location.getCars().forEach(car -> car.setLocation(null));
+        locationRepository.delete(location);
+        return true;
+    }
 }

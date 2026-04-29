@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -183,8 +185,9 @@ class CarServiceTest {
     @Test
     void complexCriteriaPagedMapsPage() {
         Page<Car> page = new PageImpl<>(List.of(car(1L), car(2L)));
-        when(carRepository.findCarsByComplexCriteriaPaged(any(), any(), any())).thenReturn(page);
-        Page<CarDto> result = carService.findCarsByComplexCriteriaPaged("a", "f", 0, 10, "id", "ASC");
+        when(carRepository.findCarsByComplexCriteriaPaged(any(), any(), anyBoolean(), any(Pageable.class)))
+                .thenReturn(page);
+        Page<CarDto> result = carService.findCarsByComplexCriteriaPaged("a", "f", true, 0, 10, "id", "ASC");
         assertEquals(2, result.getTotalElements());
     }
 

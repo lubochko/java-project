@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -127,6 +129,20 @@ public class BookingController {
         }
     }
 
+    @Operation(summary = "Обновить бронирование", description = "Меняет пользователя, машину и время бронирования")
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateBooking(
+            @PathVariable Long id,
+            @RequestParam @NotNull @Positive Long userId,
+            @RequestParam @NotNull @Positive Long carId,
+            @RequestParam @NotNull @FutureOrPresent
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+            @RequestParam @NotNull @Positive Integer minutes) {
+        return bookingService.updateBooking(id, userId, carId, startTime, minutes)
+                .<ResponseEntity<Object>>map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @Operation(summary = "Bulk создание бронирований без транзакции")
     @PostMapping("/bulk/no-transaction")
     public ResponseEntity<BookingBulkOperationResultDto> createBookingBulkWithoutTransaction(
@@ -163,5 +179,13 @@ public class BookingController {
                     log.warn(LOG_BOOKING_NOT_FOUND, id);
                     return ResponseEntity.notFound().build();
                 });
+    }
+
+    @Operation(summary = "Удалить бронирование", description = "Удаляет бронирование")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+        return bookingService.deleteBooking(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }

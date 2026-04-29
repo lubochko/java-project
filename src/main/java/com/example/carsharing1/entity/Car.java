@@ -51,6 +51,9 @@ public class Car {
     @Column(name = "fuel_level")
     private Double fuelLevel;
 
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    private String imageUrl;
+
     @Column(nullable = false)
     private boolean active = true;
 

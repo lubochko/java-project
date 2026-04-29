@@ -51,13 +51,25 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     List<Car> findCarsByComplexCriteria(@Param("email") String email,
                                         @Param("featureName") String featureName);
 
-    @Query("SELECT DISTINCT c FROM Car c " +
+    @Query(value = "SELECT DISTINCT c FROM Car c " +
             "LEFT JOIN c.bookings b " +
             "LEFT JOIN b.user u " +
             "WHERE (:email IS NULL OR u.email = :email) " +
-            "AND (:featureName IS NULL OR EXISTS (SELECT f FROM c.features f WHERE f.name = :featureName))")
+            "AND (:featureName IS NULL OR EXISTS (SELECT f FROM c.features f WHERE f.name = :featureName)) " +
+            "AND (:availableOnly = false OR (c.active = true AND NOT EXISTS " +
+            "(SELECT activeBooking FROM Booking activeBooking WHERE activeBooking.car = c " +
+            "AND activeBooking.status = 'ACTIVE')))",
+            countQuery = "SELECT COUNT(DISTINCT c) FROM Car c " +
+                    "LEFT JOIN c.bookings b " +
+                    "LEFT JOIN b.user u " +
+                    "WHERE (:email IS NULL OR u.email = :email) " +
+                    "AND (:featureName IS NULL OR EXISTS (SELECT f FROM c.features f WHERE f.name = :featureName)) " +
+                    "AND (:availableOnly = false OR (c.active = true AND NOT EXISTS " +
+                    "(SELECT activeBooking FROM Booking activeBooking WHERE activeBooking.car = c " +
+                    "AND activeBooking.status = 'ACTIVE')))")
     Page<Car> findCarsByComplexCriteriaPaged(@Param("email") String email,
                                              @Param("featureName") String featureName,
+                                             @Param("availableOnly") boolean availableOnly,
                                              Pageable pageable);
 
     @Query(value = "SELECT DISTINCT c.* FROM cars c " +

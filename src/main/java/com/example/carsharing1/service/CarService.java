@@ -5,6 +5,7 @@ import com.example.carsharing1.dto.CarDto;
 import com.example.carsharing1.entity.Car;
 import com.example.carsharing1.entity.Feature;
 import com.example.carsharing1.entity.Location;
+import com.example.carsharing1.enums.BookingStatus;
 import com.example.carsharing1.exception.CarServiceException;
 import com.example.carsharing1.exception.FeatureNotFoundException;
 import com.example.carsharing1.exception.LocationNotFoundException;
@@ -20,6 +21,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -28,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -138,6 +145,18 @@ public class CarService {
     }
 
     @Transactional
+    public CarDto createCarWithRelations(CarDto carDto, Long locationId, Set<Long> featureIds) {
+        log.info("Создание новой машины со связями");
+        Car car = prepareCar(carDto, locationId);
+        car.setFeatures(resolveFeatures(featureIds));
+        Car savedCar = carRepository.save(car);
+
+        invalidateCache();
+
+        return CarMapper.toDto(savedCar);
+    }
+
+    @Transactional
     public Optional<CarDto> updateCar(Long id, CarDto carDto) {
         log.info(UPDATE_CAR, id);
 
@@ -146,6 +165,26 @@ public class CarService {
                     updateCarFields(car, carDto);
                     Car updatedCar = carRepository.save(car);
                     log.info(CAR_UPDATED, id);
+
+                    invalidateCache();
+
+                    return CarMapper.toDto(updatedCar);
+                });
+    }
+
+    @Transactional
+    public Optional<CarDto> updateCarWithRelations(Long id, CarDto carDto,
+                                                   Long locationId, Set<Long> featureIds) {
+        log.info("Обновление машины со связями, ID: {}", id);
+
+        return carRepository.findById(id)
+                .map(car -> {
+                    updateCarFields(car, carDto);
+                    updateCarLocation(car, locationId);
+                    if (featureIds != null) {
+                        car.setFeatures(resolveFeatures(featureIds));
+                    }
+                    Car updatedCar = carRepository.save(car);
 
                     invalidateCache();
 
@@ -166,6 +205,39 @@ public class CarService {
                     invalidateCache();
 
                     return CarMapper.toDto(updatedCar);
+                });
+    }
+
+    @Transactional
+    public Optional<CarDto> releaseCar(Long id) {
+        return carRepository.findById(id)
+                .map(car -> {
+                    car.getBookings().stream()
+                            .filter(booking -> booking.getStatus() == BookingStatus.ACTIVE)
+                            .forEach(booking -> {
+                                booking.setStatus(BookingStatus.COMPLETED);
+                                booking.setEndTime(java.time.LocalDateTime.now());
+                            });
+                    car.setActive(true);
+                    invalidateCache();
+                    return CarMapper.toDto(carRepository.save(car));
+                });
+    }
+
+    @Transactional
+    public Optional<CarDto> updateCarPhoto(Long id, MultipartFile photo) {
+        if (photo == null || photo.isEmpty()) {
+            throw new CarServiceException("Файл фото не выбран");
+        }
+        if (photo.getContentType() == null || !photo.getContentType().startsWith("image/")) {
+            throw new CarServiceException("Можно загрузить только изображение");
+        }
+
+        return carRepository.findById(id)
+                .map(car -> {
+                    car.setImageUrl(storeCarPhoto(photo));
+                    invalidateCache();
+                    return CarMapper.toDto(carRepository.save(car));
                 });
     }
 
@@ -221,13 +293,14 @@ public class CarService {
     }
 
     public Page<CarDto> findCarsByComplexCriteriaPaged(String email, String featureName,
-                                                       int page, int size, String sortBy, String sortDirection) {
+                                                       boolean availableOnly, int page,
+                                                       int size, String sortBy, String sortDirection) {
         log.info(SEARCH_PAGED, page, size, sortBy, sortDirection);
 
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Car> carPage = carRepository.findCarsByComplexCriteriaPaged(email, featureName, pageable);
+        Page<Car> carPage = carRepository.findCarsByComplexCriteriaPaged(email, featureName, availableOnly, pageable);
         return carPage.map(CarMapper::toDto);
     }
 
@@ -264,6 +337,11 @@ public class CarService {
 
     private Car prepareCar(CarDto carDto, Long locationId) {
         Car car = CarMapper.toEntity(carDto);
+
+        if (locationId == null) {
+            car.setActive(true);
+            return car;
+        }
 
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> {
@@ -314,6 +392,34 @@ public class CarService {
         return featuresToAdd;
     }
 
+    private Set<Feature> resolveFeatures(Set<Long> featureIds) {
+        Set<Feature> features = new HashSet<>();
+        if (featureIds == null) {
+            return features;
+        }
+
+        for (Long featureId : featureIds) {
+            Feature feature = featureRepository.findById(featureId)
+                    .orElseThrow(() -> new FeatureNotFoundException(
+                            "Особенность с ID " + featureId + " не найдена"));
+            features.add(feature);
+        }
+
+        return features;
+    }
+
+    private void updateCarLocation(Car car, Long locationId) {
+        if (locationId == null) {
+            car.setLocation(null);
+            return;
+        }
+
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new LocationNotFoundException(
+                        "Локация с ID " + locationId + " не найдена"));
+        car.setLocation(location);
+    }
+
     private void updateCarFields(Car car, CarDto dto) {
         if (dto.getBrand() != null) {
             car.setBrand(dto.getBrand());
@@ -332,6 +438,30 @@ public class CarService {
         }
         if (dto.getFuelLevel() != null) {
             car.setFuelLevel(dto.getFuelLevel());
+        }
+        if (dto.getImageUrl() != null) {
+            car.setImageUrl(dto.getImageUrl());
+        }
+    }
+
+    private String storeCarPhoto(MultipartFile photo) {
+        try {
+            Path uploadDir = Path.of("uploads", "cars");
+            Files.createDirectories(uploadDir);
+
+            String originalFilename = photo.getOriginalFilename() == null ? "photo" : photo.getOriginalFilename();
+            String extension = "";
+            int dotIndex = originalFilename.lastIndexOf('.');
+            if (dotIndex >= 0) {
+                extension = originalFilename.substring(dotIndex);
+            }
+
+            String filename = UUID.randomUUID() + extension;
+            Path target = uploadDir.resolve(filename);
+            Files.copy(photo.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+            return "/uploads/cars/" + filename;
+        } catch (IOException e) {
+            throw new CarServiceException("Не удалось сохранить фото автомобиля");
         }
     }
 

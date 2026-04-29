@@ -54,6 +54,9 @@ public class CarDto {
     @Schema(description = "Уровень топлива (0-100)", example = "95.0")
     private Double fuelLevel;
 
+    @Schema(description = "Ссылка на изображение автомобиля")
+    private String imageUrl;
+
     @NotNull(message = "Статус активности обязателен")
     @Schema(description = "Активна ли машина", example = "true")
     private boolean active;

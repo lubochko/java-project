@@ -1,6 +1,7 @@
 package com.example.carsharing1.controller;
 
 import com.example.carsharing1.dto.CarDto;
+import com.example.carsharing1.dto.CarUpsertRequestDto;
 import com.example.carsharing1.service.CarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -112,11 +114,47 @@ public class CarController {
         return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Создать машину со связями", description = "Создает автомобиль с локацией и особенностями")
+    @PostMapping("/managed")
+    public ResponseEntity<CarDto> createCarManaged(@Valid @RequestBody CarUpsertRequestDto request) {
+        CarDto createdCar = carService.createCarWithRelations(
+                request.getCar(), request.getLocationId(), request.getFeatureIds());
+        return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
+    }
+
     @Operation(summary = "Обновить машину", description = "Обновляет данные существующего автомобиля")
     @PutMapping("/{id}")
     public ResponseEntity<CarDto> updateCar(@PathVariable Long id, @Valid @RequestBody CarDto carDto) {
         log.info(LOG_UPDATE, id);
         return carService.updateCar(id, carDto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    log.warn(LOG_CAR_NOT_FOUND, id);
+                    return ResponseEntity.notFound().build();
+                });
+    }
+
+    @Operation(summary = "Обновить машину со связями", description = "Обновляет автомобиль, локацию и особенности")
+    @PutMapping("/{id}/managed")
+    public ResponseEntity<CarDto> updateCarManaged(
+            @PathVariable Long id,
+            @Valid @RequestBody CarUpsertRequestDto request) {
+        log.info(LOG_UPDATE, id);
+        return carService.updateCarWithRelations(
+                        id, request.getCar(), request.getLocationId(), request.getFeatureIds())
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    log.warn(LOG_CAR_NOT_FOUND, id);
+                    return ResponseEntity.notFound().build();
+                });
+    }
+
+    @Operation(summary = "Загрузить фото машины", description = "Сохраняет изображение автомобиля")
+    @PostMapping("/{id}/photo")
+    public ResponseEntity<CarDto> uploadCarPhoto(
+            @PathVariable Long id,
+            @RequestParam("photo") MultipartFile photo) {
+        return carService.updateCarPhoto(id, photo)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> {
                     log.warn(LOG_CAR_NOT_FOUND, id);
@@ -131,6 +169,17 @@ public class CarController {
             @RequestParam boolean active) {
         log.info(LOG_PATCH_STATUS, id, active);
         return carService.updateCarStatus(id, active)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    log.warn(LOG_CAR_NOT_FOUND, id);
+                    return ResponseEntity.notFound().build();
+                });
+    }
+
+    @Operation(summary = "Освободить машину", description = "Завершает активные бронирования автомобиля")
+    @PatchMapping("/{id}/release")
+    public ResponseEntity<CarDto> releaseCar(@PathVariable Long id) {
+        return carService.releaseCar(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> {
                     log.warn(LOG_CAR_NOT_FOUND, id);
@@ -234,6 +283,7 @@ public class CarController {
     public ResponseEntity<Page<CarDto>> searchCarsPaged(
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String feature,
+            @RequestParam(defaultValue = "false") boolean availableOnly,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -242,7 +292,7 @@ public class CarController {
         log.info(LOG_PAGED_SEARCH, email, feature, page, size, sortBy, sortDirection);
 
         Page<CarDto> carPage = carService.findCarsByComplexCriteriaPaged(
-                email, feature, page, size, sortBy, sortDirection);
+                email, feature, availableOnly, page, size, sortBy, sortDirection);
 
         return ResponseEntity.ok(carPage);
     }

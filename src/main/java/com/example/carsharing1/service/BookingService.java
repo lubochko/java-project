@@ -71,6 +71,41 @@ public class BookingService {
         return BookingMapper.toDto(savedBooking);
     }
 
+    @Transactional
+    public Optional<BookingDto> updateBooking(Long id, Long userId, Long carId,
+                                              LocalDateTime startTime, Integer minutes) {
+        return bookingRepository.findById(id)
+                .map(booking -> {
+                    User user = userRepository.findById(userId)
+                            .orElseThrow(() -> new BookingException("Пользователь с ID " + userId + " не найден"));
+                    Car car = carRepository.findById(carId)
+                            .orElseThrow(() -> new BookingException("Машина с ID " + carId + " не найдена"));
+
+                    booking.setUser(user);
+                    booking.setCar(car);
+                    booking.setStartTime(startTime);
+                    booking.setEndTime(startTime.plusMinutes(minutes));
+                    booking.setTotalCost(car.getPricePerMinute() * minutes);
+
+                    if (booking.getPayment() != null) {
+                        booking.getPayment().setAmount(booking.getTotalCost());
+                    }
+
+                    return BookingMapper.toDto(bookingRepository.save(booking));
+                });
+    }
+
+    @Transactional
+    public boolean deleteBooking(Long id) {
+        if (!bookingRepository.existsById(id)) {
+            return false;
+        }
+
+        paymentRepository.findByBookingId(id).ifPresent(paymentRepository::delete);
+        bookingRepository.deleteById(id);
+        return true;
+    }
+
     public BookingBulkOperationResultDto createBookingsBulkWithoutTransaction(List<BookingCreateRequestDto> requests) {
         List<BookingDto> created = requests.stream()
                 .map(this::createSingleForBulk)

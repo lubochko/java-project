@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -30,12 +32,16 @@ public class DataInitializer implements CommandLineRunner {
     private final LocationRepository locationRepository;
     private final FeatureRepository featureRepository;
     private final BookingRepository bookingRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     @Transactional
     public void run(String @NonNull ... args) {
 
+        normalizeImageColumn();
+
         if (featureRepository.count() > 0) {
+            trimLoadTestCars();
             log.info("ДАННЫЕ УЖЕ СУЩЕСТВУЮТ, ПРОПУСКАЕМ ИНИЦИАЛИЗАЦИЮ");
             return;
         }
@@ -92,43 +98,43 @@ public class DataInitializer implements CommandLineRunner {
                 savedUser4.getName(), savedUser5.getName());
 
         Car car1 = new Car(null, "Toyota", "Camry", 0.8,
-                "1234AB-5", 2022, 95.0, true,
+                "1234AB-5", 2022, 95.0, null, true,
                 savedLoc1, null, Set.of(savedF1, savedF2));
 
         Car car2 = new Car(null, "BMW", "X5", 1.5,
-                "5678CD-5", 2023, 80.0, true,
+                "5678CD-5", 2023, 80.0, null, true,
                 savedLoc1, null, Set.of(savedF1, savedF2, savedF4));
 
         Car car3 = new Car(null, "Audi", "A4", 1.0,
-                "9012EF-5", 2022, 45.0, true,
+                "9012EF-5", 2022, 45.0, null, true,
                 savedLoc2, null, Set.of(savedF1, savedF3));
 
         Car car4 = new Car(null, "Tesla", "Model 3", 1.2,
-                "3456GH-5", 2023, 90.0, true,
+                "3456GH-5", 2023, 90.0, null, true,
                 savedLoc2, null, Set.of(savedF1, savedF2, savedF4));
 
         Car car5 = new Car(null, "Honda", "Civic", 0.6,
-                "4567IJ-6", 2021, 92.0, true,
+                "4567IJ-6", 2021, 92.0, null, true,
                 savedLoc1, null, Set.of(savedF1, savedF3));
 
         Car car6 = new Car(null, "Ford", "Focus", 0.55,
-                "7890KL-7", 2020, 88.0, true,
+                "7890KL-7", 2020, 88.0, null, true,
                 savedLoc2, null, Set.of(savedF2, savedF4));
 
         Car car7 = new Car(null, "Volkswagen", "PassB5", 0.75,
-                "1234MN-8", 2022, 94.0, true,
+                "1234MN-8", 2022, 94.0, null, true,
                 savedLoc1, null, Set.of(savedF1, savedF2, savedF3));
 
         Car car8 = new Car(null, "Mercedes", "E-Class", 1.3,
-                "5678OP-9", 2023, 97.0, true,
+                "5678OP-9", 2023, 97.0, null, true,
                 savedLoc2, null, Set.of(savedF1, savedF2, savedF3, savedF4, savedF5, savedF6, savedF7));
 
         Car car9 = new Car(null, "Renault", "Logan", 0.4,
-                "9012QR-0", 2020, 75.0, true,
+                "9012QR-0", 2020, 75.0, null, true,
                 savedLoc1, null, Set.of(savedF1));
 
         Car car10 = new Car(null, "Kia", "Rio", 0.45,
-                "3456ST-1", 2021, 82.0, true,
+                "3456ST-1", 2021, 82.0, null, true,
                 savedLoc2, null, Set.of(savedF3));
 
         carRepository.save(car1);
@@ -186,5 +192,44 @@ public class DataInitializer implements CommandLineRunner {
 
         log.info("Создано {} бронирований", 8);
         log.info("ТЕСТОВЫЕ ДАННЫЕ УСПЕШНО ЗАГРУЖЕНЫ");
+    }
+
+    private void trimLoadTestCars() {
+        long carCount = carRepository.count();
+        if (carCount <= 10) {
+            return;
+        }
+
+        carRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
+                .filter(car -> "Citroen".equalsIgnoreCase(car.getBrand()) && "X5".equalsIgnoreCase(car.getModel()))
+                .filter(car -> car.getBookings() == null || car.getBookings().isEmpty())
+                .forEach(carRepository::delete);
+        log.info("Удалены лишние автомобили, созданные нагрузочным тестом. Текущее количество: {}",
+                carRepository.count());
+    }
+
+    private void normalizeImageColumn() {
+        try {
+            String dataType = jdbcTemplate.queryForObject(
+                    "SELECT data_type FROM information_schema.columns "
+                            + "WHERE table_name = 'cars' AND column_name = 'image_url'",
+                    String.class);
+
+            if (dataType == null) {
+                jdbcTemplate.execute("ALTER TABLE cars ADD COLUMN image_url TEXT");
+                return;
+            }
+
+            if (!"text".equalsIgnoreCase(dataType) && !"character varying".equalsIgnoreCase(dataType)) {
+                jdbcTemplate.execute("ALTER TABLE cars DROP COLUMN image_url");
+                jdbcTemplate.execute("ALTER TABLE cars ADD COLUMN image_url TEXT");
+            }
+        } catch (Exception e) {
+            try {
+                jdbcTemplate.execute("ALTER TABLE cars ADD COLUMN IF NOT EXISTS image_url TEXT");
+            } catch (Exception innerException) {
+                log.warn("Не удалось нормализовать колонку image_url: {}", innerException.getMessage());
+            }
+        }
     }
 }

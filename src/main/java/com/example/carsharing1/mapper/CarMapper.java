@@ -22,6 +22,7 @@ public class CarMapper {
         dto.setLicensePlate(car.getLicensePlate());
         dto.setYear(car.getYear());
         dto.setFuelLevel(car.getFuelLevel());
+        dto.setImageUrl(car.getImageUrl());
         dto.setActive(car.isActive());
         dto.setAvailable(car.isAvailable());
 
@@ -52,6 +53,7 @@ public class CarMapper {
         car.setLicensePlate(dto.getLicensePlate());
         car.setYear(dto.getYear());
         car.setFuelLevel(dto.getFuelLevel());
+        car.setImageUrl(dto.getImageUrl());
         car.setActive(dto.isActive());
 
         return car;

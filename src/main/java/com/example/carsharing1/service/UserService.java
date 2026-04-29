@@ -5,10 +5,14 @@ import com.example.carsharing1.entity.User;
 import com.example.carsharing1.exception.UserNotFoundException;
 import com.example.carsharing1.exception.DuplicateEmailException;
 import com.example.carsharing1.exception.DuplicateLicenseException;
+import com.example.carsharing1.exception.BookingException;
 import com.example.carsharing1.mapper.UserMapper;
+import com.example.carsharing1.enums.BookingStatus;
+import com.example.carsharing1.repository.BookingRepository;
 import com.example.carsharing1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -23,6 +27,7 @@ import java.util.function.Consumer;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
 
     private static final String EMAIL_ALREADY_TAKEN = "Email {} уже занят";
     private static final String LICENSE_ALREADY_TAKEN = "Водительское удостоверение {} уже зарегистрировано";
@@ -147,8 +152,18 @@ public class UserService {
             return;
         }
 
-        userRepository.deleteById(id);
-        log.info("Пользователь с ID {} удален", id);
+        if (bookingRepository.existsByUserIdAndStatus(id, BookingStatus.ACTIVE)) {
+            throw new BookingException("Ошибка: невозможно удалить клиента с активными бронированиями");
+        }
+
+        try {
+            userRepository.deleteById(id);
+            userRepository.flush();
+            log.info("Пользователь с ID {} удален", id);
+        } catch (DataIntegrityViolationException ex) {
+            log.warn("Не удалось удалить пользователя с ID {}: есть связанные бронирования", id);
+            throw new BookingException("Ошибка: невозможно удалить клиента с активными бронированиями");
+        }
     }
 
     private User findUserById(Long id) {
