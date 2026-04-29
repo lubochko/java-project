@@ -1,0 +1,15 @@
+{
+  "name": "carsharing1-root",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev:8080",
+    "dev:8080": "concurrently -n FE,BE \"npm --prefix frontend run build:watch\" \"mvnw.cmd spring-boot:run\"",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "backend": "mvnw.cmd spring-boot:run"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

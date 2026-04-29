@@ -1,0 +1,160 @@
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(182, 255, 0, 0.12), transparent 30%),
+    linear-gradient(180deg, #18211e 0%, #111411 42%);
+}
+
+.hero {
+  background:
+    linear-gradient(90deg, rgba(7, 11, 12, 0.96), rgba(7, 11, 12, 0.7)),
+    url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1800&q=80");
+  background-position: center;
+  background-size: cover;
+}
+
+.company-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.about-panel {
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(12, 15, 14, 0.94), rgba(12, 15, 14, 0.72)),
+    url("https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1800&q=80");
+  background-position: center;
+  background-size: cover;
+}
+
+.about-copy {
+  max-width: 620px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+@media (max-width: 800px) {
+  .company-hero {
+    align-items: flex-start;
+  }
+}
+
+.accent {
+  color: #b6ff00;
+}
+
+.muted-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.car-card {
+  height: 100%;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.car-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(182, 255, 0, 0.55);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+}
+
+.feature-chip-row {
+  max-width: 100%;
+  align-items: flex-start;
+}
+
+.feature-chip {
+  max-width: 92px;
+  height: auto !important;
+  min-height: 24px;
+}
+
+.feature-chip .MuiChip-label {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.row-actions {
+  align-items: flex-end;
+}
+
+.edit-action,
+.release-action,
+.delete-action {
+  color: #fff !important;
+  border-radius: 4px !important;
+  width: 28px !important;
+  height: 28px !important;
+  padding: 5px !important;
+}
+
+.edit-action {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.edit-action:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.release-action {
+  background: #5b7f00 !important;
+}
+
+.release-action:hover {
+  background: #7dae00 !important;
+}
+
+.delete-action {
+  color: #fff !important;
+  background: #c62828 !important;
+  border-radius: 4px !important;
+}
+
+.edit-action svg,
+.release-action svg,
+.delete-action svg {
+  font-size: 16px;
+}
+
+.delete-action:hover {
+  background: #e53935 !important;
+}
+
+.help-dot {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #111411;
+  background: #b6ff00;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: help;
+  margin-top: 16px;
+}
+
+.wheel-logo {
+  width: 72px;
+  height: 42px;
+  flex-shrink: 0;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}

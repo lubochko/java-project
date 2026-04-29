@@ -51,4 +51,7 @@ Thumbs.db
 *.iml
 .classpath
 .project
-.settings/
+.settings/node_modules/
+frontend/node_modules/
+frontend/dist/
+uploads/
