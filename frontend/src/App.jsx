@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   AppBar,
@@ -327,6 +327,7 @@ export default function App() {
     let rows = bookings;
     if (!isAdmin && session?.user?.id) {
       rows = rows.filter((booking) => booking.userId === session.user.id);
+      rows = rows.filter((booking) => booking.status === 'ACTIVE');
     }
     if (bookingFilter.userId) {
       rows = rows.filter((booking) => booking.userId === bookingFilter.userId);
@@ -667,40 +668,6 @@ export default function App() {
       </AppBar>
 
       <Container maxWidth="xl" sx={{ py: 4 }}>
-        <Box className="hero company-hero" sx={{ p: { xs: 3, md: 5 }, mb: 3 }}>
-          <Box sx={{ maxWidth: 760 }}>
-            <Typography variant="h1" sx={{ fontSize: { xs: 42, md: 72 } }}>
-              Prime<span className="accent">Wheel</span>
-            </Typography>
-            <Typography variant="h5" color="text.secondary">
-              Премиальный прокат автомобилей в Минске
-            </Typography>
-          </Box>
-        </Box>
-
-        {section === 'cars' && !isAdmin && !selectedCar && (
-          <Box className="about-panel" sx={{ p: { xs: 3, md: 5 }, mb: 3 }}>
-            <Grid container spacing={4} alignItems="center">
-              <Grid size={{ xs: 12, md: 5 }}>
-                <Typography variant="h3" fontWeight={900}>
-                  Прокат авто для любых задач
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 7 }}>
-                <Typography className="about-copy" color="text.secondary">
-                  PrimeWheel помогает быстро подобрать автомобиль для поездки по городу, деловой встречи,
-                  выходных или длительной аренды. Мы показываем только понятные клиенту данные: модель,
-                  стоимость, адрес выдачи, особенности и доступность машины.
-                </Typography>
-                <Typography className="about-copy" color="text.secondary" sx={{ mt: 2 }}>
-                  Бронирование занимает несколько шагов: выберите свободный автомобиль, укажите дату,
-                  время и продолжительность аренды.
-                </Typography>
-              </Grid>
-            </Grid>
-          </Box>
-        )}
-
         {notice && <Alert severity="success" sx={{ mb: 2 }}>{notice}</Alert>}
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
@@ -937,6 +904,7 @@ function CarsSection(props) {
     onSearch,
     onSubmit,
   } = props;
+  const { formRef: editFormRef, highlightForm: highlightEditForm } = useEditFormFocus(isAdmin && Boolean(editingCar));
 
   if (!isAdmin && selectedCar) {
     return (
@@ -962,7 +930,18 @@ function CarsSection(props) {
         ? 'Локация и особенности выбираются из справочников.'
         : ''}
       form={isAdmin ? (
-        <Box component="form" onSubmit={onSubmit}>
+        <Box
+          ref={editFormRef}
+          component="form"
+          onSubmit={onSubmit}
+          sx={{
+            scrollMarginTop: '90px',
+            borderRadius: 1,
+            transition: 'box-shadow 220ms ease, background-color 220ms ease',
+            boxShadow: highlightEditForm ? '0 0 0 2px rgba(182, 255, 0, 0.65)' : 'none',
+            backgroundColor: highlightEditForm ? 'rgba(182, 255, 0, 0.06)' : 'transparent',
+          }}
+        >
           <Stack spacing={2}>
             <TextField label="Марка" required value={carForm.brand}
               onChange={(event) => onChangeForm({ ...carForm, brand: event.target.value })} />
@@ -1026,12 +1005,12 @@ function CarsSection(props) {
           <Paper sx={{ p: 2 }}>
             <Grid container spacing={2}>
               {isAdmin && (
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12, md: 3 }}>
                   <TextField fullWidth label="Фильтр по email клиента" value={carFilters.email}
                     onChange={(event) => onChangeFilters({ ...carFilters, email: event.target.value })} />
                 </Grid>
               )}
-              <Grid size={{ xs: 12, md: isAdmin ? 4 : 3 }}>
+              <Grid size={{ xs: 12, md: isAdmin ? 3 : 3 }}>
                 <TextField select fullWidth label="Фильтр по особенности" value={carFilters.feature}
                   onChange={(event) => onChangeFilters({ ...carFilters, feature: event.target.value })}>
                   <MenuItem value="">Все особенности</MenuItem>
@@ -1047,7 +1026,7 @@ function CarsSection(props) {
                   </TextField>
                 </Grid>
               )}
-              <Grid size={{ xs: 6, md: isAdmin ? 2 : 3 }}>
+              <Grid size={{ xs: 6, md: isAdmin ? 3 : 3 }}>
                 <TextField select fullWidth label="Сортировка" value={carFilters.sortBy}
                   onChange={(event) => onChangeFilters({ ...carFilters, sortBy: event.target.value })}>
                   <MenuItem value="id">По добавлению</MenuItem>
@@ -1056,21 +1035,21 @@ function CarsSection(props) {
                   <MenuItem value="year">Год</MenuItem>
                 </TextField>
               </Grid>
-              <Grid size={{ xs: 6, md: isAdmin ? 2 : 3 }}>
+              <Grid size={{ xs: 6, md: isAdmin ? 3 : 3 }}>
                 <Button fullWidth sx={{ height: '100%' }} variant="outlined" onClick={onSearch}>Найти</Button>
               </Grid>
             </Grid>
           </Paper>
           {isAdmin ? (
             <TableCard>
-              <Table>
+              <Table sx={{ tableLayout: 'fixed', width: '100%' }}>
                 <TableHead>
                   <TableRow>
                     <TableCell>Автомобиль</TableCell>
                     <TableCell>Локация</TableCell>
-                    <TableCell>Особенности</TableCell>
-                    <TableCell>Цена</TableCell>
-                    <TableCell>Статус</TableCell>
+                    <TableCell sx={{ width: 250 }}>Особенности</TableCell>
+                    <TableCell sx={{ width: 90 }}>Цена</TableCell>
+                    <TableCell sx={{ width: 140 }}>Статус</TableCell>
                     <TableCell align="right">Действия</TableCell>
                   </TableRow>
                 </TableHead>
@@ -1081,15 +1060,35 @@ function CarsSection(props) {
                         <Typography fontWeight={800}>{displayCar(car)}</Typography>
                         <Typography color="text.secondary">{car.year || 'год не указан'} · топливо {car.fuelLevel ?? 0}%</Typography>
                       </TableCell>
-                      <TableCell>{car.locationCity ? `${car.locationCity}, ${car.locationAddress}` : 'не назначена'}</TableCell>
-                      <TableCell>
-                        <Stack direction="row" spacing={1.5} useFlexGap flexWrap="wrap">
-                          {(car.features || []).map((feature) => <Chip key={feature} size="small" label={feature} />)}
-                        </Stack>
+                      <TableCell sx={{ overflowWrap: 'anywhere' }}>
+                        {car.locationCity ? `${car.locationCity}, ${car.locationAddress}` : 'не назначена'}
+                      </TableCell>
+                      <TableCell sx={{ width: 250, overflow: 'hidden' }}>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, maxWidth: '100%' }}>
+                          {(car.features || []).map((feature) => (
+                            <Chip
+                              key={feature}
+                              size="small"
+                              label={feature}
+                              sx={{
+                                maxWidth: '100%',
+                                flexShrink: 0,
+                                '& .MuiChip-label': {
+                                  whiteSpace: 'normal',
+                                  wordBreak: 'keep-all',
+                                  overflowWrap: 'normal',
+                                  lineHeight: 1.2,
+                                  paddingTop: '3px',
+                                  paddingBottom: '3px',
+                                },
+                              }}
+                            />
+                          ))}
+                        </Box>
                       </TableCell>
                       <TableCell>{car.pricePerMinute} BYN/мин</TableCell>
                       <TableCell>
-                        <Chip color={car.available ? 'primary' : 'default'} label={car.available ? 'Свободна' : 'Занята'} />
+                        <Chip color={car.available ? 'primary' : 'default'} label={car.available ? 'Available' : 'Busy'} />
                       </TableCell>
                       <TableCell align="right">
                         <RowActions
@@ -1145,13 +1144,19 @@ function BookingsSection(props) {
     users,
   } = props;
   const rows = pageSlice(bookings, page, 6);
+  const { formRef: editFormRef, highlightForm: highlightEditForm } = useEditFormFocus(Boolean(editingBooking));
 
   return (
     <SectionShell
       title={editingBooking ? 'Редактировать бронирование' : 'Новое бронирование'}
       subtitle=""
       form={(
-        <Box component="form" onSubmit={onSubmit}>
+        <Box
+          ref={editFormRef}
+          component="form"
+          onSubmit={onSubmit}
+          sx={getEditFormSx(highlightEditForm)}
+        >
           <Stack spacing={2}>
             {isAdmin ? (
               <Autocomplete options={users} getOptionLabel={displayUser}
@@ -1214,7 +1219,7 @@ function BookingsSection(props) {
                   <TableCell>Автомобиль</TableCell>
                   <TableCell>Период</TableCell>
                   <TableCell>Стоимость</TableCell>
-                  <TableCell>Статус</TableCell>
+                  <TableCell sx={{ width: 120 }}>Статус</TableCell>
                   <TableCell align="right">Действия</TableCell>
                 </TableRow>
               </TableHead>
@@ -1225,18 +1230,26 @@ function BookingsSection(props) {
                     <TableCell>{booking.carBrand} {booking.carModel}</TableCell>
                     <TableCell>{formatDate(booking.startTime)} - {formatDate(booking.endTime)}</TableCell>
                     <TableCell>{booking.totalCost ?? 0} BYN</TableCell>
-                    <TableCell><Chip label={booking.status} color={booking.status === 'ACTIVE' ? 'primary' : 'default'} /></TableCell>
+                    <TableCell sx={{ width: 120 }}>
+                      <Chip label={booking.status} color={booking.status === 'ACTIVE' ? 'primary' : 'default'} />
+                    </TableCell>
                     <TableCell align="right">
-                      {isAdmin && (
-                        <Tooltip title="Завершить">
-                          <span>
-                            <IconButton disabled={booking.status !== 'ACTIVE'} onClick={() => onComplete(booking)}>
-                              <DoneIcon />
-                            </IconButton>
-                          </span>
-                        </Tooltip>
-                      )}
-                      <RowActions onEdit={() => onEdit(booking)} onDelete={() => onDelete(booking)} />
+                      <Stack direction="row" spacing={0.75} sx={{ justifyContent: 'flex-end', alignItems: 'center' }}>
+                        {isAdmin && (
+                          <Tooltip title="Завершить">
+                            <span>
+                              <IconButton
+                                className="edit-action"
+                                disabled={booking.status !== 'ACTIVE'}
+                                onClick={() => onComplete(booking)}
+                              >
+                                <DoneIcon />
+                              </IconButton>
+                            </span>
+                          </Tooltip>
+                        )}
+                        <RowActions onEdit={() => onEdit(booking)} onDelete={() => onDelete(booking)} />
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -1256,11 +1269,16 @@ function BookingsSection(props) {
 
 function UsersSection({ bookingsByUser, editingUser, form, onChangeForm, onDelete, onEdit, onPage, onReset, onSubmit, page, users }) {
   const rows = pageSlice(users, page, 6);
+  const { formRef: editFormRef, highlightForm: highlightEditForm } = useEditFormFocus(Boolean(editingUser));
   return (
     <SectionShell
       title={editingUser ? 'Редактировать клиента' : 'Новый клиент'}
       subtitle="Добавление нового клиента."
-      form={<SimpleUserForm form={form} editing={editingUser} onChange={onChangeForm} onReset={onReset} onSubmit={onSubmit} />}
+      form={(
+        <Box ref={editFormRef} sx={getEditFormSx(highlightEditForm)}>
+          <SimpleUserForm form={form} editing={editingUser} onChange={onChangeForm} onReset={onReset} onSubmit={onSubmit} />
+        </Box>
+      )}
       table={(
         <PagedTable page={page} total={users.length} onPage={onPage}>
           <Table>
@@ -1284,11 +1302,16 @@ function UsersSection({ bookingsByUser, editingUser, form, onChangeForm, onDelet
 
 function LocationsSection({ carsByLocation, editingLocation, form, locations, onChangeForm, onDelete, onEdit, onPage, onReset, onSubmit, page }) {
   const rows = pageSlice(locations, page, 6);
+  const { formRef: editFormRef, highlightForm: highlightEditForm } = useEditFormFocus(Boolean(editingLocation));
   return (
     <SectionShell
       title={editingLocation ? 'Редактировать локацию' : 'Новая локация'}
       subtitle="Адреса выдачи автомобилей в Минске."
-      form={<LocationForm form={form} editing={editingLocation} onChange={onChangeForm} onReset={onReset} onSubmit={onSubmit} />}
+      form={(
+        <Box ref={editFormRef} sx={getEditFormSx(highlightEditForm)}>
+          <LocationForm form={form} editing={editingLocation} onChange={onChangeForm} onReset={onReset} onSubmit={onSubmit} />
+        </Box>
+      )}
       table={(
         <PagedTable page={page} total={locations.length} onPage={onPage}>
           <Table>
@@ -1315,11 +1338,16 @@ function LocationsSection({ carsByLocation, editingLocation, form, locations, on
 
 function FeaturesSection({ cars, editingFeature, features, form, onChangeForm, onDelete, onEdit, onPage, onReset, onSubmit, page }) {
   const rows = pageSlice(features, page, 6);
+  const { formRef: editFormRef, highlightForm: highlightEditForm } = useEditFormFocus(Boolean(editingFeature));
   return (
     <SectionShell
       title={editingFeature ? 'Редактировать особенность' : 'Новая особенность'}
       subtitle="Добавление новой особенности."
-      form={<FeatureForm form={form} editing={editingFeature} onChange={onChangeForm} onReset={onReset} onSubmit={onSubmit} />}
+      form={(
+        <Box ref={editFormRef} sx={getEditFormSx(highlightEditForm)}>
+          <FeatureForm form={form} editing={editingFeature} onChange={onChangeForm} onReset={onReset} onSubmit={onSubmit} />
+        </Box>
+      )}
       table={(
         <PagedTable page={page} total={features.length} onPage={onPage}>
           <Table>
@@ -1423,7 +1451,7 @@ function FriendlyPager({ onPage, page, totalPages }) {
 
 function RowActions({ onDelete, onEdit, onRelease }) {
   return (
-    <Stack className="row-actions" spacing={0.75}>
+    <Stack className="row-actions" direction="row" spacing={0.75}>
       {onRelease && (
         <Tooltip title="Освободить">
           <IconButton className="release-action" onClick={onRelease}><LockOpenIcon /></IconButton>
@@ -1437,4 +1465,32 @@ function RowActions({ onDelete, onEdit, onRelease }) {
       </Tooltip>
     </Stack>
   );
+}
+
+function useEditFormFocus(isEditing) {
+  const formRef = useRef(null);
+  const [highlightForm, setHighlightForm] = useState(false);
+
+  useEffect(() => {
+    if (!isEditing || !formRef.current) {
+      return undefined;
+    }
+
+    formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setHighlightForm(true);
+    const timer = setTimeout(() => setHighlightForm(false), 1400);
+    return () => clearTimeout(timer);
+  }, [isEditing]);
+
+  return { formRef, highlightForm };
+}
+
+function getEditFormSx(highlight) {
+  return {
+    scrollMarginTop: '90px',
+    borderRadius: 1,
+    transition: 'box-shadow 220ms ease, background-color 220ms ease',
+    boxShadow: highlight ? '0 0 0 2px rgba(182, 255, 0, 0.65)' : 'none',
+    backgroundColor: highlight ? 'rgba(182, 255, 0, 0.06)' : 'transparent',
+  };
 }

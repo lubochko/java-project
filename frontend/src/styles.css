@@ -5,6 +5,18 @@ body {
     linear-gradient(180deg, #18211e 0%, #111411 42%);
 }
 
+input::-webkit-credentials-auto-fill-button,
+input::-ms-reveal,
+input::-ms-clear {
+  filter: brightness(0) invert(1);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
 .hero {
   background:
     linear-gradient(90deg, rgba(7, 11, 12, 0.96), rgba(7, 11, 12, 0.7)),
