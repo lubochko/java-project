@@ -67,7 +67,7 @@ export function CarDetails({ car, onBack, onBookCar }) {
             <Chip color={car.available ? 'primary' : 'default'} label={car.available ? 'Свободна сейчас' : 'Занята'} />
           </Stack>
           <Typography color="text.secondary" paragraph>
-            {displayCar(car)} доступен для аренды в сервисе PrimeWheel. Выберите этот автомобиль в разделе
+            {displayCar(car)} доступен для аренды в сервисе Carsharing. Выберите этот автомобиль в разделе
             бронирований, укажите дату и длительность аренды.
           </Typography>
           <Divider sx={{ my: 2 }} />

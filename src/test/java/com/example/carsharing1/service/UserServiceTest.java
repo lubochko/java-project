@@ -4,7 +4,9 @@ import com.example.carsharing1.dto.UserDto;
 import com.example.carsharing1.entity.User;
 import com.example.carsharing1.exception.DuplicateEmailException;
 import com.example.carsharing1.exception.DuplicateLicenseException;
+import com.example.carsharing1.enums.BookingStatus;
 import com.example.carsharing1.exception.UserNotFoundException;
+import com.example.carsharing1.repository.BookingRepository;
 import com.example.carsharing1.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +29,8 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private BookingRepository bookingRepository;
     @InjectMocks
     private UserService userService;
 
@@ -292,6 +296,7 @@ class UserServiceTest {
     @Test
     void deleteUserDeletesOnlyWhenExists() {
         when(userRepository.existsById(1L)).thenReturn(true);
+        when(bookingRepository.existsByUserIdAndStatus(1L, BookingStatus.ACTIVE)).thenReturn(false);
         userService.deleteUser(1L);
         verify(userRepository).deleteById(1L);
 

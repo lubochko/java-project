@@ -640,7 +640,7 @@ export default function App() {
             />
             <Box>
               <Typography variant="h5" sx={{ fontWeight: 900, lineHeight: 0.9, mt: 0.45 }}>
-                Prime<span className="accent">Wheel</span>
+                Car<span className="accent">sharing</span>
               </Typography>
             </Box>
           </Stack>
@@ -1045,11 +1045,11 @@ function CarsSection(props) {
               <Table sx={{ tableLayout: 'fixed', width: '100%' }}>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Автомобиль</TableCell>
-                    <TableCell>Локация</TableCell>
-                    <TableCell sx={{ width: 250 }}>Особенности</TableCell>
-                    <TableCell sx={{ width: 90 }}>Цена</TableCell>
-                    <TableCell sx={{ width: 140 }}>Статус</TableCell>
+                    <TableCell sx={{ width: '21%' }}>Автомобиль</TableCell>
+                    <TableCell sx={{ width: '21%' }}>Локация</TableCell>
+                    <TableCell sx={{ width: '20%' }}>Особенности</TableCell>
+                    <TableCell sx={{ width: '10%' }}>Цена</TableCell>
+                    <TableCell sx={{ width: '14%' }}>Статус</TableCell>
                     <TableCell align="right">Действия</TableCell>
                   </TableRow>
                 </TableHead>
@@ -1057,13 +1057,15 @@ function CarsSection(props) {
                   {cars.map((car) => (
                     <TableRow key={car.id} hover>
                       <TableCell>
-                        <Typography fontWeight={800}>{displayCar(car)}</Typography>
-                        <Typography color="text.secondary">{car.year || 'год не указан'} · топливо {car.fuelLevel ?? 0}%</Typography>
+                        <Typography fontWeight={700} sx={{ fontSize: '0.9rem' }}>{displayCar(car)}</Typography>
+                        <Typography color="text.secondary" sx={{ fontSize: '0.95rem' }}>
+                          {car.year || 'год не указан'} · топливо {car.fuelLevel ?? 0}%
+                        </Typography>
                       </TableCell>
                       <TableCell sx={{ overflowWrap: 'anywhere' }}>
                         {car.locationCity ? `${car.locationCity}, ${car.locationAddress}` : 'не назначена'}
                       </TableCell>
-                      <TableCell sx={{ width: 250, overflow: 'hidden' }}>
+                      <TableCell sx={{ overflow: 'hidden' }}>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, maxWidth: '100%' }}>
                           {(car.features || []).map((feature) => (
                             <Chip
@@ -1086,7 +1088,7 @@ function CarsSection(props) {
                           ))}
                         </Box>
                       </TableCell>
-                      <TableCell>{car.pricePerMinute} BYN/мин</TableCell>
+                      <TableCell sx={{ overflowWrap: 'anywhere' }}>{car.pricePerMinute} BYN/мин</TableCell>
                       <TableCell>
                         <Chip color={car.available ? 'primary' : 'default'} label={car.available ? 'Available' : 'Busy'} />
                       </TableCell>
@@ -1416,7 +1418,20 @@ function FeatureForm({ editing, form, onChange, onReset, onSubmit }) {
 
 function TableCard({ children }) {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      component={Paper}
+      sx={{
+        overflowX: 'hidden',
+        '& .MuiTableCell-root': {
+          fontSize: '0.9rem',
+          lineHeight: 1.3,
+          py: 1.2,
+        },
+        '& .MuiChip-root': {
+          fontSize: '0.82rem',
+        },
+      }}
+    >
       {children}
     </TableContainer>
   );
