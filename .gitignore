@@ -1,5 +1,6 @@
 HELP.md
 .env
+/node_modules/
 target/
 ../gitt/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
