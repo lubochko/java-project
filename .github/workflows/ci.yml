@@ -1,5 +1,3 @@
-# Секреты для деплоя: RAILWAY_TOKEN + RAILWAY_SERVICE (или DEPLOY_HOOK_URL).
-# После деплоя: APP_BASE_URL — публичный URL для healthcheck (например https://….up.railway.app).
 name: Docker Image CI
 
 on:
