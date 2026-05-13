@@ -11,7 +11,8 @@ public class StaticFilesConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:uploads/");
+        // classpath first: Docker/Railway JAR has no ./frontend/dist next to the process
         registry.addResourceHandler("/**")
-                .addResourceLocations("file:frontend/dist/", "classpath:/static/");
+                .addResourceLocations("classpath:/static/", "file:frontend/dist/");
     }
 }
