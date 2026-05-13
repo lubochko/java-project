@@ -26,7 +26,7 @@ import java.util.Set;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "app.seed.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "app.seed.enabled", havingValue = "true", matchIfMissing = false)
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
