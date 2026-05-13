@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ import java.util.Set;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "app.seed.enabled", havingValue = "true", matchIfMissing = true)
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
@@ -37,7 +39,14 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String @NonNull ... args) {
+        try {
+            runSeed();
+        } catch (Throwable t) {
+            log.error("Ошибка инициализации данных (приложение продолжит работу): {}", t.toString(), t);
+        }
+    }
 
+    private void runSeed() {
         normalizeImageColumn();
 
         if (featureRepository.count() > 0) {
@@ -202,7 +211,7 @@ public class DataInitializer implements CommandLineRunner {
 
         carRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
                 .filter(car -> "Citroen".equalsIgnoreCase(car.getBrand()) && "X5".equalsIgnoreCase(car.getModel()))
-                .filter(car -> car.getBookings() == null || car.getBookings().isEmpty())
+                .filter(car -> !bookingRepository.existsByCarId(car.getId()))
                 .forEach(carRepository::delete);
         log.info("Удалены лишние автомобили, созданные нагрузочным тестом. Текущее количество: {}",
                 carRepository.count());

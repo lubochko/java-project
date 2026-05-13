@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
+    boolean existsByCarId(Long carId);
+
     List<Booking> findByUserId(Long userId);
     boolean existsByUserIdAndStatus(Long userId, BookingStatus status);
 
