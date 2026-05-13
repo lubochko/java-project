@@ -8,7 +8,7 @@ RUN npm run build
 
 FROM eclipse-temurin:17-jdk-noble AS backend-build
 WORKDIR /build
-COPY pom.xml mvnw mvnw./cmd ./
+COPY pom.xml mvnw mvnw.cmd ./
 COPY .mvn .mvn
 COPY src ./src
 COPY --from=frontend-build /build/frontend/dist ./frontend/dist
