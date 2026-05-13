@@ -10,6 +10,11 @@ public class CarMapper {
     private CarMapper() { }
 
     public static CarDto toDto(Car car) {
+        return toDto(car, null);
+    }
+
+
+    public static CarDto toDto(Car car, Boolean availableOverride) {
         if (car == null) {
             return null;
         }
@@ -24,7 +29,7 @@ public class CarMapper {
         dto.setFuelLevel(car.getFuelLevel());
         dto.setImageUrl(car.getImageUrl());
         dto.setActive(car.isActive());
-        dto.setAvailable(car.isAvailable());
+        dto.setAvailable(availableOverride != null ? availableOverride : car.isAvailable());
 
         if (car.getLocation() != null) {
             dto.setLocationCity(car.getLocation().getCity());

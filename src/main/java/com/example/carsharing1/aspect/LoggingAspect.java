@@ -5,12 +5,14 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 @Slf4j
 @Aspect
 @Component
+@Profile("!prod")
 public class LoggingAspect {
     @Pointcut("execution(* com.example.carsharing1.service.*.*(..))")
     public void serviceMethods() { }

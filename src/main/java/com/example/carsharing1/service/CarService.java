@@ -10,6 +10,7 @@ import com.example.carsharing1.exception.CarServiceException;
 import com.example.carsharing1.exception.FeatureNotFoundException;
 import com.example.carsharing1.exception.LocationNotFoundException;
 import com.example.carsharing1.mapper.CarMapper;
+import com.example.carsharing1.repository.BookingRepository;
 import com.example.carsharing1.repository.CarRepository;
 import com.example.carsharing1.repository.FeatureRepository;
 import com.example.carsharing1.repository.LocationRepository;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -44,6 +46,7 @@ public class CarService {
     private final CarRepository carRepository;
     private final LocationRepository locationRepository;
     private final FeatureRepository featureRepository;
+    private final BookingRepository bookingRepository;
 
     private final Map<CarSearchKey, List<CarDto>> searchCache = new HashMap<>();
     private static final Comparator<CarDto> BY_ID = Comparator.comparing(CarDto::getId);
@@ -92,24 +95,30 @@ public class CarService {
 
     public List<CarDto> getAllCars() {
         log.info(GET_ALL_CARS);
-        return carRepository.findAll().stream()
-                .map(CarMapper::toDto)
+        List<Car> cars = carRepository.findAll();
+        Map<Long, Boolean> availability = availabilityByCarId(cars);
+        return cars.stream()
+                .map(car -> toDtoWithAvailability(car, availability))
                 .sorted(BY_ID)
                 .toList();
     }
 
     public List<CarDto> getAllActiveCars() {
         log.info(GET_ACTIVE_CARS);
-        return carRepository.findAllActive().stream()
-                .map(CarMapper::toDto)
+        List<Car> cars = carRepository.findAllActive();
+        Map<Long, Boolean> availability = availabilityByCarId(cars);
+        return cars.stream()
+                .map(car -> toDtoWithAvailability(car, availability))
                 .sorted(BY_ID)
                 .toList();
     }
 
     public List<CarDto> getAvailableCars() {
         log.info(GET_AVAILABLE_CARS);
-        return carRepository.findAvailableCars().stream()
-                .map(CarMapper::toDto)
+        List<Car> cars = carRepository.findAvailableCars();
+        Map<Long, Boolean> availability = availabilityByCarId(cars);
+        return cars.stream()
+                .map(car -> toDtoWithAvailability(car, availability))
                 .sorted(BY_ID)
                 .toList();
     }
@@ -277,8 +286,9 @@ public class CarService {
         log.info(SEARCH_JPQL, email, featureName);
 
         List<Car> cars = carRepository.findCarsByComplexCriteria(email, featureName);
+        Map<Long, Boolean> availability = availabilityByCarId(cars);
         return cars.stream()
-                .map(CarMapper::toDto)
+                .map(car -> toDtoWithAvailability(car, availability))
                 .sorted(BY_ID)
                 .toList();
     }
@@ -287,8 +297,9 @@ public class CarService {
         log.info(SEARCH_NATIVE, email, featureName);
 
         List<Car> cars = carRepository.findCarsByComplexCriteriaNative(email, featureName);
+        Map<Long, Boolean> availability = availabilityByCarId(cars);
         return cars.stream()
-                .map(CarMapper::toDto)
+                .map(car -> toDtoWithAvailability(car, availability))
                 .sorted(BY_ID)
                 .toList();
     }
@@ -302,7 +313,8 @@ public class CarService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         Page<Car> carPage = carRepository.findCarsByComplexCriteriaPaged(email, featureName, availableOnly, pageable);
-        return carPage.map(CarMapper::toDto);
+        Map<Long, Boolean> availability = availabilityByCarId(carPage.getContent());
+        return carPage.map(car -> toDtoWithAvailability(car, availability));
     }
 
     public List<CarDto> findCarsWithCache(String email, String featureName,
@@ -334,6 +346,36 @@ public class CarService {
     private void invalidateCache() {
         log.info(CACHE_INVALIDATED);
         searchCache.clear();
+    }
+
+
+    private Map<Long, Boolean> availabilityByCarId(List<Car> cars) {
+        if (cars == null || cars.isEmpty()) {
+            return Map.of();
+        }
+        List<Long> ids = cars.stream()
+                .map(Car::getId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+        if (ids.isEmpty()) {
+            return Map.of();
+        }
+        Set<Long> busy = new HashSet<>(bookingRepository.findCarIdsWithStatusAmong(BookingStatus.ACTIVE, ids));
+        Map<Long, Boolean> map = new HashMap<>();
+        for (Car car : cars) {
+            Long id = car.getId();
+            if (id != null) {
+                map.put(id, car.isActive() && !busy.contains(id));
+            }
+        }
+        return map;
+    }
+
+    private CarDto toDtoWithAvailability(Car car, Map<Long, Boolean> availability) {
+        Long id = car.getId();
+        Boolean override = id == null ? null : availability.get(id);
+        return CarMapper.toDto(car, override);
     }
 
     private Car prepareCar(CarDto carDto, Long locationId) {
@@ -469,6 +511,7 @@ public class CarService {
     public List<CarDto> getAllCarsWithNPlusOneProblem() {
         log.info(N_PLUS_ONE_DEMO);
         List<Car> cars = carRepository.findAll();
+        Map<Long, Boolean> availability = availabilityByCarId(cars);
         List<CarDto> result = new ArrayList<>();
 
         for (Car car : cars) {
@@ -479,9 +522,9 @@ public class CarService {
                     car.getId(),
                     location != null ? location.getCity() : "не указана",
                     features.size(),
-                    car.isAvailable());
+                    availability.get(car.getId()));
 
-            result.add(CarMapper.toDto(car));
+            result.add(toDtoWithAvailability(car, availability));
         }
         return result;
     }
@@ -495,8 +538,9 @@ public class CarService {
     public List<CarDto> getAllActiveCarsWithFetchJoin() {
         log.info(FETCH_JOIN_SOLUTION);
         List<Car> cars = carRepository.findAllActiveWithDetails();
+        Map<Long, Boolean> availability = availabilityByCarId(cars);
         return cars.stream()
-                .map(CarMapper::toDto)
+                .map(car -> toDtoWithAvailability(car, availability))
                 .sorted(BY_ID)
                 .toList();
     }

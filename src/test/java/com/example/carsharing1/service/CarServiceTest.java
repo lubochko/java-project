@@ -10,8 +10,10 @@ import com.example.carsharing1.exception.CarServiceException;
 import com.example.carsharing1.exception.FeatureNotFoundException;
 import com.example.carsharing1.exception.LocationNotFoundException;
 import com.example.carsharing1.repository.CarRepository;
+import com.example.carsharing1.repository.BookingRepository;
 import com.example.carsharing1.repository.FeatureRepository;
 import com.example.carsharing1.repository.LocationRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -43,6 +46,15 @@ class CarServiceTest {
     private LocationRepository locationRepository;
     @Mock
     private FeatureRepository featureRepository;
+    @Mock
+    private BookingRepository bookingRepository;
+
+    @BeforeEach
+    void stubNoActiveBookingsForAvailabilityBatch() {
+        lenient().when(bookingRepository.findCarIdsWithStatusAmong(any(BookingStatus.class), any()))
+                .thenReturn(List.of());
+    }
+
     @InjectMocks
     private CarService carService;
 

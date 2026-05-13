@@ -23,7 +23,7 @@ RUN groupadd --system app && useradd --system --gid app --no-create-home app
 COPY --from=backend-build /build/target/*.jar app.jar
 USER app
 EXPOSE 8080
-ENV JAVA_TOOL_OPTIONS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -XX:MaxMetaspaceSize=256m -XX:+ExitOnOutOfMemoryError"
+ENV JAVA_TOOL_OPTIONS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0 -XX:MaxMetaspaceSize=256m -XX:+UseStringDeduplication -XX:+ExitOnOutOfMemoryError"
 ENV JAVA_OPTS=""
 HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=5 \
   CMD curl -fsS "http://127.0.0.1:${PORT:-8080}/actuator/health/liveness" | grep -q UP || exit 1

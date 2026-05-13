@@ -7,7 +7,6 @@ on:
     branches: [master]
 
 concurrency:
-  # Уникальная группа по имени файла workflow (не только github.workflow из YAML name:).
   group: docker-image-yml-${{ github.ref }}
   cancel-in-progress: true
 

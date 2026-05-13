@@ -7,12 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     boolean existsByCarId(Long carId);
+
+    @Query("SELECT DISTINCT b.car.id FROM Booking b WHERE b.status = :status AND b.car.id IN :carIds")
+    List<Long> findCarIdsWithStatusAmong(@Param("status") BookingStatus status,
+                                         @Param("carIds") Collection<Long> carIds);
 
     List<Booking> findByUserId(Long userId);
     boolean existsByUserIdAndStatus(Long userId, BookingStatus status);
