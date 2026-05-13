@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 
@@ -15,14 +16,21 @@ import org.springframework.core.env.MapPropertySource;
  * Railway and similar platforms set {@code DATABASE_URL} as {@code postgresql://user:pass@host:port/db}.
  * Spring/Hikari need {@code jdbc:postgresql://host:port/db} plus optional username/password properties.
  * Also normalizes {@code SPRING_DATASOURCE_URL} when it uses a {@code postgres://} URL without {@code jdbc:}.
+ * <p>Runs last so {@code application.properties} resolution cannot place a raw {@code postgresql://} URL
+ * above this fix (Spring Boot config data uses {@code addFirst}).
  */
-public class RailwayJdbcUrlEnvironmentPostProcessor implements EnvironmentPostProcessor {
+public class RailwayJdbcUrlEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     private static final String ENV_DATABASE_URL = "DATABASE_URL";
     private static final String ENV_SPRING_DATASOURCE_URL = "SPRING_DATASOURCE_URL";
     private static final String DATASOURCE_URL = "spring.datasource.url";
     private static final String DATASOURCE_USERNAME = "spring.datasource.username";
     private static final String DATASOURCE_PASSWORD = "spring.datasource.password";
+
+    @Override
+    public int getOrder() {
+        return Ordered.LOWEST_PRECEDENCE;
+    }
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
