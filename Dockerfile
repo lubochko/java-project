@@ -19,6 +19,7 @@ RUN apk add --no-cache wget
 COPY --from=jar-build /build/target/*.jar app.jar
 EXPOSE 8080
 ENV JAVA_OPTS=""
+
 ENV PORT=8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=5 \
   CMD sh -c 'wget -qO- "http://127.0.0.1:${PORT:-8080}/actuator/health/liveness" | grep -q UP || exit 1'
