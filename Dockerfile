@@ -1,26 +1,29 @@
-
-FROM node:20-alpine AS frontend-build
+FROM node:22-bookworm-slim AS frontend-build
+WORKDIR /build
+COPY frontend/package.json frontend/package-lock.json ./frontend/
+RUN cd frontend && npm ci
+COPY frontend ./frontend
 WORKDIR /build/frontend
-COPY frontend/package.json frontend/package-lock.json ./
-RUN npm ci
-COPY frontend/ ./
 RUN npm run build
 
-FROM maven:3.9.9-eclipse-temurin-17 AS jar-build
+FROM eclipse-temurin:17-jdk-noble AS backend-build
 WORKDIR /build
-COPY pom.xml .
+COPY pom.xml mvnw mvnw.cmd ./
+COPY .mvn .mvn
 COPY src ./src
 COPY --from=frontend-build /build/frontend/dist ./frontend/dist
-RUN mvn -B -ntp -Dskip.frontend=true -Pcheckstyle-skip package -DskipTests
+RUN chmod +x mvnw && ./mvnw -B -ntp package -DskipTests -Pcheckstyle-skip -Dskip.frontend=true
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre-noble
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-RUN apk add --no-cache wget
-COPY --from=jar-build /build/target/*.jar app.jar
+RUN groupadd --system app && useradd --system --gid app --no-create-home app
+COPY --from=backend-build /build/target/*.jar app.jar
+USER app
 EXPOSE 8080
 ENV JAVA_OPTS=""
-
-ENV PORT=8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=5 \
-  CMD sh -c 'wget -qO- "http://127.0.0.1:${PORT:-8080}/actuator/health/liveness" | grep -q UP || exit 1'
+  CMD curl -fsS "http://127.0.0.1:${PORT:-8080}/actuator/health/liveness" | grep -q UP || exit 1
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/app.jar"]
