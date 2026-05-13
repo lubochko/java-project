@@ -47,13 +47,13 @@ public class LoggingAspect {
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
 
-        log.info("Вызов контроллера: {}.{} с параметрами: {}", className, methodName, args);
+        log.info("Вызов контроллера: {}.{} (аргументов: {})", className, methodName, args == null ? 0 : args.length);
 
         long startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();
         long executionTime = System.currentTimeMillis() - startTime;
 
-        log.info("Контроллер {}.{} выполнен за {} мс, результат: {}", className, methodName, executionTime, result);
+        log.info("Контроллер {}.{} выполнен за {} мс", className, methodName, executionTime);
 
         return result;
     }

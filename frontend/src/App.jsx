@@ -94,13 +94,22 @@ const ADMIN_ACCOUNT = {
 
 async function api(path, options = {}) {
   const isFormData = options.body instanceof FormData;
-  const response = await fetch(path, {
-    headers: {
-      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-      ...(options.headers || {}),
-    },
-    ...options,
-  });
+  let response;
+  try {
+    response = await fetch(path, {
+      headers: {
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+        ...(options.headers || {}),
+      },
+      ...options,
+    });
+  } catch (err) {
+    const msg = err?.message || '';
+    if (msg.includes('Failed to fetch') || msg.includes('NetworkError')) {
+      throw new Error('Нет соединения с сервером. Проверьте интернет и что бэкенд запущен (тот же адрес, что и сайт).');
+    }
+    throw err;
+  }
 
   if (!response.ok) {
     const text = await response.text();
@@ -118,6 +127,16 @@ async function api(path, options = {}) {
 function normalizeApiError(text, status) {
   if (!text) {
     return `Не удалось выполнить действие. Код ошибки: ${status}`;
+  }
+
+  const lower = text.toLowerCase();
+  if (status === 502 || status === 503 || status === 504
+      || lower.includes('application failed to respond')
+      || lower.includes('bad gateway')
+      || lower.includes('service unavailable')
+      || lower.includes('gateway time-out')) {
+    return 'Сервер не ответил вовремя или перезапускается (часто из‑за нехватки памяти на хостинге). '
+      + 'Обновите страницу через минуту или увеличьте лимит RAM в настройках сервиса.';
   }
 
   try {
@@ -293,16 +312,11 @@ export default function App() {
   const loadAll = async () => {
     setLoading(true);
     try {
-      const [usersData, bookingsData, locationsData, featuresData] = await Promise.all([
-        api('/api/users'),
-        api('/api/bookings'),
-        api('/api/locations'),
-        api('/api/features'),
-      ]);
-      setUsers(usersData || []);
-      setBookings(bookingsData || []);
-      setLocations(locationsData || []);
-      setFeatures(featuresData || []);
+      // Последовательно, не Promise.all: на слабом Paaс меньше одновременной нагрузки на БД и память.
+      setUsers((await api('/api/users')) || []);
+      setBookings((await api('/api/bookings')) || []);
+      setLocations((await api('/api/locations')) || []);
+      setFeatures((await api('/api/features')) || []);
       await loadCars(1);
     } catch (err) {
       showError(err);
