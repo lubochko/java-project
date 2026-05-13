@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image CI/CD
 
 on:
   push:
@@ -83,6 +83,11 @@ jobs:
           echo "Deploy пропущен: задайте secrets RAILWAY_TOKEN + RAILWAY_SERVICE или DEPLOY_HOOK_URL."
           exit 0
 
+  healthcheck:
+    needs: deploy
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
       - name: Healthcheck (production)
         env:
           APP_BASE_URL: ${{ secrets.APP_BASE_URL }}

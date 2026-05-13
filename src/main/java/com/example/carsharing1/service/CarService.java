@@ -312,7 +312,20 @@ public class CarService {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Car> carPage = carRepository.findCarsByComplexCriteriaPaged(email, featureName, availableOnly, pageable);
+        String emailNorm = (email == null || email.isBlank()) ? null : email;
+        String featureNorm = (featureName == null || featureName.isBlank()) ? null : featureName;
+
+        Page<Car> carPage;
+        if (emailNorm == null && featureNorm == null) {
+            if (availableOnly) {
+                carPage = carRepository.findAvailableCarsPaged(pageable);
+            } else {
+                carPage = carRepository.findAll(pageable);
+            }
+        } else {
+            carPage = carRepository.findCarsByComplexCriteriaPaged(
+                    emailNorm, featureNorm, availableOnly, pageable);
+        }
         Map<Long, Boolean> availability = availabilityByCarId(carPage.getContent());
         return carPage.map(car -> toDtoWithAvailability(car, availability));
     }

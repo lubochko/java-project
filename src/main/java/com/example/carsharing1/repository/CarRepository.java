@@ -70,6 +70,13 @@ public interface CarRepository extends JpaRepository<Car, Long> {
                                              @Param("availableOnly") boolean availableOnly,
                                              Pageable pageable);
 
+
+    @Query(value = "SELECT c FROM Car c WHERE c.active = true AND NOT EXISTS ("
+            + "SELECT ab FROM Booking ab WHERE ab.car = c AND ab.status = 'ACTIVE')",
+            countQuery = "SELECT COUNT(c) FROM Car c WHERE c.active = true AND NOT EXISTS ("
+                    + "SELECT ab FROM Booking ab WHERE ab.car = c AND ab.status = 'ACTIVE')")
+    Page<Car> findAvailableCarsPaged(Pageable pageable);
+
     @Query(value = "SELECT DISTINCT c.* FROM cars c " +
             "LEFT JOIN bookings b ON c.id = b.car_id " +
             "LEFT JOIN users u ON b.user_id = u.id " +
