@@ -1,5 +1,6 @@
 package com.example.carsharing1.mapper;
 
+import com.example.carsharing1.dto.BookingAdminListItem;
 import com.example.carsharing1.dto.BookingDto;
 import com.example.carsharing1.dto.PaymentDto;
 import com.example.carsharing1.entity.Booking;
@@ -43,6 +44,34 @@ public class BookingMapper {
             dto.setPayment(paymentDto);
         }
 
+        return dto;
+    }
+
+    public static BookingDto fromAdminListItem(BookingAdminListItem row) {
+        if (row == null) {
+            return null;
+        }
+        BookingDto dto = new BookingDto();
+        dto.setId(row.getId());
+        dto.setUserId(row.getUserId());
+        dto.setUserName(row.getUserName());
+        dto.setCarId(row.getCarId());
+        dto.setCarBrand(row.getCarBrand());
+        dto.setCarModel(row.getCarModel());
+        dto.setStartTime(row.getStartTime());
+        dto.setEndTime(row.getEndTime());
+        dto.setStatus(row.getStatus());
+        dto.setTotalCost(row.getTotalCost());
+        if (row.getPaymentId() != null) {
+            PaymentDto paymentDto = new PaymentDto();
+            paymentDto.setId(row.getPaymentId());
+            paymentDto.setAmount(row.getPaymentAmount());
+            paymentDto.setTime(row.getPaymentTime());
+            paymentDto.setStatus(row.getPaymentStatus());
+            paymentDto.setMethod(row.getPaymentMethod());
+            paymentDto.setTransactionId(row.getPaymentTransactionId());
+            dto.setPayment(paymentDto);
+        }
         return dto;
     }
 }

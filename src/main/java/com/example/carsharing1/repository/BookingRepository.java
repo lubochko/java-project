@@ -1,5 +1,6 @@
 package com.example.carsharing1.repository;
 
+import com.example.carsharing1.dto.BookingAdminListItem;
 import com.example.carsharing1.entity.Booking;
 import com.example.carsharing1.enums.BookingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -44,4 +45,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "JOIN FETCH b.car " +
             "WHERE b.id = :id")
     Booking findByIdWithDetails(@Param("id") Long id);
+
+    @Query("SELECT NEW com.example.carsharing1.dto.BookingAdminListItem("
+            + "b.id, u.id, u.name, c.id, c.brand, c.model, b.startTime, b.endTime, b.status, b.totalCost, "
+            + "p.id, p.amount, p.time, p.status, p.method, p.transactionId) "
+            + "FROM Booking b LEFT JOIN b.user u LEFT JOIN b.car c LEFT JOIN b.payment p "
+            + "ORDER BY b.id ASC")
+    List<BookingAdminListItem> findAllForAdminList();
 }

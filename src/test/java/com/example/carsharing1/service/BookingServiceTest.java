@@ -1,5 +1,6 @@
 package com.example.carsharing1.service;
 
+import com.example.carsharing1.dto.BookingAdminListItem;
 import com.example.carsharing1.dto.BookingBulkOperationResultDto;
 import com.example.carsharing1.dto.BookingCreateRequestDto;
 import com.example.carsharing1.dto.BookingDto;
@@ -47,9 +48,15 @@ class BookingServiceTest {
 
     @Test
     void getAllBookingsSortsById() {
-        Booking b2 = booking(2L, 40.0);
-        Booking b1 = booking(1L, 20.0);
-        when(bookingRepository.findAll()).thenReturn(List.of(b2, b1));
+        LocalDateTime st = LocalDateTime.now().plusHours(1);
+        LocalDateTime et = LocalDateTime.now().plusHours(2);
+        BookingAdminListItem row2 = new BookingAdminListItem(
+                2L, 1L, "U1", 2L, "B", "M", st, et, BookingStatus.ACTIVE, 40.0,
+                null, null, null, null, null, null);
+        BookingAdminListItem row1 = new BookingAdminListItem(
+                1L, 1L, "U1", 2L, "B", "M", st, et, BookingStatus.ACTIVE, 20.0,
+                null, null, null, null, null, null);
+        when(bookingRepository.findAllForAdminList()).thenReturn(List.of(row2, row1));
 
         List<BookingDto> result = bookingService.getAllBookings();
 

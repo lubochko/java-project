@@ -36,9 +36,10 @@ public class BookingService {
     private final PaymentRepository paymentRepository;
     private static final Comparator<BookingDto> BY_ID = Comparator.comparing(BookingDto::getId);
 
+    @Transactional(readOnly = true)
     public List<BookingDto> getAllBookings() {
-        return bookingRepository.findAll().stream()
-                .map(BookingMapper::toDto)
+        return bookingRepository.findAllForAdminList().stream()
+                .map(BookingMapper::fromAdminListItem)
                 .sorted(BY_ID)
                 .toList();
     }
