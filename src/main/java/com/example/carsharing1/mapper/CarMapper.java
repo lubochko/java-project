@@ -10,15 +10,24 @@ public class CarMapper {
     private CarMapper() { }
 
     public static CarDto toDto(Car car) {
-        return toDto(car, null);
-    }
-
-
-    public static CarDto toDto(Car car, Boolean availableOverride) {
         if (car == null) {
             return null;
         }
+        CarDto dto = fillCarDtoExceptAvailability(car);
+        dto.setAvailable(car.isAvailable());
+        return dto;
+    }
 
+    public static CarDto toDtoWithPrecomputedAvailable(Car car, boolean available) {
+        if (car == null) {
+            return null;
+        }
+        CarDto dto = fillCarDtoExceptAvailability(car);
+        dto.setAvailable(available);
+        return dto;
+    }
+
+    private static CarDto fillCarDtoExceptAvailability(Car car) {
         CarDto dto = new CarDto();
         dto.setId(car.getId());
         dto.setBrand(car.getBrand());
@@ -29,7 +38,6 @@ public class CarMapper {
         dto.setFuelLevel(car.getFuelLevel());
         dto.setImageUrl(car.getImageUrl());
         dto.setActive(car.isActive());
-        dto.setAvailable(availableOverride != null ? availableOverride : car.isAvailable());
 
         if (car.getLocation() != null) {
             dto.setLocationCity(car.getLocation().getCity());

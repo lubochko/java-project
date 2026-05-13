@@ -387,8 +387,10 @@ public class CarService {
 
     private CarDto toDtoWithAvailability(Car car, Map<Long, Boolean> availability) {
         Long id = car.getId();
-        Boolean override = id == null ? null : availability.get(id);
-        return CarMapper.toDto(car, override);
+        if (id == null) {
+            return CarMapper.toDto(car);
+        }
+        return CarMapper.toDtoWithPrecomputedAvailable(car, availability.getOrDefault(id, Boolean.FALSE));
     }
 
     private Car prepareCar(CarDto carDto, Long locationId) {
